@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">ECTRO</string>
+    <string name="welcome_back_greeting">Selamat Datang Kembali,\nSilahkan Login terlebih dahulu.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="dont_have_acc_yet">Belum punya akun?</string>
+    <string name="register_now">Daftar Sekarang</string>
+    <string name="loading">Loading</string>
+    <string name="an_error_occurred">Terjadi Kesalahan</string>
+    <string name="pls_check_your_internet">Mohon periksa koneksi internet anda.</string>
+    <string name="try_again">Coba Lagi</string>
+    <string name="sign_up_desc">Selamat Datang di ECTRO,\nSilahkan Buat Akun terlebih dahulu.</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="password_confirmation">Konfirmasi Password</string>
+    <string name="register">DAFTAR</string>
+    <string name="already_have_acc">Sudah punya akun?</string>
+    <string name="login_here">Login Disini</string>
+    <string name="bad_signal_icon">Ikon Sinyal Buruk</string>
 </resources>
