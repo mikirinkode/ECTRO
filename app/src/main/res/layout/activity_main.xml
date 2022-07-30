@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,128 +7,54 @@
     tools:context=".ui.main.MainActivity">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_bar"
+    <fragment
+        android:id="@+id/nav_host_fragment_activity_home"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/bottom_navigation" />
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect_rounded_bottom"
-        android:backgroundTint="@color/primary_500"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/white"
+        app:contentInsetStart="0dp"
+        app:fabCradleMargin="12dp"
+        app:fabCradleRoundedCornerRadius="@dimen/corner_radius"
+        app:hideOnScroll="false">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_photo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_default_profile" />
-
-        <TextView
-            android:id="@+id/tv_greeting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Halo"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/iv_user_photo"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_not_login_yet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Silahkan login terlebih dahulu."
-            android:textColor="@color/white"
-            android:fontFamily="@font/poppins_semibold"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@id/iv_user_photo"
-            app:layout_constraintBottom_toBottomOf="@id/iv_user_photo"
-            app:layout_constraintStart_toEndOf="@id/iv_user_photo"
-            android:layout_marginStart="16dp"/>
-
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/poppins_medium"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_user_photo"
-            app:layout_constraintTop_toBottomOf="@id/tv_greeting"
-            tools:text="Muhammad Wafa" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_bar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_announcement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:text="Pengumuman"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            app:itemIconTint="@color/nav_color"
+            app:itemTextColor="@color/nav_color"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/nav_bottom" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
 
-            <ImageView
-                android:id="@+id/announcement"
-                android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_announcement"
-                tools:src="@drawable/sample_announcement_image" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/button_scan"
+        android:elevation="2dp"
+        android:src="@drawable/ic_camera_outline"
+        app:backgroundTint="?android:attr/colorPrimary"
+        app:layout_anchor="@id/bottom_app_bar"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottom_nav_view"
+        app:tint="@color/white" />
 
-            <TextView
-                android:id="@+id/tv_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Acara"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/announcement" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_event"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_event"
-                tools:listitem="@layout/item_event" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

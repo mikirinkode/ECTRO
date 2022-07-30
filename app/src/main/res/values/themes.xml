@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ECTRO" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ECTRO" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_500</item>
         <item name="colorPrimaryVariant">@color/primary_700</item>
@@ -15,6 +15,10 @@
         <item name="background">@color/white</item>
         <item name="backgroundColor">@color/primary_500</item>
         <item name="android:textColor">@color/neutral_700</item>
+
+        <!--    For Selector    -->
+        <item name="itemTextAppearanceActive">@color/white</item>
+        <item name="itemTextAppearanceInactive">@color/light_400</item>
     </style>
 
     <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button.ElevatedButton">

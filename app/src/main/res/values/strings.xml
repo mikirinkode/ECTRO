@@ -17,4 +17,9 @@
     <string name="already_have_acc">Sudah punya akun?</string>
     <string name="login_here">Login Disini</string>
     <string name="bad_signal_icon">Ikon Sinyal Buruk</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Beranda</string>
+    <string name="profile">Profil</string>
+    <string name="button_scan">Button Scan</string>
 </resources>
