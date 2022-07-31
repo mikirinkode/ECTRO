@@ -22,4 +22,5 @@
     <string name="home">Beranda</string>
     <string name="profile">Profil</string>
     <string name="button_scan">Button Scan</string>
+    <string name="active_role">Role Aktif</string>
 </resources>

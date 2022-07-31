@@ -32,14 +32,7 @@ class MainActivity : AppCompatActivity() {
             bottomNavView.background = null
             bottomNavView.menu.getItem(1).isEnabled = false
 
-            val appBarConf = AppBarConfiguration(
-                setOf(
-                    R.id.nav_home,
-                    R.id.nav_profile
-                )
-            )
 
-            setupActionBarWithNavController(navController)
             bottomNavView.setupWithNavController(navController)
 
             fabScan.setOnClickListener {
@@ -47,30 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    //        binding.apply {
-//            Glide.with(this@MainActivity)
-//                .load(R.drawable.ic_default_profile)
-//                .into(ivUserPhoto)
-//
-//            Glide.with(this@MainActivity)
-//                .load(R.drawable.sample_announcement_image)
-//                .into(announcement)
-//
-//            if (tvUserName.text.isNotEmpty()) {
-//                tvGreeting.visibility = View.VISIBLE
-//                tvNotLoginYet.visibility = View.GONE
-//            } else {
-//                tvNotLoginYet.visibility = View.VISIBLE
-//            }
-//
-//            ivUserPhoto.setOnClickListener {
-//
-//            }
-//
-//            tvNotLoginYet.setOnClickListener {
-//                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-//            }
-//        }
+
 
     }
 }

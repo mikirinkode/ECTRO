@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import id.unila.himatro.ectro.R
 import id.unila.himatro.ectro.databinding.ActivityLoginBinding
+import id.unila.himatro.ectro.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -20,6 +21,10 @@ class LoginActivity : AppCompatActivity() {
             btnRegisterNow.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
                 finish()
+            }
+
+            tvAppName.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
         }
     }
