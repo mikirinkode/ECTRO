@@ -36,8 +36,8 @@
     </style>
 
     <style name="ECTRO.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/white</item>
-        <item name="android:height">50dp</item>
+        <item name="android:color">?attr/background</item>
+        <item name="android:height">0dp</item>
         <item name="shapeAppearance">@style/ECTRO.Custom.Indicator.ShapeAppearance</item>
     </style>
 

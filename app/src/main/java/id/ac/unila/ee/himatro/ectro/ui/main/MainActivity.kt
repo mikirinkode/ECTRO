@@ -1,29 +1,48 @@
 package id.ac.unila.ee.himatro.ectro.ui.main
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import id.unila.himatro.ectro.R
-import id.unila.himatro.ectro.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import id.ac.unila.ee.himatro.ectro.R
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.model.User
+import id.ac.unila.ee.himatro.ectro.databinding.ActivityMainBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 
 class MainActivity : AppCompatActivity() {
+
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
+    }
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
+    }
+
+    private val fireStore: FirebaseFirestore by lazy {
+        Firebase.firestore
+    }
+
+    private val preferences: EctroPreferences by lazy {
+        EctroPreferences(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        // save user info to preferences
+        saveUserDataToPreference()
 
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
 
@@ -39,8 +58,43 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Scan Button", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    private fun saveUserDataToPreference() {
+        Log.e(TAG, "Method saveUserDataToPreference()")
+        val loggedUser = auth.currentUser
 
+        if (loggedUser != null) {
+            Log.e(TAG, "There is Logged User")
+            val userInDB: DocumentReference = fireStore.collection("users").document(loggedUser.uid)
 
+            userInDB.get()
+                .addOnSuccessListener { document ->
+                    val user: User? = document.toObject<User>()
+
+                    if (user != null) {
+                        Log.e(TAG, user.email)
+                        Log.e(TAG, user.name)
+                        Log.e(TAG, user.npm)
+                        Log.e(TAG, user.userPhotoUrl)
+                        Log.e(TAG, user.instagram)
+                        Log.e(TAG, user.linkedin)
+                        Log.e(TAG, user.lastLoginAt)
+                        preferences.startSession(user.name, user.email, user.npm, user.userPhotoUrl)
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, it.message.toString())
+                    Toast.makeText(
+                        this,
+                        getString(R.string.database_connection_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

@@ -20,4 +20,28 @@
         <item name="itemTextAppearanceActive">@color/dark_700</item>
         <item name="itemTextAppearanceInactive">@color/neutral_500</item>
     </style>
+
+    <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Theme.ECTRO.InputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
+    </style>
+
+    <style name="ECTRO.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?attr/background</item>
+        <item name="android:height">0dp</item>
+        <item name="shapeAppearance">@style/ECTRO.Custom.Indicator.ShapeAppearance</item>
+    </style>
+
+    <style name="ECTRO.Custom.Indicator.ShapeAppearance" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">25%</item>
+    </style>
 </resources>

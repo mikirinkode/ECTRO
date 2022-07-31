@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="id.unila.himatro.ectro">
+    package="id.ac.unila.ee.himatro.ectro">
 
     <application
         android:allowBackup="true"
@@ -14,12 +14,14 @@
         android:theme="@style/Theme.ECTRO"
         tools:targetApi="31">
         <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name="id.ac.unila.ee.himatro.ectro.ui.auth.RegisterActivity"
             android:exported="false" />
         <activity
             android:name="id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +30,7 @@
         </activity>
         <activity
             android:name="id.ac.unila.ee.himatro.ectro.ui.main.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

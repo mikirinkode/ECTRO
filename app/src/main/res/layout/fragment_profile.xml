@@ -8,7 +8,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false">
 
         <View
             android:layout_width="match_parent"
@@ -21,18 +23,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/tv_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Profil"
+            android:text="@string/profile"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_settings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:contentDescription="@string/button_settings"
+            android:focusable="true"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintBottom_toBottomOf="@id/tv_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_profile"
+            app:tint="@color/white" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_user_info"
@@ -51,42 +68,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_edit_profile"
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="?attr/background"
-                    app:cardCornerRadius="@dimen/card_corner_radius"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            app:tint="?android:attr/textColor"
-                            android:src="@drawable/ic_edit"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="Edit"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                android:padding="24dp">
 
                 <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="85dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:textAlignment="center"
                     android:textSize="18sp"
@@ -95,44 +83,29 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Muhammad Wafa Al Ausath" />
 
-                <LinearLayout
-                    android:id="@+id/layout_social_instagram"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_user_instagram"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_user_name">
+                    android:drawablePadding="16dp"
+                    app:drawableStartCompat="@drawable/ic_instagram"
+                    app:drawableTint="?android:attr/textColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+                    tools:text="muhammadwafa_" />
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:tint="?android:attr/textColor"
-                        android:src="@drawable/ic_instagram"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        tools:text="muhammadwafa_"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/layout_social_linkeding"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_user_linkedin"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_social_instagram">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:tint="?android:attr/textColor"
-                        android:src="@drawable/ic_linkedin"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        tools:text="Muhammad Wafa Al Ausath"/>
-                </LinearLayout>
+                    android:drawablePadding="16dp"
+                    app:drawableStartCompat="@drawable/ic_linkedin"
+                    app:drawableTint="?android:attr/textColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_instagram"
+                    tools:text="Muhammad Wafa Al Ausath" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -144,6 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:backgroundTint="?attr/background"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_user_info">
@@ -158,11 +132,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/active_role"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/active_role" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

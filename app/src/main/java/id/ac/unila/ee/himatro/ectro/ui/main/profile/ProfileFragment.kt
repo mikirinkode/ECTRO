@@ -1,18 +1,25 @@
 package id.ac.unila.ee.himatro.ectro.ui.main.profile
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import id.unila.himatro.ectro.R
-import id.unila.himatro.ectro.databinding.FragmentProfileBinding
+import id.ac.unila.ee.himatro.ectro.R
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.databinding.FragmentProfileBinding
+import id.ac.unila.ee.himatro.ectro.ui.settings.SettingsActivity
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val preferences: EctroPreferences by lazy {
+        EctroPreferences(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,10 +32,37 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        updateUserInfo()
+
         binding.apply {
-            Glide.with(requireContext())
-                .load(R.drawable.ic_default_profile)
-                .into(ivUserPhoto)
+            btnSettings.setOnClickListener {
+                startActivity(Intent(requireContext(), SettingsActivity::class.java))
+            }
+        }
+    }
+
+    private fun updateUserInfo() {
+        val userName = preferences.getValues(EctroPreferences.USER_NAME)
+        val userPhotoUrl = preferences.getValues(EctroPreferences.USER_PHOTO_URL)
+        val instagramAccount = preferences.getValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT)
+        val linkedinAccount = preferences.getValues(EctroPreferences.USER_LINKEDIN_ACCOUNT)
+
+        binding.apply {
+            tvUserName.text = userName
+            tvUserInstagram.text = if (instagramAccount.isNullOrEmpty()) "-" else instagramAccount
+            tvUserLinkedin.text = if (linkedinAccount.isNullOrEmpty()) "-" else linkedinAccount
+
+            
+            if (userPhotoUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(R.drawable.ic_default_profile)
+                    .into(ivUserPhoto)
+            } else {
+                Glide.with(requireContext())
+                    .load(userPhotoUrl)
+                    .into(ivUserPhoto)
+            }
         }
     }
 

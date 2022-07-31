@@ -4,7 +4,7 @@
     <color name="secondary_200">#FF03DAC5</color>
     <color name="secondary_700">#FF018786</color>
 
-    <color name="primary_300">#479BFD</color>
+    <color name="primary_300">#61AAFF</color>
     <color name="primary_500">#2083F8</color>
     <color name="primary_700">#10427C</color>
 
@@ -23,7 +23,7 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#F44336</color>
+    <color name="red">#FF655A</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>

@@ -94,7 +94,7 @@
                 android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 app:endIconMode="password_toggle"
                 app:endIconDrawable="@drawable/switch_eye"
-                app:helperText="Must include Uppercase, Lowercase, number and have more than 6 characters"
+                app:helperText="@string/password_creating_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 style="@style/Theme.ECTRO.InputLayout"
                 app:startIconDrawable="@drawable/ic_password"
@@ -175,7 +175,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/loading"
+            android:id="@+id/loading_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
