@@ -14,10 +14,10 @@
         android:theme="@style/Theme.ECTRO"
         tools:targetApi="31">
         <activity
-            android:name=".ui.auth.RegisterActivity"
+            android:name="id.ac.unila.ee.himatro.ectro.ui.auth.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.auth.LoginActivity"
+            android:name="id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity"
             android:exported="true">
 
             <intent-filter>
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="id.ac.unila.ee.himatro.ectro.ui.main.MainActivity"
             android:exported="true">
         </activity>
 

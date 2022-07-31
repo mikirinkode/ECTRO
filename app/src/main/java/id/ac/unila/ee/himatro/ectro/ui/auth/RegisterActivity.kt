@@ -1,4 +1,4 @@
-package id.unila.himatro.ectro.ui.auth
+package id.ac.unila.ee.himatro.ectro.ui.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

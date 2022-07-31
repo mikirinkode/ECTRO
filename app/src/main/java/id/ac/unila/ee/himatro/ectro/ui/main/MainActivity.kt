@@ -1,4 +1,4 @@
-package id.unila.himatro.ectro.ui.main
+package id.ac.unila.ee.himatro.ectro.ui.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import id.unila.himatro.ectro.R
 import id.unila.himatro.ectro.databinding.ActivityMainBinding
-import id.unila.himatro.ectro.ui.auth.LoginActivity
+import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {

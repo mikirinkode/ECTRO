@@ -1,5 +1,6 @@
-package id.unila.himatro.ectro.ui.main.profile
+package id.ac.unila.ee.himatro.ectro.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import id.unila.himatro.ectro.R
+import id.unila.himatro.ectro.databinding.FragmentHomeBinding
 import id.unila.himatro.ectro.databinding.FragmentProfileBinding
+import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 
-class ProfileFragment : Fragment() {
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
-    private var _binding: FragmentProfileBinding? = null
+
+class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -19,7 +27,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentProfileBinding.inflate(inflater,container, false)
+        _binding = FragmentHomeBinding.inflate(inflater,container, false)
         return binding.root
     }
 
@@ -29,6 +37,15 @@ class ProfileFragment : Fragment() {
             Glide.with(requireContext())
                 .load(R.drawable.ic_default_profile)
                 .into(ivUserPhoto)
+
+            Glide.with(requireContext())
+                .load(R.drawable.sample_announcement_image)
+                .into(announcement)
+
+            ivUserPhoto.setOnClickListener {
+
+            }
+
         }
     }
 

@@ -1,11 +1,11 @@
-package id.unila.himatro.ectro.ui.auth
+package id.ac.unila.ee.himatro.ectro.ui.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import id.unila.himatro.ectro.R
 import id.unila.himatro.ectro.databinding.ActivityLoginBinding
-import id.unila.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
