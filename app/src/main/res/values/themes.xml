@@ -14,6 +14,7 @@
         <item name="android:windowBackground">@color/light_200</item>
         <item name="background">@color/white</item>
         <item name="backgroundColor">@color/primary_500</item>
+
         <item name="android:textColor">@color/neutral_700</item>
 
         <!--    For Selector    -->
@@ -21,7 +22,7 @@
         <item name="itemTextAppearanceInactive">@color/light_400</item>
     </style>
 
-    <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button.ElevatedButton">
+    <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">
         <item name="android:padding">@dimen/button_padding</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
@@ -29,6 +30,13 @@
     </style>
 
     <style name="Theme.ECTRO.InputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
+    </style>
+
+    <style name="Theme.ECTRO.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
         <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>
         <item name="boxCornerRadiusTopEnd">@dimen/corner_radius</item>

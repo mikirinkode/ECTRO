@@ -18,6 +18,7 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.DARK_MODE_PR
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_OUT
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_EMAIL
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.databinding.ActivitySettingsBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 import kotlin.math.log
@@ -43,6 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userEmail = preferences.getValues(USER_EMAIL)
+        val userName = preferences.getValues(USER_NAME)
         val loggedUser = auth.currentUser
 
         binding.apply {
@@ -59,16 +61,16 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             tvUserEmail.text = userEmail
+            tvUserName.text = userName
             if (loggedUser != null){
                 if (!loggedUser.isEmailVerified){
                     tvEmailStatus.text = getString(R.string.email_not_verified)
+                    btnVerifyEmail.visibility = View.VISIBLE
                 } else {
                     tvEmailStatus.text = getString(R.string.email_is_verified)
                     btnVerifyEmail.visibility = View.GONE
                 }
             }
-
-
 
             btnChangeLanguage.setOnClickListener {
                 Toast.makeText(this@SettingsActivity, "Under Development", Toast.LENGTH_SHORT)
@@ -98,7 +100,7 @@ class SettingsActivity : AppCompatActivity() {
                         FirebaseAuth.getInstance().signOut()
                         preferences.endSession()
                         startActivity(Intent(this@SettingsActivity, LoginActivity::class.java))
-                        finish()
+                        finishAffinity()
                     }
                     .setNegativeButton(getString(R.string.no)) { dialogInterface, _ ->
                         dialogInterface.cancel()

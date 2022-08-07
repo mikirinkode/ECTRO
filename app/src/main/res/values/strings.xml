@@ -17,7 +17,6 @@
     <string name="already_have_acc">Sudah punya akun?</string>
     <string name="login_here">Login Disini</string>
     <string name="bad_signal_icon">Ikon Sinyal Buruk</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Beranda</string>
     <string name="profile">Profil</string>
@@ -52,4 +51,68 @@
     <string name="btn_back">Back Button</string>
     <string name="email_not_verified">*Email belum terverifikasi</string>
     <string name="email_is_verified">Email Terverifikasi</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="membership">Keanggotaan</string>
+    <string name="announcement">Pengumuman</string>
+    <string name="settings">Pengaturan</string>
+    <string name="npm">NPM</string>
+    <string name="department">Departemen</string>
+    <string name="division">Divisi</string>
+    <string name="position">Posisi</string>
+    <string name="student_information">Informasi Mahasiswa</string>
+    <string name="role_info">Informasi Keanggotaan</string>
+    <string name="social_media">Media Sosial</string>
+    <string name="instagram_link">Tautan Akun Instagram</string>
+    <string name="linkedin_link">Tautan Akun Linkedin</string>
+    <string name="save">Simpan</string>
+    <string name="create_event">Buat Acara</string>
+
+
+    <string-array name="department_list">
+        <item>PH</item>
+        <item>Kominfo</item>
+        <item>Soswir</item>
+        <item>Bangtek</item>
+        <item>PPD</item>
+        <item>KPO</item>
+    </string-array>
+
+    <string-array name="kominfo_division_list">
+        <item>Media Informasi</item>
+        <item>Humas</item>
+    </string-array>
+
+    <string-array name="bangtek_division_list">
+        <item>Penelitian dan Pengembangan</item>
+        <item>Pengabdian Masyarakat</item>
+    </string-array>
+
+    <string-array name="soswir_division_list">
+        <item>Sosial</item>
+        <item>Kewirausahaan</item>
+    </string-array>
+
+    <string-array name="ppd_division_list">
+        <item>Pendidikan</item>
+        <item>Kerohanian</item>
+        <item>Minat dan Bakan</item>
+    </string-array>
+
+    <string-array name="ph_position_list">
+        <item>Ketua Himpunan</item>
+        <item>Wakil Ketua Himpunan</item>
+        <item>Sekretaris Umum</item>
+        <item>Bendahara Umum</item>
+        <item>Wakil Skretaris Umum</item>
+        <item>Wakil Bendahara Umum</item>
+    </string-array>
+
+    <string-array name="other_position_list">
+        <item>Kepala Departemen</item>
+        <item>Sekretaris Departemen</item>
+        <item>Kepala Divisi</item>
+        <item>Anggota</item>
+    </string-array>
+
+
 </resources>

@@ -7,13 +7,12 @@
     tools:context="id.ac.unila.ee.himatro.ectro.ui.main.home.HomeFragment">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rect_rounded_bottom"
-        android:backgroundTint="?attr/backgroundColor"
+        android:backgroundTint="?attr/background"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +34,6 @@
             android:layout_marginStart="16dp"
             android:text="Halo"
             android:visibility="visible"
-            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/iv_user_photo"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,20 +43,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
-            android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_search"
             app:layout_constraintStart_toEndOf="@+id/iv_user_photo"
             app:layout_constraintTop_toBottomOf="@id/tv_greeting"
             tools:text="Muhammad Wafa" />
+
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="200dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_bar">
@@ -73,25 +83,85 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:text="Pengumuman"
+                android:drawablePadding="16dp"
                 android:fontFamily="@font/poppins_medium"
+                android:text="@string/announcement"
                 android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_announcement"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <ImageView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/announcement"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:scaleType="fitXY"
+                android:backgroundTint="?attr/background"
+                app:cardCornerRadius="@dimen/card_corner_radius"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_announcement"
-                tools:src="@drawable/sample_announcement_image" />
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tv_announcement_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="ECTRO \nHimatro Mobile"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_announcement_picture"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_announcement_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:text="Under Developement"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_announcement_picture"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_announcement"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Masukan"
+                        app:cornerRadius="@dimen/corner_radius"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_announcement_picture"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_announcement_desc" />
+
+                    <ImageView
+                        android:id="@+id/iv_announcement_picture"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/ic_sample_announcement_picture" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
 
             <TextView
                 android:id="@+id/tv_event"
@@ -100,11 +170,27 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:drawablePadding="16dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Acara"
                 android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/announcement" />
+
+            <Button
+                android:id="@+id/btn_create_event"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="8dp"
+                android:text="@string/create_event"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/tv_event"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_event" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_event"
@@ -114,6 +200,54 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_event"
                 tools:listitem="@layout/item_event" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/empty_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:visibility="visible"
+                android:elevation="2dp"
+                tools:visibility="visible"
+                android:padding="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/rect_rounded"
+                android:backgroundTint="?attr/background"
+                app:layout_constraintTop_toBottomOf="@+id/tv_event">
+
+                <ImageView
+                    android:id="@+id/iv_no_data"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    tools:src="@drawable/ic_no_event"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_no_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tidak ada Data"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_bold"
+                    app:layout_constraintTop_toBottomOf="@id/iv_no_data"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_no_data_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Belum ada Acara dalam Waktu Dekat."
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/tv_no_data"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

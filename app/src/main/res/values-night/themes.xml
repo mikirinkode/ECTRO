@@ -21,7 +21,7 @@
         <item name="itemTextAppearanceInactive">@color/neutral_500</item>
     </style>
 
-    <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button.ElevatedButton">
+    <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">
         <item name="android:padding">@dimen/button_padding</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:fontFamily">@font/poppins_bold</item>

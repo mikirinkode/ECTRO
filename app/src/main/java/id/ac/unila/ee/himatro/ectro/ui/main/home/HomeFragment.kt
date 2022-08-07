@@ -1,5 +1,6 @@
 package id.ac.unila.ee.himatro.ectro.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_PHOTO_URL
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentHomeBinding
+import id.ac.unila.ee.himatro.ectro.ui.event.CreateEventActivity
+import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 
 
 class HomeFragment : Fragment() {
@@ -38,13 +41,16 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             Glide.with(requireContext())
-                .load(R.drawable.sample_announcement_image)
-                .into(announcement)
+                .load(R.drawable.ic_sample_announcement_picture)
+                .into(ivAnnouncementPicture)
 
             ivUserPhoto.setOnClickListener {
-
+                startActivity(Intent(requireContext(), EditProfileActivity::class.java))
             }
 
+            btnCreateEvent.setOnClickListener {
+                startActivity(Intent(requireContext(), CreateEventActivity::class.java))
+            }
         }
     }
 
