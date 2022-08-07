@@ -33,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/background"
-            android:elevation="0dp"
             app:itemActiveIndicatorStyle="@style/ECTRO.Custom.Indicator"
             app:itemIconSize="26dp"
             app:itemIconTint="@color/nav_color"

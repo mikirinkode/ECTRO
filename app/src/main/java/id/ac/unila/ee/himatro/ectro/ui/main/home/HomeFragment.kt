@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import id.ac.unila.ee.himatro.ectro.R
@@ -48,8 +49,16 @@ class HomeFragment : Fragment() {
                 startActivity(Intent(requireContext(), EditProfileActivity::class.java))
             }
 
+            btnUserRecap.setOnClickListener {
+                Toast.makeText(requireContext(), "Under Development", Toast.LENGTH_SHORT).show()
+            }
+
             btnCreateEvent.setOnClickListener {
                 startActivity(Intent(requireContext(), CreateEventActivity::class.java))
+            }
+
+            btnMore.setOnClickListener {
+                Toast.makeText(requireContext(), "Under Development", Toast.LENGTH_SHORT).show()
             }
         }
     }

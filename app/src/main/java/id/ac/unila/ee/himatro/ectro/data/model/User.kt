@@ -9,7 +9,7 @@ class User (
     var linkedin:String = "",
     var instagram:String = "",
 
-    var Role: UserRole = UserRole(),
+    var role: UserRole = UserRole(),
 
     var lastLoginAt:String = "",
 )

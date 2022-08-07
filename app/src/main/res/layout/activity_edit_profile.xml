@@ -264,11 +264,12 @@
                     style="@style/Theme.ECTRO.InputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/instagram_link"
+                    android:hint="@string/instagram_username"
                     android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="16dp"
+                    app:helperText="instagram.com/{your_username}"
                     app:layout_constraintTop_toBottomOf="@id/tv_social_media">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -285,17 +286,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/linkedin_link"
+                    android:hint="@string/linkedin_username"
                     android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:helperText="linkedin.com/in/{your_username}"
                     app:layout_constraintTop_toBottomOf="@+id/til_instagram">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_linkedin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
+                        android:inputType="textPersonName" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

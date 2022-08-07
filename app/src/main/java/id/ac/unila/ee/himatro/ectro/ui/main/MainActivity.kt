@@ -77,10 +77,17 @@ class MainActivity : AppCompatActivity() {
                         Log.e(TAG, user.name)
                         Log.e(TAG, user.npm)
                         Log.e(TAG, user.userPhotoUrl)
+
+                        Log.e(TAG, user.role.department)
+                        Log.e(TAG, user.role.division)
+                        Log.e(TAG, user.role.position)
+
                         Log.e(TAG, user.instagram)
                         Log.e(TAG, user.linkedin)
                         Log.e(TAG, user.lastLoginAt)
-                        preferences.startSession(user.name, user.email, user.npm, user.userPhotoUrl)
+                        preferences.startSession(user)
+
+
                     }
                 }
                 .addOnFailureListener {

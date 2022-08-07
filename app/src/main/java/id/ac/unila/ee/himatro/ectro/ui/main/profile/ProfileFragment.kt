@@ -48,11 +48,30 @@ class ProfileFragment : Fragment() {
         val instagramAccount = preferences.getValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT)
         val linkedinAccount = preferences.getValues(EctroPreferences.USER_LINKEDIN_ACCOUNT)
 
+        val userDepartment = preferences.getValues(EctroPreferences.USER_DEPARTMENT)
+        val userDivision = preferences.getValues(EctroPreferences.USER_DIVISION)
+        val userPosition = preferences.getValues(EctroPreferences.USER_POSITION)
+
         binding.apply {
             tvUserName.text = userName
             tvUserInstagram.text = if (instagramAccount.isNullOrEmpty()) "-" else instagramAccount
             tvUserLinkedin.text = if (linkedinAccount.isNullOrEmpty()) "-" else linkedinAccount
 
+            if (userDivision.isNullOrEmpty() && userPosition.isNullOrEmpty()) {
+                tvPosition.text = ""
+                tvPosition.visibility = View.GONE
+            } else {
+                tvPosition.text = "$userPosition $userDivision"
+                tvPosition.visibility = View.VISIBLE
+            }
+
+            if (userDepartment.isNullOrEmpty()){
+                tvDepartment.text = ""
+                tvDepartment.visibility = View.GONE
+            } else {
+                tvDepartment.text = userDepartment
+                tvDepartment.visibility = View.VISIBLE
+            }
             
             if (userPhotoUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())

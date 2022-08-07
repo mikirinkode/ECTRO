@@ -19,6 +19,8 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_IN
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_EMAIL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
+import id.ac.unila.ee.himatro.ectro.data.model.User
+import id.ac.unila.ee.himatro.ectro.data.model.UserRole
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityRegisterBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import java.util.regex.Pattern
@@ -76,6 +78,8 @@ class RegisterActivity : AppCompatActivity() {
                     if (firebaseUser != null) {
                         firebaseUser.sendEmailVerification()
 
+                        val lastLogin = System.currentTimeMillis().toString()
+
                         // create user
                         val user = hashMapOf(
                             "email" to email,
@@ -89,7 +93,7 @@ class RegisterActivity : AppCompatActivity() {
                                 "division" to "",
                                 "position" to ""
                             ),
-                            "lastLoginAt" to System.currentTimeMillis().toString()
+                            "lastLoginAt" to lastLogin
                         )
 
                         // add new user document to fireStore
@@ -104,8 +108,18 @@ class RegisterActivity : AppCompatActivity() {
                                 )
                                     .show()
 
+                                val userEntity = User(
+                                    email,
+                                    name,
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    UserRole("", "", ""),
+                                    lastLogin
+                                )
                                 // save user info to preferences
-                                preferences.startSession(name, email, null, null)
+                                preferences.startSession(userEntity)
 
                                 startActivity(
                                     Intent(

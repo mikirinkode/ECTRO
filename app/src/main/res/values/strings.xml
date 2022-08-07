@@ -66,6 +66,9 @@
     <string name="linkedin_link">Tautan Akun Linkedin</string>
     <string name="save">Simpan</string>
     <string name="create_event">Buat Acara</string>
+    <string name="instagram_username">Username Instagram</string>
+    <string name="linkedin_username">Username Linkedin</string>
+    <string name="see_all">Lihat Semua</string>
 
 
     <string-array name="department_list">
