@@ -69,6 +69,16 @@
     <string name="instagram_username">Username Instagram</string>
     <string name="linkedin_username">Username Linkedin</string>
     <string name="see_all">Lihat Semua</string>
+    <string name="event_name">Nama Acara</string>
+    <string name="event_desc">Deskripsi Acara</string>
+    <string name="event_date">Tanggal</string>
+    <string name="event_time">Jam</string>
+    <string name="event_category">Kategori</string>
+    <string name="with_attendance_form">Absensi via Ectro</string>
+    <string name="event_info">Informasi Acara</string>
+    <string name="event_place_date">Tempat dan Tanggal</string>
+    <string name="event_type">Jenis Acara</string>
+    <string name="additional_info">Informasi Tambahan</string>
 
 
     <string-array name="department_list">

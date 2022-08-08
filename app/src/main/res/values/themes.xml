@@ -20,6 +20,7 @@
         <!--    For Selector    -->
         <item name="itemTextAppearanceActive">@color/white</item>
         <item name="itemTextAppearanceInactive">@color/light_400</item>
+        <item name="colorOnBackground">@color/neutral_700</item>
     </style>
 
     <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">

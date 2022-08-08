@@ -18,7 +18,8 @@
 
         <!--    For Selector    -->
         <item name="itemTextAppearanceActive">@color/dark_700</item>
-        <item name="itemTextAppearanceInactive">@color/neutral_500</item>
+        <item name="itemTextAppearanceInactive">@color/neutral_200</item>
+        <item name="colorOnBackground">@color/neutral_200</item>
     </style>
 
     <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">
