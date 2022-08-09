@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ECTRO"
         tools:targetApi="31">
         <activity
-            android:name=".ui.event.CreateEventActivity"
+            android:name=".ui.event.AddEventActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.EditProfileActivity"

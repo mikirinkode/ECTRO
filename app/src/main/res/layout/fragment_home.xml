@@ -67,8 +67,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingBottom="220dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +74,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="220dp">
 
             <View
                 android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                     android:focusable="true"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_create_event"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_add_event"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:strokeWidth="0dp">
@@ -147,7 +147,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_create_event"
+                    android:id="@+id/btn_add_event"
                     style="@style/Widget.Material3.CardView.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="Buat Acara"
+                            android:text="@string/add_event"
                             android:textAlignment="center"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -193,7 +193,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btn_create_event"
+                    app:layout_constraintStart_toEndOf="@+id/btn_add_event"
                     app:layout_constraintTop_toTopOf="parent"
                     app:strokeWidth="0dp">
 
@@ -342,6 +342,7 @@
                 android:id="@+id/rv_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_event"
@@ -355,7 +356,7 @@
                 android:background="@drawable/rect_rounded"
                 android:backgroundTint="?attr/background"
                 android:padding="24dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_event"

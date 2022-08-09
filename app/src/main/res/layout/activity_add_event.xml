@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.event.CreateEventActivity">
+    tools:context=".ui.event.AddEventActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:text="@string/create_event"
+            android:text="@string/add_event"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,6 +50,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp"
+        android:clipToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar">
 
@@ -84,7 +86,7 @@
                     style="@style/Theme.ECTRO.InputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/event_name"
                     android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -132,16 +134,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_event_info">
 
-                <TextView
-                    android:id="@+id/tv_place_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/event_place_date"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
 
                 <TextView
                     android:id="@+id/tv_event_type"
@@ -149,15 +141,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/event_type"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_place_date" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <RadioGroup
                     android:id="@+id/rg_event_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@id/rb_offline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_event_type">
 
@@ -165,14 +157,46 @@
                         android:id="@+id/rb_offline"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Offline" />
+                        android:text="@string/offline" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rb_online"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Online" />
+                        android:text="@string/online" />
                 </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_place_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/event_place_date"
+                    android:textSize="16sp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rg_event_type"/>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_event_place"
+                    style="@style/Theme.ECTRO.InputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/event_place"
+                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperText="Silahkan isi dengan Link Online Meeting jika dilaksanakan secara online"
+                    app:layout_constraintTop_toBottomOf="@id/tv_place_date">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_event_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_event_date"
@@ -184,7 +208,7 @@
                     android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rg_event_type">
+                    app:layout_constraintTop_toBottomOf="@id/til_event_place">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_event_date"
@@ -260,7 +284,7 @@
                     android:id="@+id/til_attendance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -286,13 +310,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_create_event"
+                android:id="@+id/btn_add_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/create_event"
+                android:text="@string/add_event"
                 android:theme="@style/Theme.ECTRO.Button"
                 app:cornerRadius="@dimen/corner_radius"
                 android:textAllCaps="true"
@@ -300,6 +324,44 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_event_additional_info" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/rect_rounded"
+        android:backgroundTint="?android:attr/windowBackground"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="?attr/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/loading"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/progress_bar"
+            app:layout_constraintStart_toEndOf="@id/progress_bar"
+            app:layout_constraintTop_toTopOf="@id/progress_bar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
