@@ -9,4 +9,9 @@ object DateHelper {
         val date = Date()
         return dateFormat.format(date)
     }
+
+    fun getCurrentYear(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.YEAR)
+    }
 }

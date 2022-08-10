@@ -128,6 +128,18 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
+                <Button
+                    android:id="@+id/btn_request_role"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="8dp"
+                    android:text="@string/request_role"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="?attr/colorPrimary" />
+
                 <TextView
                     android:id="@+id/tv_role"
                     android:layout_width="wrap_content"
@@ -224,6 +236,41 @@
             app:layout_constraintTop_toTopOf="@+id/card_user_info"
             tools:src="@drawable/ic_default_profile" />
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/rect_rounded"
+            android:backgroundTint="?attr/background"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ProgressBar
+                android:indeterminateTint="?attr/colorPrimary"
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                app:layout_constraintStart_toEndOf="@id/progress_bar"
+                app:layout_constraintTop_toTopOf="@id/progress_bar"
+                app:layout_constraintBottom_toBottomOf="@id/progress_bar"
+                android:textSize="20sp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/poppins_medium"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

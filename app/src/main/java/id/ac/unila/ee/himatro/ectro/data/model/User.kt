@@ -10,6 +10,7 @@ class User (
     var instagram:String = "",
 
     var role: UserRole = UserRole(),
+    var roleRequestStatus:String = "",
 
     var lastLoginAt:String = "",
 )

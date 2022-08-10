@@ -72,8 +72,6 @@ class MainActivity : AppCompatActivity() {
 
                     if (user != null) {
                         preferences.startSession(user)
-
-
                     }
                 }
                 .addOnFailureListener {

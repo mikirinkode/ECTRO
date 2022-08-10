@@ -61,7 +61,7 @@
     <string name="position">Posisi</string>
     <string name="student_information">Informasi Mahasiswa</string>
     <string name="role_info">Informasi Keanggotaan</string>
-    <string name="social_media">Media Sosial</string>
+    <string name="social_media">Media Sosial (opsional)</string>
     <string name="instagram_link">Tautan Akun Instagram</string>
     <string name="linkedin_link">Tautan Akun Linkedin</string>
     <string name="save">Simpan</string>
@@ -103,6 +103,13 @@
     <string name="empty_additional_link">Mohon isi field berikut</string>
     <string name="please_fill_attendance_first">Mohon Absen Dahulu</string>
     <string name="please_choose_online_media">Mohon pilih media acara</string>
+    <string name="please_complete_your_data">Silahkan lengkapi profil anda.</string>
+    <string name="invalid_id">NPM tidak valid</string>
+    <string name="successfully_update_data">Berhasil memperbaharui data</string>
+    <string name="update_failed">Gagal memperbaharui data</string>
+    <string name="request_role">Request</string>
+    <string name="successfully_request_role">Berrhasil mengirim permintaan</string>
+    <string name="request_processed">Permintaan sedang diproses</string>
 
 
     <string-array name="online_event_media">

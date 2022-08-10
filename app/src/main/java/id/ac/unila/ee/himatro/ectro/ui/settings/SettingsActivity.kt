@@ -21,6 +21,7 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_EMAIL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.databinding.ActivitySettingsBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
+import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 import kotlin.math.log
 
 class SettingsActivity : AppCompatActivity() {
@@ -48,6 +49,10 @@ class SettingsActivity : AppCompatActivity() {
         val loggedUser = auth.currentUser
 
         binding.apply {
+
+            btnEditProfile.setOnClickListener{
+                startActivity(Intent(this@SettingsActivity, EditProfileActivity::class.java))
+            }
 
             val isDark = preferences.getBooleanValues(DARK_MODE_PREF)
             switchDarkMode.isChecked = isDark == true

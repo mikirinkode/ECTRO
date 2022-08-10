@@ -15,10 +15,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_IN
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_EMAIL
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.data.model.UserRole
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityRegisterBinding
@@ -72,53 +68,52 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser(name: String, email: String, password: String) {
         binding.loadingIndicator.visibility = View.VISIBLE
+
+        // create user entity for fireStore
+        val user = hashMapOf(
+            "email" to email,
+            "name" to name,
+            "npm" to "",
+            "userPhotoUrl" to "",
+            "linkedin" to "",
+            "instagram" to "",
+            "role" to hashMapOf(
+                "department" to "",
+                "division" to "",
+                "position" to "",
+                "yearOfManagement" to 0
+            ),
+            "lastLoginAt" to DateHelper.getCurrentDate()
+        )
+
+        // create user entity for local preference
+        val userEntity = User(
+            email = email,
+            name = name,
+            lastLoginAt = DateHelper.getCurrentDate()
+        )
+
+        // try to create new user
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser? = task.result.user
+
                     if (firebaseUser != null) {
                         firebaseUser.sendEmailVerification()
 
-                        val lastLogin = DateHelper.getCurrentDate()
-
-                        // create user
-                        val user = hashMapOf(
-                            "email" to email,
-                            "name" to name,
-                            "npm" to "",
-                            "userPhotoUrl" to "",
-                            "linkedin" to "",
-                            "instagram" to "",
-                            "role" to hashMapOf(
-                                "department" to "",
-                                "division" to "",
-                                "position" to ""
-                            ),
-                            "lastLoginAt" to lastLogin
-                        )
-
-                        // add new user document to fireStore
+                        // try to add new user document to fireStore
                         fireStore.collection("users").document(firebaseUser.uid)
                             .set(user)
                             .addOnSuccessListener {
-                                binding.loadingIndicator.visibility = View.GONE
                                 Toast.makeText(
                                     this,
                                     getString(R.string.successfully_create_account),
                                     Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ).show()
 
-                                val userEntity = User(
-                                    email,
-                                    name,
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    UserRole("", "", ""),
-                                    lastLogin
-                                )
+                                binding.loadingIndicator.visibility = View.GONE
+
                                 // save user info to preferences
                                 preferences.startSession(userEntity)
 
@@ -161,7 +156,6 @@ class RegisterActivity : AppCompatActivity() {
     ): Boolean {
         binding.apply {
             var isValid = true
-
             if (TextUtils.isEmpty(name)) {
                 edtRegisterName.error = getString(R.string.empty_name)
                 isValid = false
