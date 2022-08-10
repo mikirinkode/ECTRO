@@ -23,6 +23,7 @@ import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.data.model.UserRole
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityRegisterBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
@@ -78,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (firebaseUser != null) {
                         firebaseUser.sendEmailVerification()
 
-                        val lastLogin = System.currentTimeMillis().toString()
+                        val lastLogin = DateHelper.getCurrentDate()
 
                         // create user
                         val user = hashMapOf(

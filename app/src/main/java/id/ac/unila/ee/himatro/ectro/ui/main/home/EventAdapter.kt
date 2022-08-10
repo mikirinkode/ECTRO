@@ -1,10 +1,12 @@
 package id.ac.unila.ee.himatro.ectro.ui.main.home
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
+import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 
 class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
@@ -19,6 +21,12 @@ class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
                 tvEventPlace.text = event.place
                 tvDummyCategory.text = "#${event.category}"
                 tvEventCategory.text = "#${event.category}"
+            }
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, DetailEventActivity::class.java)
+                intent.putExtra(DetailEventActivity.EXTRA_ENTITY, event)
+                itemView.context.startActivity(intent)
             }
         }
     }

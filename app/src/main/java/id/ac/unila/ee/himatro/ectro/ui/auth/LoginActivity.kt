@@ -23,6 +23,7 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityLoginBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 
 class LoginActivity : AppCompatActivity() {
 
@@ -98,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
 
                     // set last login
                     val lastLogin = hashMapOf(
-                        "lastLoginAt" to System.currentTimeMillis().toString()
+                        "lastLoginAt" to DateHelper.getCurrentDate()
                     )
 
                     val db = Firebase.firestore

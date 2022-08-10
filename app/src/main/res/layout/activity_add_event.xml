@@ -50,7 +50,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="24dp"
+        android:paddingBottom="24dp"
         android:clipToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar">
@@ -120,6 +120,28 @@
                         android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_event_category"
+                    style="@style/Theme.ECTRO.InputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/event_category"
+                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperText="Rapat, Lokakarya, Mubes"
+                    app:layout_constraintTop_toBottomOf="@id/til_event_desc">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_event_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,7 +161,6 @@
                     android:id="@+id/tv_event_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="@string/event_type"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="16sp"
@@ -166,6 +187,28 @@
                         android:text="@string/online" />
                 </RadioGroup>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_online_event_media"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:theme="@style/Theme.ECTRO.InputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Media Acara Online"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/rg_event_type">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/act_online_event_media"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:padding="17dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/tv_place_date"
                     android:layout_width="wrap_content"
@@ -175,7 +218,7 @@
                     android:textSize="16sp"
                     android:layout_marginTop="24dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rg_event_type"/>
+                    app:layout_constraintTop_toBottomOf="@+id/til_online_event_media"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -188,7 +231,6 @@
                     android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:helperText="Silahkan isi dengan Link Online Meeting jika dilaksanakan secara online"
                     app:layout_constraintTop_toBottomOf="@id/tv_place_date">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -255,30 +297,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/additional_info"
+                    android:text="@string/other"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_event_category"
-                    style="@style/Theme.ECTRO.InputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/event_category"
-                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_additional_info">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_event_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
-
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:id="@+id/til_attendance"
@@ -288,14 +310,13 @@
                     android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_event_category">
+                    app:layout_constraintTop_toBottomOf="@id/tv_additional_info">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
-                        android:drawablePadding="16dp"
                         android:fontFamily="@font/poppins_medium"
                         android:text="@string/with_attendance_form" />
 
@@ -304,18 +325,90 @@
                         android:id="@+id/switch_attendance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_additional_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/til_attendance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/additional_button" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_additional_name"
+                    style="@style/Theme.ECTRO.InputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Nama Aksi"
+                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperText="Cth: Join Meet, Konfirmasi Pembayaran atau lainnya"
+                    app:layout_constraintTop_toBottomOf="@id/tv_additional_button">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_additional_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_additional_link"
+                    style="@style/Theme.ECTRO.InputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Link yang dituju"
+                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperText="Cth: Link Zoom, Link Form Pembayaran atau lainnya"
+                    app:layout_constraintTop_toBottomOf="@id/til_additional_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_additional_link"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_action_after_attendance"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_additional_link"
+                    app:layout_constraintEnd_toStartOf="@+id/switch_action_after_attendance"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:text="Tombol tambahan aktif setelah peserta Absen" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_additional_link"
+                    android:id="@+id/switch_action_after_attendance"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
                 android:text="@string/add_event"
                 android:theme="@style/Theme.ECTRO.Button"
                 app:cornerRadius="@dimen/corner_radius"

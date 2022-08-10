@@ -58,19 +58,23 @@ class ProfileFragment : Fragment() {
             tvUserLinkedin.text = if (linkedinAccount.isNullOrEmpty()) "-" else linkedinAccount
 
             if (userDivision.isNullOrEmpty() && userPosition.isNullOrEmpty()) {
-                tvPosition.text = ""
                 tvPosition.visibility = View.GONE
+                tvDummyPosition.visibility = View.GONE
             } else {
                 tvPosition.text = "$userPosition $userDivision"
+                tvDummyPosition.text = "$userPosition $userDivision"
                 tvPosition.visibility = View.VISIBLE
+                tvDummyPosition.visibility = View.VISIBLE
             }
 
             if (userDepartment.isNullOrEmpty()){
-                tvDepartment.text = ""
                 tvDepartment.visibility = View.GONE
+                tvDummyDepartment.visibility = View.GONE
             } else {
                 tvDepartment.text = userDepartment
+                tvDummyDepartment.text = userDepartment
                 tvDepartment.visibility = View.VISIBLE
+                tvDummyDepartment.visibility = View.VISIBLE
             }
             
             if (userPhotoUrl.isNullOrEmpty()) {

@@ -89,7 +89,26 @@
     <string name="offline">Offline</string>
     <string name="online">Online</string>
     <string name="empty_event_place">Mohon masukkan lokasi acara</string>
+    <string name="event_detail">Detail Acara</string>
+    <string name="participant">Peserta</string>
+    <string name="absent">Absen</string>
+    <string name="already_absent">Sudah Absen</string>
+    <string name="participant_list">Daftar Peserta</string>
+    <string name="attendance">Kehadiran</string>
+    <string name="fill_attendance">Isi Kehadiran</string>
+    <string name="created_by">Dibuat oleh</string>
+    <string name="other">Lainnya</string>
+    <string name="additional_button">Tombol Tambahan</string>
+    <string name="empty_meeting_link">Mohon masukkan tautan online meeting</string>
+    <string name="empty_additional_link">Mohon isi field berikut</string>
+    <string name="please_fill_attendance_first">Mohon Absen Dahulu</string>
+    <string name="please_choose_online_media">Mohon pilih media acara</string>
 
+
+    <string-array name="online_event_media">
+        <item>Via Online Meeting</item>
+        <item>Lainnya</item>
+    </string-array>
 
     <string-array name="department_list">
         <item>PH</item>

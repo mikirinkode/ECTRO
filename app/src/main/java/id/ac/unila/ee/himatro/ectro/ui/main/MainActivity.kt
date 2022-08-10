@@ -61,11 +61,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveUserDataToPreference() {
-        Log.e(TAG, "Method saveUserDataToPreference()")
         val loggedUser = auth.currentUser
 
         if (loggedUser != null) {
-            Log.e(TAG, "There is Logged User")
             val userInDB: DocumentReference = fireStore.collection("users").document(loggedUser.uid)
 
             userInDB.get()
@@ -73,18 +71,6 @@ class MainActivity : AppCompatActivity() {
                     val user: User? = document.toObject<User>()
 
                     if (user != null) {
-                        Log.e(TAG, user.email)
-                        Log.e(TAG, user.name)
-                        Log.e(TAG, user.npm)
-                        Log.e(TAG, user.userPhotoUrl)
-
-                        Log.e(TAG, user.role.department)
-                        Log.e(TAG, user.role.division)
-                        Log.e(TAG, user.role.position)
-
-                        Log.e(TAG, user.instagram)
-                        Log.e(TAG, user.linkedin)
-                        Log.e(TAG, user.lastLoginAt)
                         preferences.startSession(user)
 
 

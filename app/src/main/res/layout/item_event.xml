@@ -27,14 +27,15 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_category"
             tools:text="Rapat Electrical Engineering in Action 2022" />
 
+
         <ImageView
             android:id="@+id/ic_date"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="16dp"
             android:src="@drawable/ic_date"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_event_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_event_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_event_date" />
 
         <TextView
             android:id="@+id/tv_event_date"
@@ -42,19 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_medium"
-            app:layout_constraintBottom_toBottomOf="@id/ic_date"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/ic_date"
-            app:layout_constraintTop_toTopOf="@id/ic_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_event_title"
             tools:text="Senin, 19 Juni 2022" />
 
         <ImageView
             android:id="@+id/ic_time"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
             android:src="@drawable/ic_time"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_event_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ic_date" />
+            app:layout_constraintTop_toTopOf="@+id/tv_event_time" />
 
         <TextView
             android:id="@+id/tv_event_time"
@@ -62,9 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_medium"
-            app:layout_constraintBottom_toBottomOf="@id/ic_time"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/ic_time"
-            app:layout_constraintTop_toTopOf="@id/ic_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_event_date"
             tools:text="20.00 WIB - 21.00 WIB" />
 
 
@@ -72,10 +73,10 @@
             android:id="@+id/ic_location"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
             android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_event_place"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ic_time" />
+            app:layout_constraintTop_toTopOf="@+id/tv_event_place" />
 
         <TextView
             android:id="@+id/tv_event_place"
@@ -83,9 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_medium"
-            app:layout_constraintBottom_toBottomOf="@id/ic_location"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/ic_location"
-            app:layout_constraintTop_toTopOf="@id/ic_location"
+            app:layout_constraintTop_toBottomOf="@+id/tv_event_time"
             tools:text="Via Zoom" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

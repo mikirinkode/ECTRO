@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +16,7 @@ import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 
 class AddEventActivity : AppCompatActivity() {
 
@@ -35,34 +37,89 @@ class AddEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        // set Dropdown for online event type
+        val arrayString: Array<String> = resources.getStringArray(R.array.online_event_media)
+        val arrayAdapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayString)
+        binding.actOnlineEventMedia.setAdapter(arrayAdapter)
+
         binding.apply {
+
+            switchAttendance.setOnCheckedChangeListener { _, checked ->
+                if (checked) {
+                    switchActionAfterAttendance.visibility = View.VISIBLE
+                    tvActionAfterAttendance.visibility = View.VISIBLE
+                } else {
+                    switchActionAfterAttendance.visibility = View.GONE
+                    tvActionAfterAttendance.visibility = View.GONE
+                    switchActionAfterAttendance.isChecked = false
+                }
+            }
+
+            rgEventType.setOnCheckedChangeListener { _, buttonId ->
+                if (buttonId == R.id.rb_offline) {
+                    tilOnlineEventMedia.visibility = View.GONE
+                } else if (buttonId == R.id.rb_online) {
+                    tilOnlineEventMedia.visibility = View.VISIBLE
+                }
+            }
 
             btnAddEvent.setOnClickListener {
                 var isValid = true
                 val eventName = edtEventName.text.toString().trim()
                 val eventDesc = edtEventDesc.text.toString().trim()
+                val eventCategory = edtEventCategory.text.toString().trim()
 
-                val eventType =
-                    if (rgEventType.checkedRadioButtonId == R.id.rb_offline) "Offline" else "Online"
+                var eventType: String? = null
+                val onlineEventMedia = actOnlineEventMedia.text.toString().trim()
+
+                if (rgEventType.checkedRadioButtonId == R.id.rb_offline) {
+                    eventType = "Offline"
+                } else if (rgEventType.checkedRadioButtonId == R.id.rb_online) {
+                    eventType = "Online"
+                }
+
                 val eventPlace = edtEventPlace.text.toString().trim()
                 val eventDate = edtEventDate.text.toString().trim()
                 val eventTime = edtEventTime.text.toString().trim()
 
-                val eventCategory = edtEventCategory.text.toString().trim()
                 val attendanceForm = switchAttendance.isChecked
+                val additionalName = edtAdditionalName.text.toString().trim()
+                val additionalLink = edtAdditionalLink.text.toString().trim()
+                val actionAfterAttendance = switchActionAfterAttendance.isChecked
 
                 if (eventName.isEmpty()) {
                     edtEventName.error = getString(R.string.empty_event_name)
                     isValid = false
                 }
-                if (eventType.isEmpty()) {
+
+                val onlineMeeting = resources.getStringArray(R.array.online_event_media)[0]
+                if (eventType.isNullOrEmpty()) {
                     Toast.makeText(
                         this@AddEventActivity,
                         getString(R.string.empty_event_type),
                         Toast.LENGTH_SHORT
                     ).show()
                     isValid = false
+                } else if (!eventType.isNullOrEmpty() && eventType == "Online" && additionalLink.isEmpty() && onlineEventMedia == onlineMeeting) {
+                    edtAdditionalLink.error = getString(R.string.empty_meeting_link)
+                    isValid = false
                 }
+
+                if (!eventType.isNullOrEmpty() && eventType == "Online" && onlineEventMedia.isEmpty()) {
+                    actOnlineEventMedia.error = getString(R.string.please_choose_online_media)
+                    isValid = false
+                }
+
+                if (additionalName.isNotEmpty() && additionalLink.isEmpty()) {
+                    edtAdditionalLink.error = getString(R.string.empty_additional_link)
+                    isValid = false
+                }
+                if (additionalLink.isNotEmpty() && additionalName.isEmpty()) {
+                    edtAdditionalName.error = getString(R.string.empty_additional_link)
+                    isValid = false
+                }
+
                 if (eventPlace.isEmpty()) {
                     edtEventPlace.error = getString(R.string.empty_event_place)
                     isValid = false
@@ -100,7 +157,11 @@ class AddEventActivity : AppCompatActivity() {
                             "place" to eventPlace,
                             "category" to eventCategory,
                             "isNeedAttendanceForm" to attendanceForm,
-                            "userId" to firebaseUser?.uid
+                            "extraActionName" to additionalName,
+                            "extraActionLink" to additionalLink,
+                            "actionAfterAttendance" to actionAfterAttendance,
+                            "userId" to firebaseUser?.uid,
+                            "createdAt" to DateHelper.getCurrentDate()
                         )
 
                         loadingIndicator.visibility = View.VISIBLE
@@ -150,16 +211,23 @@ class AddEventActivity : AppCompatActivity() {
                     edtEventName.setText(savedState.name)
                     edtEventDesc.setText(savedState.name)
 
-                    if (rgEventType.checkedRadioButtonId == R.id.rb_offline){
+                    if (rgEventType.checkedRadioButtonId == R.id.rb_offline) {
                         rbOffline.isChecked = true
-                    } else if (rgEventType.checkedRadioButtonId == R.id.rb_online){
+                    } else if (rgEventType.checkedRadioButtonId == R.id.rb_online) {
                         rbOnline.isChecked = true
                     }
                     edtEventPlace.setText(savedState.name)
                     edtEventDate.setText(savedState.name)
                     edtEventTime.setText(savedState.name)
                     edtEventCategory.setText(savedState.name)
-                    switchAttendance.isChecked = savedState.isNeedAttendanceForm
+                    edtAdditionalName.setText(savedState.extraActionName)
+                    edtAdditionalLink.setText(savedState.extraActionLink)
+                    if (savedState.isNeedAttendanceForm != null) {
+                        switchAttendance.isChecked = savedState.isNeedAttendanceForm!!
+                    }
+                    if (savedState.actionAfterAttendance != null) {
+                        switchActionAfterAttendance.isChecked = savedState.actionAfterAttendance!!
+                    }
                 }
             }
         }
@@ -174,14 +242,17 @@ class AddEventActivity : AppCompatActivity() {
             outState.putParcelable(
                 STATE_RESULT,
                 Event(
-                    edtEventName.text.toString().trim(),
-                    edtEventDesc.text.toString().trim(),
-                    eventType,
-                    edtEventPlace.text.toString().trim(),
-                    edtEventDate.text.toString().trim(),
-                    edtEventTime.text.toString().trim(),
-                    edtEventCategory.text.toString().trim(),
-                    switchAttendance.isChecked,
+                    name = edtEventName.text.toString().trim(),
+                    desc = edtEventDesc.text.toString().trim(),
+                    category = edtEventCategory.text.toString().trim(),
+                    type = eventType,
+                    place = edtEventPlace.text.toString().trim(),
+                    date = edtEventDate.text.toString().trim(),
+                    time = edtEventTime.text.toString().trim(),
+                    isNeedAttendanceForm = switchAttendance.isChecked,
+                    extraActionName = edtAdditionalName.text.toString().trim(),
+                    extraActionLink = edtAdditionalLink.text.toString().trim(),
+                    actionAfterAttendance = switchActionAfterAttendance.isChecked,
                 )
             )
         }

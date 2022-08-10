@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            rvEvent.layoutManager = object: LinearLayoutManager(requireContext()){
+            rvEvent.layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically(): Boolean {
                     return false
                 }
@@ -104,19 +104,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun observeEventList(){
+    private fun observeEventList() {
         fireStore.collection("events").get()
             .addOnSuccessListener { documentList ->
                 val eventList: ArrayList<Event> = ArrayList()
-                for (document in documentList){
-                    if (document != null){
+                for (document in documentList) {
+                    if (document != null) {
                         eventList.add(
                             document.toObject()
                         )
                     }
                 }
 
-                if (eventList.isEmpty()){
+                if (eventList.isEmpty()) {
                     binding.emptyMessage.visibility = View.VISIBLE
                 } else {
                     binding.emptyMessage.visibility = View.GONE
