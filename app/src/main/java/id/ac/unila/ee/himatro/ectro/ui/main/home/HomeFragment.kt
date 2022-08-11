@@ -16,13 +16,13 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.ACTIVE_PERIOD
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_DEPARTMENT
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_DIVISION
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NPM
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_PHOTO_URL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_POSITION
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.YEAR_OF_MANAGEMENT
 import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentHomeBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
         val userDepartment = preferences.getValues(USER_DEPARTMENT)
         val userDivision = preferences.getValues(USER_DIVISION)
         val userPosition = preferences.getValues(USER_POSITION)
-        val yearOfManagement = preferences.getValuesInt(YEAR_OF_MANAGEMENT)
+        val activePeriod = preferences.getValues(ACTIVE_PERIOD)
 
         return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }

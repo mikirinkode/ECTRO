@@ -14,6 +14,12 @@
         android:theme="@style/Theme.ECTRO"
         tools:targetApi="31">
         <activity
+            android:name=".ui.member.EditRoleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.member.RoleRequestActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.member.MemberListActivity"
             android:exported="false" />
         <activity

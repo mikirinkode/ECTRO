@@ -27,8 +27,8 @@
     <string name="empty_password">Password tidak boleh kosong</string>
     <string name="pass_not_match">Password tidak cocok</string>
     <string name="invalid_email">Format email tidak valid</string>
-    <string name="invalid_password">Password harus berisi angka, huruf, symbol</string>
-    <string name="password_creating_hint">Harus berisi Huruf besar, Huruf kecil, Angka dan lebih dari 6 karakter</string>
+    <string name="invalid_password">Format Password Tidak Valid</string>
+    <string name="password_creating_hint">Harus berisi Huruf besar, Huruf kecil, Angka dan paling sedikit 8 karakter</string>
     <string name="failed_create_account">Gagal membuat akun</string>
     <string name="successfully_create_account">Berhasil membuat akun</string>
     <string name="name_too_short">Nama terlalu singkat</string>
@@ -108,8 +108,40 @@
     <string name="successfully_update_data">Berhasil memperbaharui data</string>
     <string name="update_failed">Gagal memperbaharui data</string>
     <string name="request_role">Request</string>
-    <string name="successfully_request_role">Berrhasil mengirim permintaan</string>
+    <string name="successfully_request_role">Berhasil mengirim permintaan</string>
     <string name="request_processed">Permintaan sedang diproses</string>
+    <string name="memberlist">Daftar Anggota</string>
+    <string name="role_request">Daftar Permintaan Role</string>
+    <string name="edit_role">Edit Role</string>
+    <string name="user_info">Informasi Pengguna</string>
+    <string name="kominfo">Kominfo</string>
+    <string name="soswir">Soswir</string>
+    <string name="bangtek">Bangtek</string>
+    <string name="ppd">PPD</string>
+    <string name="kpo">KPO</string>
+    <string name="medin">Media Informasi</string>
+    <string name="humas">Hubungan Masyarakat</string>
+    <string name="sosial">Sosial</string>
+    <string name="kewirausahaan">Kewirausahaan</string>
+    <string name="litbang">Penelitian dan Pengembangan</string>
+    <string name="pengmas">Pengabdian Masyarakat</string>
+    <string name="pendidikan">Pendidikan</string>
+    <string name="kerohanian">Kerohanian</string>
+    <string name="minat_bakat">Minat dan Bakat</string>
+    <string name="kahim">Ketua Himpunan</string>
+    <string name="wakahim">Wakil Ketua Himpunan</string>
+    <string name="sekum">Sekretaris Umum</string>
+    <string name="bendum">Bendahara Umum</string>
+    <string name="wasekum">Wakil Sekretasi Umum</string>
+    <string name="wabendum">Wakil Bendahara Umum</string>
+    <string name="kadep">Kepala Departemen</string>
+    <string name="sekdep">Skretaris Departemen</string>
+    <string name="kadiv">Kepala Divisi</string>
+    <string name="anggota">Anggota</string>
+    <string name="update_role">Update Role</string>
+    <string name="please_choose_department">Mohon pilih departemen</string>
+    <string name="please_choose_position">Mohon pilih posisi</string>
+    <string name="successfully_update_role">Berhasil memperbarui role</string>
 
 
     <string-array name="online_event_media">
@@ -156,11 +188,20 @@
         <item>Wakil Bendahara Umum</item>
     </string-array>
 
+    <string-array name="kpo_position_list">
+        <item>Kepala Departemen</item>
+        <item>Sekretaris Departemen</item>
+        <item>Anggota</item>
+    </string-array>
+
     <string-array name="other_position_list">
         <item>Kepala Departemen</item>
         <item>Sekretaris Departemen</item>
         <item>Kepala Divisi</item>
         <item>Anggota</item>
+    </string-array>
+
+    <string-array name="empty">
     </string-array>
 
 

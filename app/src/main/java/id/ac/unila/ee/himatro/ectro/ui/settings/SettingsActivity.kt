@@ -70,7 +70,7 @@ class SettingsActivity : AppCompatActivity() {
             if (loggedUser != null){
                 if (!loggedUser.isEmailVerified){
                     tvEmailStatus.text = getString(R.string.email_not_verified)
-                    btnVerifyEmail.visibility = View.VISIBLE
+                    btnVerifyEmail.visibility = View.GONE
                 } else {
                     tvEmailStatus.text = getString(R.string.email_is_verified)
                     btnVerifyEmail.visibility = View.GONE

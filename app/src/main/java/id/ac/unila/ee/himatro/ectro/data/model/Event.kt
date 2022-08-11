@@ -21,7 +21,7 @@ class Event (
     @field:JvmField
     var actionAfterAttendance: Boolean? = null,
 
-    var userId: String = "",
+    var creatorUid: String = "",
     var createdAt: String = ""
 
 ): Parcelable

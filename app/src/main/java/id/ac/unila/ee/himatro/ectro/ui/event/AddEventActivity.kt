@@ -17,6 +17,20 @@ import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENTS
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_ACTION_AFTER_ATTENDANCE
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_ATTENDANCE_FORM
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CATEGORY
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATED_AT
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATOR_UID
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_DATE
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_DESC
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NAME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_PLACE
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TIME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TYPE
 
 class AddEventActivity : AppCompatActivity() {
 
@@ -74,9 +88,9 @@ class AddEventActivity : AppCompatActivity() {
                 val onlineEventMedia = actOnlineEventMedia.text.toString().trim()
 
                 if (rgEventType.checkedRadioButtonId == R.id.rb_offline) {
-                    eventType = "Offline"
+                    eventType = getString(R.string.offline)
                 } else if (rgEventType.checkedRadioButtonId == R.id.rb_online) {
-                    eventType = "Online"
+                    eventType = getString(R.string.online)
                 }
 
                 val eventPlace = edtEventPlace.text.toString().trim()
@@ -101,12 +115,12 @@ class AddEventActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     isValid = false
-                } else if (!eventType.isNullOrEmpty() && eventType == "Online" && additionalLink.isEmpty() && onlineEventMedia == onlineMeeting) {
+                } else if (!eventType.isNullOrEmpty() && eventType == getString(R.string.online) && additionalLink.isEmpty() && onlineEventMedia == onlineMeeting) {
                     edtAdditionalLink.error = getString(R.string.empty_meeting_link)
                     isValid = false
                 }
 
-                if (!eventType.isNullOrEmpty() && eventType == "Online" && onlineEventMedia.isEmpty()) {
+                if (!eventType.isNullOrEmpty() && eventType == getString(R.string.online) && onlineEventMedia.isEmpty()) {
                     actOnlineEventMedia.error = getString(R.string.please_choose_online_media)
                     isValid = false
                 }
@@ -149,23 +163,23 @@ class AddEventActivity : AppCompatActivity() {
                 if (isValid) {
                     if (firebaseUser != null) {
                         val event = hashMapOf(
-                            "name" to eventName,
-                            "desc" to eventDesc,
-                            "type" to eventType,
-                            "date" to eventDate,
-                            "time" to eventTime,
-                            "place" to eventPlace,
-                            "category" to eventCategory,
-                            "isNeedAttendanceForm" to attendanceForm,
-                            "extraActionName" to additionalName,
-                            "extraActionLink" to additionalLink,
-                            "actionAfterAttendance" to actionAfterAttendance,
-                            "userId" to firebaseUser?.uid,
-                            "createdAt" to DateHelper.getCurrentDate()
+                            TABLE_EVENT_NAME to eventName,
+                            TABLE_EVENT_DESC to eventDesc,
+                            TABLE_EVENT_TYPE to eventType,
+                            TABLE_EVENT_DATE to eventDate,
+                            TABLE_EVENT_TIME to eventTime,
+                            TABLE_EVENT_PLACE to eventPlace,
+                            TABLE_EVENT_CATEGORY to eventCategory,
+                            TABLE_EVENT_ATTENDANCE_FORM to attendanceForm,
+                            TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
+                            TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
+                            TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
+                            TABLE_EVENT_CREATOR_UID to firebaseUser?.uid,
+                            TABLE_EVENT_CREATED_AT to DateHelper.getCurrentDate()
                         )
 
                         loadingIndicator.visibility = View.VISIBLE
-                        db.collection("events")
+                        db.collection(TABLE_EVENTS)
                             .document()
                             .set(event)
                             .addOnSuccessListener {

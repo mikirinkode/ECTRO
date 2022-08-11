@@ -49,7 +49,7 @@ class EctroPreferences(context: Context) {
         setValues(USER_DEPARTMENT, user.role.department)
         setValues(USER_DIVISION, user.role.division)
         setValues(USER_POSITION, user.role.position)
-        setValues(YEAR_OF_MANAGEMENT, user.role.yearOfManagement)
+        setValues(ACTIVE_PERIOD, user.role.activePeriod)
 
         setValues(ROLE_REQUEST_STATUS, user.roleRequestStatus)
 
@@ -68,7 +68,7 @@ class EctroPreferences(context: Context) {
         setValues(USER_DEPARTMENT, null)
         setValues(USER_DIVISION, null)
         setValues(USER_POSITION, null)
-        setValues(YEAR_OF_MANAGEMENT, 0)
+        setValues(ACTIVE_PERIOD, null)
 
         setValues(USER_LINKEDIN_ACCOUNT, null)
         setValues(USER_INSTAGRAM_ACCOUNT, null)
@@ -87,7 +87,7 @@ class EctroPreferences(context: Context) {
         const val USER_DEPARTMENT = "user_department"
         const val USER_DIVISION = "user_division"
         const val USER_POSITION = "user_position"
-        const val YEAR_OF_MANAGEMENT = "year_of_management"
+        const val ACTIVE_PERIOD = "active_period"
 
         const val USER_INSTAGRAM_ACCOUNT = "user_instagram_account"
         const val USER_LINKEDIN_ACCOUNT = "user_linkedin_account"

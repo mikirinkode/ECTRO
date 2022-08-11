@@ -102,7 +102,7 @@ class DetailEventActivity : AppCompatActivity() {
                     layoutAdditionalButton.visibility = View.GONE
                 }
 
-                observeUploaderInfo(event.userId)
+                observeUploaderInfo(event.creatorUid)
             }
         }
     }

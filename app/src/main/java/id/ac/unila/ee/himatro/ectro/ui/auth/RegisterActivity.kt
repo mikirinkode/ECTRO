@@ -20,6 +20,19 @@ import id.ac.unila.ee.himatro.ectro.data.model.UserRole
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityRegisterBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ACTIVE_PERIOD
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DEPARTMENT
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DIVISION
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_EMAIL
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_INSTAGRAM
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LAST_LOGIN
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LINKEDIN
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_NAME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_NPM
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_PHOTO_URL
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_POSITION
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ROLE
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
@@ -71,19 +84,19 @@ class RegisterActivity : AppCompatActivity() {
 
         // create user entity for fireStore
         val user = hashMapOf(
-            "email" to email,
-            "name" to name,
-            "npm" to "",
-            "userPhotoUrl" to "",
-            "linkedin" to "",
-            "instagram" to "",
-            "role" to hashMapOf(
-                "department" to "",
-                "division" to "",
-                "position" to "",
-                "yearOfManagement" to 0
+            TABLE_USER_NAME to name,
+            TABLE_USER_EMAIL to email,
+            TABLE_USER_NPM to "",
+            TABLE_USER_PHOTO_URL to "",
+            TABLE_USER_LINKEDIN to "",
+            TABLE_USER_INSTAGRAM to "",
+            TABLE_USER_ROLE to hashMapOf(
+                TABLE_USER_DEPARTMENT to "",
+                TABLE_USER_DIVISION to "",
+                TABLE_USER_POSITION to "",
+                TABLE_USER_ACTIVE_PERIOD to ""
             ),
-            "lastLoginAt" to DateHelper.getCurrentDate()
+            TABLE_USER_LAST_LOGIN to DateHelper.getCurrentDate()
         )
 
         // create user entity for local preference
@@ -103,7 +116,7 @@ class RegisterActivity : AppCompatActivity() {
                         firebaseUser.sendEmailVerification()
 
                         // try to add new user document to fireStore
-                        fireStore.collection("users").document(firebaseUser.uid)
+                        fireStore.collection(TABLE_USER).document(firebaseUser.uid)
                             .set(user)
                             .addOnSuccessListener {
                                 Toast.makeText(
@@ -193,7 +206,7 @@ class RegisterActivity : AppCompatActivity() {
         // password pattern using Regular Expression
         val regex = ("^(?=.*[0-9])"             // password must contain number
                 + "(?=.*[a-z])(?=.*[A-Z])"      // password must contain uppercase and lowercase
-                + "(?=\\S+$).{6,}$")            // password must not have whitespace and have length more than 6
+                + "(?=\\S+$).{8,}$")            // password must not have whitespace and have length more than 8
         val pattern = Pattern.compile(regex)
 
         return if (password == null) false else pattern.matcher(password).matches()

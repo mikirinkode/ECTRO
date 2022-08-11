@@ -24,6 +24,8 @@ import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityLoginBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LAST_LOGIN
 
 class LoginActivity : AppCompatActivity() {
 
@@ -99,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
 
                     // set last login
                     val lastLogin = hashMapOf(
-                        "lastLoginAt" to DateHelper.getCurrentDate()
+                        TABLE_USER_LAST_LOGIN to DateHelper.getCurrentDate()
                     )
 
                     val db = Firebase.firestore
@@ -107,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                     if (user != null) {
                         binding.loadingIndicator.visibility = View.GONE
 
-                        db.collection("users")
+                        db.collection(TABLE_USER)
                             .document(user.uid)
                             .set(lastLogin, SetOptions.merge())
 

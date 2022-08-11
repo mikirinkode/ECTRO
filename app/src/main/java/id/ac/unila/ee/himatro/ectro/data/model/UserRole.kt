@@ -4,6 +4,6 @@ class UserRole(
     var department: String = "",
     var division: String = "",
     var position: String = "",
-    var yearOfManagement: Int = 0
+    var activePeriod: String = ""
 )
 

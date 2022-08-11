@@ -22,6 +22,16 @@ import id.ac.unila.ee.himatro.ectro.databinding.FragmentProfileBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.settings.SettingsActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ROLE_REQUEST
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_EMAIL
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_NAME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_NPM
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_UID
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_REQUEST_AT
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_REQUEST_ID
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_STATUS
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
 
 class ProfileFragment : Fragment() {
 
@@ -71,6 +81,8 @@ class ProfileFragment : Fragment() {
 
             btnRequestRole.setOnClickListener {
                 if (isUserDataComplete()) {
+                    Log.e(TAG, roleRequestStatus.toString())
+
                     if (roleRequestStatus != EctroPreferences.WAITING_STATUS) {
                         createRoleRequest()
                     } else if (roleRequestStatus == EctroPreferences.WAITING_STATUS) {
@@ -93,29 +105,35 @@ class ProfileFragment : Fragment() {
 
     private fun createRoleRequest() {
         if (firebaseUser != null) {
+            val requestId = preferences.getValues(EctroPreferences.USER_NPM) + System.currentTimeMillis()
             val roleRequest = hashMapOf(
-                "status" to EctroPreferences.WAITING_STATUS,
-                "userId" to firebaseUser?.uid,
-                "requestedAt" to DateHelper.getCurrentDate()
+                TABLE_RR_REQUEST_ID to requestId,
+                TABLE_RR_STATUS to EctroPreferences.WAITING_STATUS,
+                TABLE_RR_APPLICANT_UID to firebaseUser?.uid,
+                TABLE_RR_APPLICANT_NAME to preferences.getValues(EctroPreferences.USER_NAME),
+                TABLE_RR_APPLICANT_NPM to preferences.getValues(EctroPreferences.USER_NPM),
+                TABLE_RR_APPLICANT_EMAIL to preferences.getValues(EctroPreferences.USER_EMAIL),
+                TABLE_RR_REQUEST_AT to DateHelper.getCurrentDate()
             )
 
             binding.loadingIndicator.visibility = View.VISIBLE
-            db.collection("roleRequest")
-                .document()
+            db.collection(TABLE_ROLE_REQUEST)
+                .document(requestId)
                 .set(roleRequest)
                 .addOnSuccessListener {
 
                     val updateData = hashMapOf(
-                        "roleRequestStatus" to EctroPreferences.WAITING_STATUS
+                        TABLE_USER_REQUEST_STATUS to EctroPreferences.WAITING_STATUS
                     )
 
-                    db.collection("users")
+                    db.collection(TABLE_USER)
                         .document(firebaseUser!!.uid)
                         .set(updateData, SetOptions.merge())
 
                     preferences.setValues(EctroPreferences.ROLE_REQUEST_STATUS, EctroPreferences.WAITING_STATUS)
 
                     binding.loadingIndicator.visibility = View.GONE
+                    binding.btnRequestRole.visibility = View.GONE
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.successfully_request_role),
@@ -145,7 +163,7 @@ class ProfileFragment : Fragment() {
         val userName = preferences.getValues(EctroPreferences.USER_NAME)
         val userNpm = preferences.getValues(EctroPreferences.USER_NPM)
 
-        return !userNpm.isNullOrEmpty() && !userNpm.isNullOrEmpty()
+        return !userName.isNullOrEmpty() && !userNpm.isNullOrEmpty()
     }
 
     private fun setupUi() {
