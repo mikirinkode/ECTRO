@@ -14,28 +14,28 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityMainBinding
-import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
 
-    private val fireStore: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
 
-    private val preferences: EctroPreferences by lazy {
-        EctroPreferences(this)
-    }
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
+
+    @Inject
+    lateinit var preferences: EctroPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

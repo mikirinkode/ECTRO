@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.data.model.User
@@ -19,15 +20,16 @@ import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.attendance.AttendanceFormActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.participant.ParticipantListActivity
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailEventActivity : AppCompatActivity() {
     private val binding: ActivityDetailEventBinding by lazy {
         ActivityDetailEventBinding.inflate(layoutInflater)
     }
 
-    private val fireStore: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

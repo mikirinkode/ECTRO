@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
@@ -31,20 +32,23 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NAME
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_PLACE
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TIME
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TYPE
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddEventActivity : AppCompatActivity() {
 
     private val binding: ActivityAddEventBinding by lazy {
         ActivityAddEventBinding.inflate(layoutInflater)
     }
 
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
 
-    private val db: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     private val firebaseUser: FirebaseUser? by lazy {
-        FirebaseAuth.getInstance().currentUser
+        auth.currentUser
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,7 +183,7 @@ class AddEventActivity : AppCompatActivity() {
                         )
 
                         loadingIndicator.visibility = View.VISIBLE
-                        db.collection(TABLE_EVENTS)
+                        fireStore.collection(TABLE_EVENTS)
                             .document()
                             .set(event)
                             .addOnSuccessListener {

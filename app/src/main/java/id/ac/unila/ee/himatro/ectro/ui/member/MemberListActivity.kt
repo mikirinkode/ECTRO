@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
 import id.ac.unila.ee.himatro.ectro.data.model.User
@@ -22,20 +23,20 @@ import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils.KADEP
 import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils.KADIV
 import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils.PH
 import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils.SEKDEP
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MemberListActivity : AppCompatActivity() {
 
     private val binding: ActivityMemberListBinding by lazy {
         ActivityMemberListBinding.inflate(layoutInflater)
     }
 
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
 
-    private val fireStore: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
 
     private val firebaseUser: FirebaseUser? by lazy {
         auth.currentUser

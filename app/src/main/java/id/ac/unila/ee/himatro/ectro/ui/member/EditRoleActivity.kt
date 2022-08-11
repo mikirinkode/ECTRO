@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
@@ -27,19 +28,20 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DIVISION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_POSITION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ROLE
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditRoleActivity : AppCompatActivity() {
 
     private val binding: ActivityEditRoleBinding by lazy {
         ActivityEditRoleBinding.inflate(layoutInflater)
     }
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
 
-    private val fireStore: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
+
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
 
     private val firebaseUser: FirebaseUser? by lazy {
         auth.currentUser

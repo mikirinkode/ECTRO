@@ -11,15 +11,12 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentProfileBinding
-import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.settings.SettingsActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ROLE_REQUEST
@@ -32,26 +29,27 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_REQUEST_ID
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_STATUS
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val preferences: EctroPreferences by lazy {
-        EctroPreferences(requireContext())
-    }
-    private val db: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
 
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
 
     private val firebaseUser: FirebaseUser? by lazy {
         auth.currentUser
     }
+
+    @Inject
+    lateinit var preferences: EctroPreferences
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,7 +115,7 @@ class ProfileFragment : Fragment() {
             )
 
             binding.loadingIndicator.visibility = View.VISIBLE
-            db.collection(TABLE_ROLE_REQUEST)
+            fireStore.collection(TABLE_ROLE_REQUEST)
                 .document(requestId)
                 .set(roleRequest)
                 .addOnSuccessListener {
@@ -126,7 +124,7 @@ class ProfileFragment : Fragment() {
                         TABLE_USER_REQUEST_STATUS to EctroPreferences.WAITING_STATUS
                     )
 
-                    db.collection(TABLE_USER)
+                    fireStore.collection(TABLE_USER)
                         .document(firebaseUser!!.uid)
                         .set(updateData, SetOptions.merge())
 

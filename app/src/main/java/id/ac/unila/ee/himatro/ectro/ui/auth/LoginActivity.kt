@@ -9,37 +9,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.DARK_MODE_PREF
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_IN
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
-import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityLoginBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LAST_LOGIN
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
+    @Inject
+    lateinit var auth: FirebaseAuth
 
-    private val preferences: EctroPreferences by lazy {
-        EctroPreferences(this)
-    }
+    @Inject
+    lateinit var preferences: EctroPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

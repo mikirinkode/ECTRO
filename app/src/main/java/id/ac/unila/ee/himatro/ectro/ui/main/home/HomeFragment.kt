@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.ACTIVE_PERIOD
@@ -28,19 +29,20 @@ import id.ac.unila.ee.himatro.ectro.databinding.FragmentHomeBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.member.MemberListActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val preferences: EctroPreferences by lazy {
-        EctroPreferences(requireContext())
-    }
-    private val fireStore: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
+    @Inject
+    lateinit var fireStore: FirebaseFirestore
+
+    @Inject
+    lateinit var preferences: EctroPreferences
 
     private val adapter: EventAdapter by lazy {
         EventAdapter()

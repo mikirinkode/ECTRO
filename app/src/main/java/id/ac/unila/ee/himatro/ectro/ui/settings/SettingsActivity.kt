@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.DARK_MODE_PREF
@@ -22,23 +23,21 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.databinding.ActivitySettingsBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
+import javax.inject.Inject
 import kotlin.math.log
 
+@AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
 
     private val binding: ActivitySettingsBinding by lazy {
         ActivitySettingsBinding.inflate(layoutInflater)
     }
 
-    private val preferences: EctroPreferences by lazy {
-        EctroPreferences(this)
-    }
+    @Inject
+    lateinit var preferences: EctroPreferences
 
-
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
-
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
