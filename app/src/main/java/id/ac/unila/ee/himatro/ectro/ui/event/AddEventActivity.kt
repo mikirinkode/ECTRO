@@ -10,11 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
-import id.ac.unila.ee.himatro.ectro.data.model.Event
+import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
@@ -224,7 +222,7 @@ class AddEventActivity : AppCompatActivity() {
 
             // restore saved data
             if (savedInstanceState != null) {
-                val savedState = savedInstanceState.getParcelable<Event>(STATE_RESULT)
+                val savedState = savedInstanceState.getParcelable<EventEntity>(STATE_RESULT)
                 if (savedState != null) {
                     edtEventName.setText(savedState.name)
                     edtEventDesc.setText(savedState.name)
@@ -259,7 +257,7 @@ class AddEventActivity : AppCompatActivity() {
                 if (rgEventType.checkedRadioButtonId == R.id.rb_offline) "Offline" else "Online"
             outState.putParcelable(
                 STATE_RESULT,
-                Event(
+                EventEntity(
                     name = edtEventName.text.toString().trim(),
                     desc = edtEventDesc.text.toString().trim(),
                     category = edtEventCategory.text.toString().trim(),

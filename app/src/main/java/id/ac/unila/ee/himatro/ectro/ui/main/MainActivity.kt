@@ -1,25 +1,16 @@
 package id.ac.unila.ee.himatro.ectro.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
-import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityMainBinding
-import javax.inject.Inject
+import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,21 +19,10 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    @Inject
-    lateinit var preferences: EctroPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        // save user info to preferences
-        saveUserDataToPreference()
 
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
 
@@ -55,33 +35,8 @@ class MainActivity : AppCompatActivity() {
             bottomNavView.setupWithNavController(navController)
 
             fabScan.setOnClickListener {
-                Toast.makeText(this@MainActivity, "Scan Button", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Under Development", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun saveUserDataToPreference() {
-        val loggedUser = auth.currentUser
-
-        if (loggedUser != null) {
-            val userInDB: DocumentReference = fireStore.collection("users").document(loggedUser.uid)
-
-            userInDB.get()
-                .addOnSuccessListener { document ->
-                    val user: User? = document.toObject<User>()
-
-                    if (user != null) {
-                        preferences.startSession(user)
-                    }
-                }
-                .addOnFailureListener {
-                    Log.e(TAG, it.message.toString())
-                    Toast.makeText(
-                        this,
-                        getString(R.string.database_connection_failed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
         }
     }
 

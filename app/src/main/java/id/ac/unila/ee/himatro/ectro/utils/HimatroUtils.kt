@@ -11,7 +11,7 @@ object HimatroUtils {
     const val WABENDUM = "Wakil Bendahara Umum"
 
     const val KADEP = "Kepala Departemen"
-    const val SEKDEP = "Skretaris Departemen"
+    const val SEKDEP = "Sekretaris Departemen"
     const val KADIV = "Kepala Divisi"
     const val ANGGOTA = "Anggota"
     const val DEV_TEAM = "Developer Team"

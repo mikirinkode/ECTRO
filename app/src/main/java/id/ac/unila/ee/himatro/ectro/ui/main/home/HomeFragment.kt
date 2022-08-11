@@ -2,18 +2,15 @@ package id.ac.unila.ee.himatro.ectro.ui.main.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -24,11 +21,12 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NPM
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_PHOTO_URL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_POSITION
-import id.ac.unila.ee.himatro.ectro.data.model.Event
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentHomeBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.member.MemberListActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
+import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
+import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
 
@@ -39,10 +37,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    @Inject
     lateinit var preferences: EctroPreferences
+
+    private val userViewModel: UserViewModel by viewModels()
+
+    private val eventViewModel: EventViewModel by viewModels()
 
     private val adapter: EventAdapter by lazy {
         EventAdapter()
@@ -61,6 +60,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
+            // set recyclerview layout
             rvEvent.layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically(): Boolean {
                     return false
@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
             }
             rvEvent.adapter = adapter
 
+            // set announcement
             Glide.with(requireContext())
                 .load(R.drawable.ic_sample_announcement_picture)
                 .into(ivAnnouncementPicture)
@@ -77,7 +78,15 @@ class HomeFragment : Fragment() {
             }
 
             btnUserRecap.setOnClickListener {
-                startActivity(Intent(requireContext(), MemberListActivity::class.java))
+                if (isUserDataComplete()) {
+                    startActivity(Intent(requireContext(), MemberListActivity::class.java))
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.please_complete_your_data),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             btnAddEvent.setOnClickListener {
@@ -97,8 +106,35 @@ class HomeFragment : Fragment() {
             }
         }
 
-        updateUi()
-        observeEventList()
+        observeUser()
+        observeEvent()
+    }
+
+    private fun observeEvent() {
+        eventViewModel.observeEventList()
+
+        // get event list from view model
+        eventViewModel.eventList.observe(viewLifecycleOwner) { list ->
+            if (list.isEmpty()) {
+                binding.emptyMessage.visibility = View.VISIBLE
+            } else {
+                binding.emptyMessage.visibility = View.GONE
+                adapter.setData(list)
+            }
+        }
+
+
+        eventViewModel.isError.observe(viewLifecycleOwner) { isError ->
+            if (isError) {
+                eventViewModel.responseMessage.observe(viewLifecycleOwner) {
+                    if (it != null) {
+                        it.getContentIfNotHandled()?.let { msg ->
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun isUserDataComplete(): Boolean {
@@ -111,48 +147,46 @@ class HomeFragment : Fragment() {
         return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
-    private fun updateUi() {
+    private fun observeUser() {
+
         val userName = preferences.getValues(USER_NAME)
         val userPhotoUrl = preferences.getValues(USER_PHOTO_URL)
 
-        binding.apply {
-            tvUserName.text = userName
+        if (userName == "") {
+            userViewModel.observeUserData()
+            userViewModel.isError.observe(viewLifecycleOwner) { isError ->
+                if (isError) {
+                    userViewModel.responseMessage.observe(viewLifecycleOwner) {
+                        if (it != null) {
+                            it.getContentIfNotHandled()?.let { msg ->
+                                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    userViewModel.userData.observe(viewLifecycleOwner) { user ->
+                        updateUi(user.name, user.photoUrl)
+                    }
+                }
+            }
+        } else {
+            updateUi(userName, userPhotoUrl)
+        }
+    }
 
-            if (userPhotoUrl.isNullOrEmpty()) {
+    private fun updateUi(name: String?, photoUrl: String?) {
+        binding.apply {
+            tvUserName.text = name
+            if (photoUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(R.drawable.ic_default_profile)
                     .into(ivUserPhoto)
             } else {
                 Glide.with(requireContext())
-                    .load(userPhotoUrl)
+                    .load(photoUrl)
                     .into(ivUserPhoto)
             }
         }
-    }
-
-    private fun observeEventList() {
-        fireStore.collection("events").get()
-            .addOnSuccessListener { documentList ->
-                val eventList: ArrayList<Event> = ArrayList()
-                for (document in documentList) {
-                    if (document != null) {
-                        eventList.add(
-                            document.toObject()
-                        )
-                    }
-                }
-
-                if (eventList.isEmpty()) {
-                    binding.emptyMessage.visibility = View.VISIBLE
-                } else {
-                    binding.emptyMessage.visibility = View.GONE
-                    adapter.setData(eventList)
-                }
-            }
-            .addOnFailureListener {
-                Log.e(TAG, it.message.toString())
-                Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
-            }
     }
 
     override fun onDestroy() {

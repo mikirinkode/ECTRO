@@ -44,7 +44,7 @@ class EctroPreferences(context: Context) {
         setValues(USER_NAME, user.name)
         setValues(USER_EMAIL, user.email)
         setValues(USER_NPM, user.npm)
-        setValues(USER_PHOTO_URL, user.userPhotoUrl)
+        setValues(USER_PHOTO_URL, user.photoUrl)
 
         setValues(USER_DEPARTMENT, user.role.department)
         setValues(USER_DIVISION, user.role.division)

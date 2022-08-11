@@ -8,27 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.ROLE_REQUEST_STATUS
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentProfileBinding
 import id.ac.unila.ee.himatro.ectro.ui.settings.SettingsActivity
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ROLE_REQUEST
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_EMAIL
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_NAME
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_NPM
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_APPLICANT_UID
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_REQUEST_AT
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_REQUEST_ID
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_STATUS
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
+import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
+import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,6 +42,8 @@ class ProfileFragment : Fragment() {
     @Inject
     lateinit var preferences: EctroPreferences
 
+    private val viewModel: RoleRequestViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,97 +57,76 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUi()
+        loadUserLocalPrefs()
 
         binding.apply {
-            val roleRequestStatus =
-                preferences.getValues(EctroPreferences.ROLE_REQUEST_STATUS)
+            if (preferences.getValues(ROLE_REQUEST_STATUS) != EctroPreferences.COMPLETED_STATUS){
+                userViewModel.observeUserData()
+                userViewModel.userData.observe(viewLifecycleOwner) { user ->
+                    setupUi(
+                        user.name,
+                        user.photoUrl,
+                        user.instagram,
+                        user.linkedin,
+                        user.role.department,
+                        user.role.division,
+                        user.role.position
+                    )
 
-            if(roleRequestStatus == EctroPreferences.COMPLETED_STATUS){
-                btnRequestRole.visibility = View.GONE
+                    if (user.roleRequestStatus == EctroPreferences.COMPLETED_STATUS) {
+                        btnRequestRole.visibility = View.GONE
+                    } else {
+                        btnRequestRole.visibility = View.VISIBLE
+
+                        btnRequestRole.setOnClickListener {
+                            if (isUserDataComplete()) {
+                                if (user.roleRequestStatus != EctroPreferences.WAITING_STATUS && user.roleRequestStatus != EctroPreferences.COMPLETED_STATUS) {
+                                    createRoleRequest()
+                                } else if (user.roleRequestStatus == EctroPreferences.WAITING_STATUS) {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.request_processed),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.please_complete_your_data),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
             }
 
             btnSettings.setOnClickListener {
                 startActivity(Intent(requireContext(), SettingsActivity::class.java))
             }
 
-            btnRequestRole.setOnClickListener {
-                if (isUserDataComplete()) {
-                    Log.e(TAG, roleRequestStatus.toString())
-
-                    if (roleRequestStatus != EctroPreferences.WAITING_STATUS) {
-                        createRoleRequest()
-                    } else if (roleRequestStatus == EctroPreferences.WAITING_STATUS) {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.request_processed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.please_complete_your_data),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
         }
     }
 
     private fun createRoleRequest() {
-        if (firebaseUser != null) {
-            val requestId = preferences.getValues(EctroPreferences.USER_NPM) + System.currentTimeMillis()
-            val roleRequest = hashMapOf(
-                TABLE_RR_REQUEST_ID to requestId,
-                TABLE_RR_STATUS to EctroPreferences.WAITING_STATUS,
-                TABLE_RR_APPLICANT_UID to firebaseUser?.uid,
-                TABLE_RR_APPLICANT_NAME to preferences.getValues(EctroPreferences.USER_NAME),
-                TABLE_RR_APPLICANT_NPM to preferences.getValues(EctroPreferences.USER_NPM),
-                TABLE_RR_APPLICANT_EMAIL to preferences.getValues(EctroPreferences.USER_EMAIL),
-                TABLE_RR_REQUEST_AT to DateHelper.getCurrentDate()
-            )
-
-            binding.loadingIndicator.visibility = View.VISIBLE
-            fireStore.collection(TABLE_ROLE_REQUEST)
-                .document(requestId)
-                .set(roleRequest)
-                .addOnSuccessListener {
-
-                    val updateData = hashMapOf(
-                        TABLE_USER_REQUEST_STATUS to EctroPreferences.WAITING_STATUS
-                    )
-
-                    fireStore.collection(TABLE_USER)
-                        .document(firebaseUser!!.uid)
-                        .set(updateData, SetOptions.merge())
-
-                    preferences.setValues(EctroPreferences.ROLE_REQUEST_STATUS, EctroPreferences.WAITING_STATUS)
-
-                    binding.loadingIndicator.visibility = View.GONE
-                    binding.btnRequestRole.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.successfully_request_role),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+        viewModel.createRoleRequest()
+        viewModel.isError.observe(viewLifecycleOwner) { isError ->
+            if (isError) {
+                viewModel.responseMessage.observe(viewLifecycleOwner) {
+                    if (it != null) {
+                        it.getContentIfNotHandled()?.let { msg ->
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-                .addOnFailureListener {
-                    binding.loadingIndicator.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        it.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e(TAG, it.message.toString())
-                }
-        } else {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.an_error_occurred),
-                Toast.LENGTH_SHORT
-            ).show()
+            } else {
+                binding.btnRequestRole.visibility = View.GONE
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.successfully_request_role),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -164,7 +137,7 @@ class ProfileFragment : Fragment() {
         return !userName.isNullOrEmpty() && !userNpm.isNullOrEmpty()
     }
 
-    private fun setupUi() {
+    private fun loadUserLocalPrefs() {
         val userName = preferences.getValues(EctroPreferences.USER_NAME)
         val userPhotoUrl = preferences.getValues(EctroPreferences.USER_PHOTO_URL)
         val instagramAccount = preferences.getValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT)
@@ -173,6 +146,28 @@ class ProfileFragment : Fragment() {
         val userDepartment = preferences.getValues(EctroPreferences.USER_DEPARTMENT)
         val userDivision = preferences.getValues(EctroPreferences.USER_DIVISION)
         val userPosition = preferences.getValues(EctroPreferences.USER_POSITION)
+
+        setupUi(
+            userName,
+            userPhotoUrl,
+            instagramAccount,
+            linkedinAccount,
+            userDepartment,
+            userDivision,
+            userPosition
+        )
+    }
+
+    private fun setupUi(
+        userName: String?,
+        userPhotoUrl: String?,
+        instagramAccount: String?,
+        linkedinAccount: String?,
+        userDepartment: String?,
+        userDivision: String?,
+        userPosition: String?
+    ) {
+
 
         binding.apply {
             tvUserName.text = userName

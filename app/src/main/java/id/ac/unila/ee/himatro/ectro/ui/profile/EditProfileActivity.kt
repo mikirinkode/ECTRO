@@ -133,13 +133,13 @@ class EditProfileActivity : AppCompatActivity() {
                             edtInstagram.setText(user.instagram)
                             edtLinkedin.setText(user.linkedin)
 
-                            if (user.userPhotoUrl.isEmpty()) {
+                            if (user.photoUrl.isEmpty()) {
                                 Glide.with(this@EditProfileActivity)
                                     .load(R.drawable.ic_default_profile)
                                     .into(ivUserPhoto)
                             } else {
                                 Glide.with(this@EditProfileActivity)
-                                    .load(user.userPhotoUrl)
+                                    .load(user.photoUrl)
                                     .into(ivUserPhoto)
                             }
                         }

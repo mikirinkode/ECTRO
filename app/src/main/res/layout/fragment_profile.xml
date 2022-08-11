@@ -129,6 +129,8 @@
                 android:padding="16dp">
 
                 <Button
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:id="@+id/btn_request_role"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
@@ -178,7 +180,6 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:textAlignment="center"
                     android:textColor="?attr/colorPrimary"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -213,7 +214,6 @@
                     android:layout_marginTop="16dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:textAlignment="center"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/poppins_semibold"
                     android:visibility="gone"

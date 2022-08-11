@@ -4,7 +4,7 @@ class User (
     var email:String = "",
     var name:String = "",
     var npm: String = "",
-    var userPhotoUrl: String = "",
+    var photoUrl: String = "",
 
     var linkedin:String = "",
     var instagram:String = "",

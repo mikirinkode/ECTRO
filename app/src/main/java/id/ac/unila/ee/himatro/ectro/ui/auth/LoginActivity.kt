@@ -2,16 +2,12 @@ package id.ac.unila.ee.himatro.ectro.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -20,9 +16,7 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_IN
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityLoginBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LAST_LOGIN
+import id.ac.unila.ee.himatro.ectro.viewmodel.AuthViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,14 +27,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
     lateinit var preferences: EctroPreferences
+
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        observeIsLoading()
 
         // check preference for dark mode
         val isDark = preferences.getBooleanValues(DARK_MODE_PREF)
@@ -77,7 +72,22 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 if (isValid) {
-                    signInUser(email, password)
+                    viewModel.loginUser(email, password)
+                    viewModel.isError.observe(this@LoginActivity) { isError ->
+                        if (isError){
+                            viewModel.responseMessage.observe(this@LoginActivity){
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        } else {
+                            // if not error, then
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finishAffinity()
+                        }
+                    }
                 }
             }
 
@@ -88,50 +98,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun signInUser(email: String, password: String) {
-        binding.loadingIndicator.visibility = View.VISIBLE
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-
-                    // set last login
-                    val lastLogin = hashMapOf(
-                        TABLE_USER_LAST_LOGIN to DateHelper.getCurrentDate()
-                    )
-
-                    val db = Firebase.firestore
-
-                    if (user != null) {
-                        binding.loadingIndicator.visibility = View.GONE
-
-                        db.collection(TABLE_USER)
-                            .document(user.uid)
-                            .set(lastLogin, SetOptions.merge())
-
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finishAffinity()
-                    } else {
-                        Toast.makeText(
-                            baseContext, getString(R.string.authentication_failed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        binding.loadingIndicator.visibility = View.GONE
-                    }
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext, getString(R.string.authentication_failed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    binding.loadingIndicator.visibility = View.GONE
-                }
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+                binding.loadingIndicator.visibility = View.VISIBLE
+            } else {
+                binding.loadingIndicator.visibility = View.GONE
             }
+        }
     }
-
-
 
     companion object {
         private const val TAG = "LoginActivity"

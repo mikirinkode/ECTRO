@@ -4,28 +4,28 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import id.ac.unila.ee.himatro.ectro.data.model.Event
+import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 
 class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
-    private val eventList: ArrayList<Event> = ArrayList()
+    private val eventEntityList: ArrayList<EventEntity> = ArrayList()
 
     inner class ViewHolder(private val binding: ItemEventBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: Event){
+        fun bind(eventEntity: EventEntity){
             binding.apply {
-                tvEventTitle.text = event.name
-                tvEventDate.text = event.date
-                tvEventTime.text = event.time
-                tvEventPlace.text = event.place
-                tvDummyCategory.text = "#${event.category}"
-                tvEventCategory.text = "#${event.category}"
+                tvEventTitle.text = eventEntity.name
+                tvEventDate.text = eventEntity.date
+                tvEventTime.text = eventEntity.time
+                tvEventPlace.text = eventEntity.place
+                tvDummyCategory.text = "#${eventEntity.category}"
+                tvEventCategory.text = "#${eventEntity.category}"
             }
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailEventActivity::class.java)
-                intent.putExtra(DetailEventActivity.EXTRA_ENTITY, event)
+                intent.putExtra(DetailEventActivity.EXTRA_ENTITY, eventEntity)
                 itemView.context.startActivity(intent)
             }
         }
@@ -37,14 +37,14 @@ class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(eventList[position])
+        holder.bind(eventEntityList[position])
     }
 
-    override fun getItemCount(): Int = eventList.size
+    override fun getItemCount(): Int = eventEntityList.size
 
-    fun setData(newList: ArrayList<Event>){
-        eventList.clear()
-        eventList.addAll(newList)
+    fun setData(newList: ArrayList<EventEntity>){
+        eventEntityList.clear()
+        eventEntityList.addAll(newList)
         notifyDataSetChanged()
     }
 }

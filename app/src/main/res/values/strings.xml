@@ -135,13 +135,14 @@
     <string name="wasekum">Wakil Sekretasi Umum</string>
     <string name="wabendum">Wakil Bendahara Umum</string>
     <string name="kadep">Kepala Departemen</string>
-    <string name="sekdep">Skretaris Departemen</string>
+    <string name="sekdep">Sekretaris Departemen</string>
     <string name="kadiv">Kepala Divisi</string>
     <string name="anggota">Anggota</string>
     <string name="update_role">Update Role</string>
     <string name="please_choose_department">Mohon pilih departemen</string>
     <string name="please_choose_position">Mohon pilih posisi</string>
     <string name="successfully_update_role">Berhasil memperbarui role</string>
+    <string name="status_is_completed">Status: Selesai</string>
 
 
     <string-array name="online_event_media">

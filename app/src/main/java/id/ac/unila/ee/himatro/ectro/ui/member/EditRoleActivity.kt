@@ -7,11 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -58,64 +55,105 @@ class EditRoleActivity : AppCompatActivity() {
             tvUserNpm.text = entity?.applicantNpm ?: ""
             tvUserEmail.text = entity?.applicantEmail ?: ""
 
-            rgDepartment.setOnCheckedChangeListener { _, buttonId ->
-                when (buttonId) {
+            rgDepartment.setOnCheckedChangeListener { _, departmentId ->
+                when (departmentId) {
                     R.id.rb_kominfo -> {
-                        layoutKominfoDivision.visibility = View.VISIBLE
+                        layoutOtherPosition.visibility = View.VISIBLE
+                        rbKadiv.visibility = View.VISIBLE
+                        rbKadiv.isEnabled = true
+                        rgOtherPosition.clearCheck()
 
-                        layoutSoswirDivision.visibility = View.GONE
-                        layoutBangtekDivision.visibility = View.GONE
-                        layoutPpdDivision.visibility = View.GONE
-                        layoutOtherPosition.visibility = View.GONE
+                        rgOtherPosition.setOnCheckedChangeListener { _, positionId ->
+                            if ((positionId == R.id.rb_kadiv || positionId == R.id.rb_anggota) && departmentId == R.id.rb_kominfo ) {
+                                layoutDivision.visibility = View.VISIBLE
+                                layoutKominfoDivision.visibility = View.VISIBLE
+                                layoutSoswirDivision.visibility = View.GONE
+                                layoutPpdDivision.visibility = View.GONE
+                                layoutBangtekDivision.visibility = View.GONE
+                            } else {
+                                layoutDivision.visibility = View.GONE
+                                layoutKominfoDivision.visibility = View.GONE
+                            }
+                        }
+
                     }
                     R.id.rb_soswir -> {
-                        layoutSoswirDivision.visibility = View.VISIBLE
+                        layoutOtherPosition.visibility = View.VISIBLE
+                        rbKadiv.visibility = View.VISIBLE
+                        rbKadiv.isEnabled = true
+                        rgOtherPosition.clearCheck()
 
-                        layoutKominfoDivision.visibility = View.GONE
-                        layoutBangtekDivision.visibility = View.GONE
-                        layoutPpdDivision.visibility = View.GONE
-                        layoutOtherPosition.visibility = View.GONE
+                        rgOtherPosition.setOnCheckedChangeListener { _, positionId ->
+                            if ((positionId == R.id.rb_kadiv || positionId == R.id.rb_anggota) && departmentId == R.id.rb_soswir) {
+                                layoutDivision.visibility = View.VISIBLE
+                                layoutKominfoDivision.visibility = View.GONE
+                                layoutSoswirDivision.visibility = View.VISIBLE
+                                layoutPpdDivision.visibility = View.GONE
+                                layoutBangtekDivision.visibility = View.GONE
+                            } else {
+                                layoutSoswirDivision.visibility = View.GONE
+                                layoutDivision.visibility = View.GONE
+                            }
+                        }
                     }
                     R.id.rb_bangtek -> {
-                        layoutBangtekDivision.visibility = View.VISIBLE
+                        layoutOtherPosition.visibility = View.VISIBLE
+                        rbKadiv.visibility = View.VISIBLE
+                        rbKadiv.isEnabled = true
+                        rgOtherPosition.clearCheck()
 
-                        layoutKominfoDivision.visibility = View.GONE
-                        layoutSoswirDivision.visibility = View.GONE
-                        layoutPpdDivision.visibility = View.GONE
-                        layoutOtherPosition.visibility = View.GONE
+                        rgOtherPosition.setOnCheckedChangeListener { _, positionId ->
+                            if ((positionId == R.id.rb_kadiv || positionId == R.id.rb_anggota) && departmentId == R.id.rb_bangtek) {
+                                layoutDivision.visibility = View.VISIBLE
+                                layoutKominfoDivision.visibility = View.GONE
+                                layoutSoswirDivision.visibility = View.GONE
+                                layoutPpdDivision.visibility = View.GONE
+                                layoutBangtekDivision.visibility = View.VISIBLE
+                            } else {
+                                layoutBangtekDivision.visibility = View.GONE
+                                layoutDivision.visibility = View.GONE
+                            }
+                        }
                     }
                     R.id.rb_ppd -> {
-                        layoutPpdDivision.visibility = View.VISIBLE
+                        layoutOtherPosition.visibility = View.VISIBLE
+                        rbKadiv.visibility = View.VISIBLE
+                        rbKadiv.isEnabled = true
+                        rgOtherPosition.clearCheck()
 
-                        layoutKominfoDivision.visibility = View.GONE
-                        layoutSoswirDivision.visibility = View.GONE
-                        layoutBangtekDivision.visibility = View.GONE
-                        layoutOtherPosition.visibility = View.GONE
+                        rgOtherPosition.setOnCheckedChangeListener { _, positionId ->
+                            if ((positionId == R.id.rb_kadiv || positionId == R.id.rb_anggota) && departmentId == R.id.rb_ppd) {
+                                layoutDivision.visibility = View.VISIBLE
+                                layoutKominfoDivision.visibility = View.GONE
+                                layoutSoswirDivision.visibility = View.GONE
+                                layoutPpdDivision.visibility = View.VISIBLE
+                                layoutBangtekDivision.visibility = View.GONE
+                            } else {
+                                layoutPpdDivision.visibility = View.GONE
+                                layoutDivision.visibility = View.GONE
+                            }
+                        }
                     }
                     R.id.rb_kpo -> {
-                        rbKadiv.visibility = View.GONE
                         layoutOtherPosition.visibility = View.VISIBLE
+                        rbKadiv.isEnabled = false
+                        rgOtherPosition.clearCheck()
+                        rgKominfoDivision.clearCheck()
+                        rgSoswirDivision.clearCheck()
+                        rgPpdDivision.clearCheck()
+                        rgBangtekDivision.clearCheck()
 
-                        layoutKominfoDivision.visibility = View.GONE
-                        layoutSoswirDivision.visibility = View.GONE
-                        layoutBangtekDivision.visibility = View.GONE
-                        layoutPpdDivision.visibility = View.GONE
+                        rgOtherPosition.setOnCheckedChangeListener { _, _ ->
+                            layoutDivision.visibility = View.GONE
+                            layoutKominfoDivision.visibility = View.GONE
+                            layoutSoswirDivision.visibility = View.GONE
+                            layoutPpdDivision.visibility = View.GONE
+                            layoutBangtekDivision.visibility = View.GONE
+                        }
                     }
                 }
             }
 
-            rgKominfoDivision.setOnCheckedChangeListener { _, _ ->
-                layoutOtherPosition.visibility = View.VISIBLE
-            }
-            rgSoswirDivision.setOnCheckedChangeListener { _, _ ->
-                layoutOtherPosition.visibility = View.VISIBLE
-            }
-            rgBangtekDivision.setOnCheckedChangeListener { _, _ ->
-                layoutOtherPosition.visibility = View.VISIBLE
-            }
-            rgPpdDivision.setOnCheckedChangeListener { _, _ ->
-                layoutOtherPosition.visibility = View.VISIBLE
-            }
 
             btnUpdateRole.setOnClickListener {
                 var isValid = true
@@ -200,9 +238,10 @@ class EditRoleActivity : AppCompatActivity() {
                     )
                     binding.loadingIndicator.visibility = View.VISIBLE
 
+                    // TODO: Move to View Model
                     // update user data in database
                     fireStore.collection(TABLE_USER)
-                        .document(firebaseUser?.uid ?: "")
+                        .document(entity?.applicantUid ?: "")
                         .set(updateRole, SetOptions.merge())
                         .addOnSuccessListener {
 
@@ -218,7 +257,7 @@ class EditRoleActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                    onBackPressed()
+                                    finish()
                                 }
                                 .addOnFailureListener {
                                     binding.loadingIndicator.visibility = View.GONE

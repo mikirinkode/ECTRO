@@ -9,12 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
-import id.ac.unila.ee.himatro.ectro.data.model.Event
+import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.attendance.AttendanceFormActivity
@@ -35,7 +33,7 @@ class DetailEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val entity = intent.getParcelableExtra<Event>(EXTRA_ENTITY)
+        val entity = intent.getParcelableExtra<EventEntity>(EXTRA_ENTITY)
         setData(entity)
 
         binding.apply {
@@ -56,19 +54,19 @@ class DetailEventActivity : AppCompatActivity() {
         }
     }
 
-    private fun setData(event: Event?) {
+    private fun setData(eventEntity: EventEntity?) {
         binding.apply {
-            if (event != null) {
-                tvEventName.text = event.name
-                tvEventDesc.text = event.desc
-                tvEventCategory.text = event.category
+            if (eventEntity != null) {
+                tvEventName.text = eventEntity.name
+                tvEventDesc.text = eventEntity.desc
+                tvEventCategory.text = eventEntity.category
 
-                tvEventDate.text = event.date
-                tvEventTime.text = event.time
-                tvEventPlace.text = event.place
+                tvEventDate.text = eventEntity.date
+                tvEventTime.text = eventEntity.time
+                tvEventPlace.text = eventEntity.place
 
                 // show attendance layout
-                if (event.isNeedAttendanceForm == true) {
+                if (eventEntity.isNeedAttendanceForm == true) {
                     layoutEventAttendance.visibility = View.VISIBLE
 
                     btnAttendance.setOnClickListener {
@@ -79,24 +77,24 @@ class DetailEventActivity : AppCompatActivity() {
                 }
 
                 // show extra action button
-                if (event.extraActionName.isNotEmpty()) {
+                if (eventEntity.extraActionName.isNotEmpty()) {
                     layoutAdditionalButton.visibility = View.VISIBLE
 
                     // if action only active after user fill attendance && user has not fill it
                     // then button will be disabled
-                    if (event.actionAfterAttendance == true && !hasFilledAttendance()) {
+                    if (eventEntity.actionAfterAttendance == true && !hasFilledAttendance()) {
                         btnAdditional.isEnabled = false
                         btnAdditional.text = getString(R.string.please_fill_attendance_first)
                     } else {
                         btnAdditional.isEnabled = true
-                        btnAdditional.text = event.extraActionName
+                        btnAdditional.text = eventEntity.extraActionName
                     }
 
 
                     btnAdditional.setOnClickListener {
                         Toast.makeText(
                             this@DetailEventActivity,
-                            event.extraActionLink,
+                            eventEntity.extraActionLink,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -104,7 +102,7 @@ class DetailEventActivity : AppCompatActivity() {
                     layoutAdditionalButton.visibility = View.GONE
                 }
 
-                observeUploaderInfo(event.creatorUid)
+                observeUploaderInfo(eventEntity.creatorUid)
             }
         }
     }
@@ -121,9 +119,9 @@ class DetailEventActivity : AppCompatActivity() {
                     binding.apply {
                         tvUserName.text = user.name
 
-                        if (user.userPhotoUrl.isNotEmpty()) {
+                        if (user.photoUrl.isNotEmpty()) {
                             Glide.with(this@DetailEventActivity)
-                                .load(user.userPhotoUrl)
+                                .load(user.photoUrl)
                                 .into(ivUserPhoto)
                         } else {
                             Glide.with(this@DetailEventActivity)

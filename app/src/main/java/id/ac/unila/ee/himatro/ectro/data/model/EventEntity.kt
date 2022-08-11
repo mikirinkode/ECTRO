@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Event (
+class EventEntity (
     var name: String = "",
     var desc: String = "",
     var category: String = "",
