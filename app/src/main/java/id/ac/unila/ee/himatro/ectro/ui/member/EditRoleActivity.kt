@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -25,6 +26,7 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DIVISION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_POSITION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ROLE
+import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,19 +36,13 @@ class EditRoleActivity : AppCompatActivity() {
         ActivityEditRoleBinding.inflate(layoutInflater)
     }
 
-    @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    private val firebaseUser: FirebaseUser? by lazy {
-        auth.currentUser
-    }
+    private val viewModel: RoleRequestViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        observeIsLoading()
 
         binding.apply {
             val entity = intent.getParcelableExtra<RoleRequest>(EXTRA_ENTITY)
@@ -222,140 +218,42 @@ class EditRoleActivity : AppCompatActivity() {
                 }
 
                 if (isValid) {
-                    val updateRequest = hashMapOf(
-                        TABLE_RR_STATUS to EctroPreferences.COMPLETED_STATUS,
-                        TABLE_RR_HANDLER_UID to firebaseUser?.uid,
-                        TABLE_RR_UPDATED_AT to DateHelper.getCurrentDate()
-                    )
+                    viewModel.updateRoleRequest(entity, department, division, position)
 
-                    val updateRole = hashMapOf(
-                        TABLE_USER_REQUEST_STATUS to EctroPreferences.COMPLETED_STATUS,
-                        TABLE_USER_ROLE to hashMapOf(
-                            TABLE_USER_DEPARTMENT to department,
-                            TABLE_USER_DIVISION to division,
-                            TABLE_USER_POSITION to position,
-                        )
-                    )
-                    binding.loadingIndicator.visibility = View.VISIBLE
-
-                    // TODO: Move to View Model
-                    // update user data in database
-                    fireStore.collection(TABLE_USER)
-                        .document(entity?.applicantUid ?: "")
-                        .set(updateRole, SetOptions.merge())
-                        .addOnSuccessListener {
-
-                            // update request document in database
-                            fireStore.collection(TABLE_ROLE_REQUEST)
-                                .document(entity?.requestId ?: "")
-                                .set(updateRequest, SetOptions.merge())
-                                .addOnSuccessListener {
-                                    binding.loadingIndicator.visibility = View.GONE
-                                    Toast.makeText(
-                                        this@EditRoleActivity,
-                                        getString(R.string.successfully_update_role),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    finish()
+                    viewModel.isError.observe(this@EditRoleActivity){ isError ->
+                        if (isError){
+                            viewModel.responseMessage.observe(this@EditRoleActivity){
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(this@EditRoleActivity, msg, Toast.LENGTH_SHORT).show()
+                                    }
                                 }
-                                .addOnFailureListener {
-                                    binding.loadingIndicator.visibility = View.GONE
-                                    Toast.makeText(
-                                        this@EditRoleActivity,
-                                        it.message.toString(),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    Log.e(TAG, it.message.toString())
-                                }
+                            }
+                        } else if (!isError) {
+                            Toast.makeText(
+                                this@EditRoleActivity,
+                                getString(R.string.successfully_update_role),
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            finish()
                         }
+                    }
                 }
             }
-
-            // set Dropdown for department
-//            val departmentList: Array<String> = resources.getStringArray(R.array.department_list)
-//            val departmentAdapter: ArrayAdapter<String> =
-//                ArrayAdapter(
-//                    this@EditRoleActivity,
-//                    android.R.layout.simple_list_item_1,
-//                    departmentList
-//                )
-//            actDepartment.setAdapter(departmentAdapter)
-//
-//            // set Dropdown for division
-//            val department = actDepartment.text.toString().trim()
-//
-//
-//            if (department == departmentList[0]) {
-//                tilDivision.visibility = View.GONE
-//                tilPosition.visibility = View.VISIBLE
-//
-//                // dropdown for PH position
-//                val phPositionList: Array<String> = resources.getStringArray(R.array.ph_position_list)
-//                val phPositionAdapter: ArrayAdapter<String> =
-//                    ArrayAdapter(
-//                        this@EditRoleActivity,
-//                        android.R.layout.simple_list_item_1,
-//                        phPositionList
-//                    )
-//                actPosition.setAdapter(phPositionAdapter)
-//
-//            } else if (department == departmentList[5]) {
-//                tilDivision.visibility = View.GONE
-//                tilPosition.visibility = View.VISIBLE
-//                // dropdown for KPO position
-//                val positionList: Array<String> = resources.getStringArray(R.array.kpo_position_list)
-//                val positionAdapter: ArrayAdapter<String> =
-//                    ArrayAdapter(
-//                        this@EditRoleActivity,
-//                        android.R.layout.simple_list_item_1,
-//                        positionList
-//                    )
-//                actPosition.setAdapter(positionAdapter)
-//            } else {
-//                tilDivision.visibility = View.VISIBLE
-//                tilPosition.visibility = View.VISIBLE
-//                val divisionList: Array<String> = when (department) {
-//                    departmentList[1] -> {
-//                        resources.getStringArray(R.array.ppd_division_list)
-//                    }
-//                    departmentList[2] -> {
-//                        resources.getStringArray(R.array.soswir_division_list)
-//                    }
-//                    departmentList[3] -> {
-//                        resources.getStringArray(R.array.bangtek_division_list)
-//                    }
-//                    departmentList[4] -> {
-//                        resources.getStringArray(R.array.ppd_division_list)
-//                    }
-//                    else -> resources.getStringArray(R.array.empty)
-//                }
-//
-//                // set dropdown for division
-//                val divisionAdapter: ArrayAdapter<String> =
-//                    ArrayAdapter(
-//                        this@EditRoleActivity,
-//                        android.R.layout.simple_list_item_1,
-//                        divisionList
-//                    )
-//                actDivision.setAdapter(divisionAdapter)
-//
-//                // set Dropdown for position
-//                val otherPositionList: Array<String> = resources.getStringArray(R.array.other_position_list)
-//                val otherPositionAdapter: ArrayAdapter<String> =
-//                    ArrayAdapter(
-//                        this@EditRoleActivity,
-//                        android.R.layout.simple_list_item_1,
-//                        otherPositionList
-//                    )
-//                actPosition.setAdapter(otherPositionAdapter)
-//            }
-
-
             btnBack.setOnClickListener { onBackPressed() }
         }
     }
 
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+                binding.loadingIndicator.visibility = View.VISIBLE
+            } else {
+                binding.loadingIndicator.visibility = View.GONE
+            }
+        }
+    }
 
     companion object {
         const val EXTRA_ENTITY = "extra_entity"

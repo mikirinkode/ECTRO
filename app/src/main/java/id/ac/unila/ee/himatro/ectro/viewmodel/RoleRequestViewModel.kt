@@ -1,6 +1,8 @@
 package id.ac.unila.ee.himatro.ectro.viewmodel
 
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +11,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
+import id.ac.unila.ee.himatro.ectro.ui.member.EditRoleActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
@@ -99,7 +103,7 @@ class RoleRequestViewModel @Inject constructor(
                 val entityList: ArrayList<RoleRequest> = ArrayList()
                 for (document in documentList) {
                     val entity = document.toObject<RoleRequest>()
-                        entityList.add(entity)
+                    entityList.add(entity)
                 }
 
                 _roleRequestList.postValue(entityList)
@@ -108,6 +112,51 @@ class RoleRequestViewModel @Inject constructor(
                 _isLoading.postValue(false)
                 _isError.postValue(true)
                 _responseMessage.postValue(Event(it.message.toString()))
+            }
+    }
+
+    fun updateRoleRequest(entity: RoleRequest?, department: String, division: String, position: String) {
+
+        val firebaseUser = auth.currentUser
+
+        val updateRequest = hashMapOf(
+            FirestoreUtils.TABLE_RR_STATUS to EctroPreferences.COMPLETED_STATUS,
+            FirestoreUtils.TABLE_RR_HANDLER_UID to firebaseUser?.uid,
+            FirestoreUtils.TABLE_RR_UPDATED_AT to DateHelper.getCurrentDate()
+        )
+
+        val updateRole = hashMapOf(
+            FirestoreUtils.TABLE_USER_REQUEST_STATUS to EctroPreferences.COMPLETED_STATUS,
+            FirestoreUtils.TABLE_USER_ROLE to hashMapOf(
+                FirestoreUtils.TABLE_USER_DEPARTMENT to department,
+                FirestoreUtils.TABLE_USER_DIVISION to division,
+                FirestoreUtils.TABLE_USER_POSITION to position,
+            )
+        )
+
+        _isLoading.postValue(true)
+
+        // update user data in database
+        fireStore.collection(FirestoreUtils.TABLE_USER)
+            .document(entity?.applicantUid ?: "")
+            .set(updateRole, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // update request document in database
+                fireStore.collection(FirestoreUtils.TABLE_ROLE_REQUEST)
+                    .document(entity?.requestId ?: "")
+                    .set(updateRequest, SetOptions.merge())
+                    .addOnSuccessListener {
+                        _isLoading.postValue(false)
+                        _isError.postValue(false)
+
+                    }
+                    .addOnFailureListener {
+                        _isLoading.postValue(false)
+                        _isError.postValue(true)
+                        _responseMessage.postValue(Event(it.message.toString()))
+                        Log.e(TAG, it.message.toString())
+                    }
             }
     }
 
