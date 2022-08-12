@@ -15,6 +15,7 @@ class EventEntity (
     var time: String = "",
 
     @field:JvmField
+    var isNeedNotes: Boolean? = null,
     var isNeedAttendanceForm: Boolean? = null,
     var extraActionName: String = "",
     var extraActionLink: String = "",

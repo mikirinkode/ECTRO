@@ -37,6 +37,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/ic_user_fill.xml" value="0.1905" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/ic_user_note.xml" value="0.143" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/ic_user_outline.xml" value="0.1905" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/outlined_rectangle.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/rect_rounded.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/rect_rounded_bottom.xml" value="0.182" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/rect_rounded_category.xml" value="0.1085" />
@@ -44,7 +45,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/switch_eye.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/switch_home.xml" value="0.1625" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/drawable/switch_user.xml" value="0.1625" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_add_event.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_add_event.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_add_note.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_attendance_form.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_create_event.xml" value="0.2" />

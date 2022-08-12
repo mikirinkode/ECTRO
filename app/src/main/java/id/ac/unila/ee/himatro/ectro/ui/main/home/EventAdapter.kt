@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
+import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 
 class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
@@ -16,7 +17,11 @@ class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
         fun bind(eventEntity: EventEntity){
             binding.apply {
                 tvEventTitle.text = eventEntity.name
-                tvEventDate.text = eventEntity.date
+                try {
+                    tvEventDate.text = DateHelper.mapAlarmFormatToDisplayFormat(eventEntity.date)
+                } catch (e: Exception){
+                    tvEventDate.text = eventEntity.date
+                }
                 tvEventTime.text = eventEntity.time
                 tvEventPlace.text = eventEntity.place
                 tvDummyCategory.text = "#${eventEntity.category}"

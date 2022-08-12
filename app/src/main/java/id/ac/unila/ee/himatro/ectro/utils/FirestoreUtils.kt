@@ -30,6 +30,7 @@ object FirestoreUtils {
     const val TABLE_EVENT_TIME = "time"
     const val TABLE_EVENT_PLACE = "place"
     const val TABLE_EVENT_CATEGORY = "category"
+    const val TABLE_EVENT_NEED_NOTES = "isNeedNotes"
     const val TABLE_EVENT_ATTENDANCE_FORM = "isNeedAttendanceForm"
     const val TABLE_EVENT_EXTRA_ACTION_NAME = "extraActionName"
     const val TABLE_EVENT_EXTRA_ACTION_LINK = "extraActionLink"

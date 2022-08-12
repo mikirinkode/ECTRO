@@ -1,12 +1,19 @@
 package id.ac.unila.ee.himatro.ectro.ui.event
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,9 +34,13 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_DESC
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NAME
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NEED_NOTES
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_PLACE
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TIME
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TYPE
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,6 +71,53 @@ class AddEventActivity : AppCompatActivity() {
         binding.actOnlineEventMedia.setAdapter(arrayAdapter)
 
         binding.apply {
+            /**
+             *  Setup Date Picker
+             */
+            // Build constraints.
+            val constraintsBuilder =
+                CalendarConstraints.Builder()
+                    .setStart(MaterialDatePicker.todayInUtcMilliseconds())
+                    .setValidator(DateValidatorPointForward.now()) // Makes only dates from today forward selectable.
+
+
+            val datePicker =
+                MaterialDatePicker.Builder.datePicker()
+                    .setTitleText(getString(R.string.choose_event_date))
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+                    .setCalendarConstraints(constraintsBuilder.build())
+                    .build()
+
+            /**
+             *  Setup Time Picker
+             */
+            val calendar = Calendar.getInstance()
+            val timePicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+                .setMinute(calendar.get(Calendar.MINUTE))
+                .setTitleText(getString(R.string.choose_event_start_time))
+                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+                .build()
+
+            tilEventDate.setOnClickListener {
+                datePicker.show(supportFragmentManager, "DATE_PICKER")
+            }
+
+            datePicker.addOnPositiveButtonClickListener {
+                // map to alarm format, then to display format
+                val date = DateHelper.mapPickerFormatToAlarmFormat(datePicker.headerText)
+                edtEventDate.text = DateHelper.mapAlarmFormatToDisplayFormat(date)
+            }
+
+            tilEventTime.setOnClickListener {
+                timePicker.show(supportFragmentManager, "TIME_PICKER")
+            }
+
+            timePicker.addOnPositiveButtonClickListener {
+                edtEventTime.setText("${timePicker.hour}:${timePicker.minute}")
+            }
 
             switchAttendance.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
@@ -96,10 +154,11 @@ class AddEventActivity : AppCompatActivity() {
                 }
 
                 val eventPlace = edtEventPlace.text.toString().trim()
-                val eventDate = edtEventDate.text.toString().trim()
+                var eventDate = edtEventDate.text.toString().trim()
                 val eventTime = edtEventTime.text.toString().trim()
 
-                val attendanceForm = switchAttendance.isChecked
+                val isNeedNotes = switchNotes.isChecked
+                val isNeedAttendance = switchAttendance.isChecked
                 val additionalName = edtAdditionalName.text.toString().trim()
                 val additionalLink = edtAdditionalLink.text.toString().trim()
                 val actionAfterAttendance = switchActionAfterAttendance.isChecked
@@ -147,7 +206,10 @@ class AddEventActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     isValid = false
+                } else {
+//                    eventDate = DateHelper.mapAlarmFormatToDisplayFormat()
                 }
+
                 if (eventTime.isEmpty()) {
                     Toast.makeText(
                         this@AddEventActivity,
@@ -168,11 +230,12 @@ class AddEventActivity : AppCompatActivity() {
                             TABLE_EVENT_NAME to eventName,
                             TABLE_EVENT_DESC to eventDesc,
                             TABLE_EVENT_TYPE to eventType,
-                            TABLE_EVENT_DATE to eventDate,
+                            TABLE_EVENT_DATE to DateHelper.mapDisplayFormatToAlarmFormat(eventDate),
                             TABLE_EVENT_TIME to eventTime,
                             TABLE_EVENT_PLACE to eventPlace,
                             TABLE_EVENT_CATEGORY to eventCategory,
-                            TABLE_EVENT_ATTENDANCE_FORM to attendanceForm,
+                            TABLE_EVENT_NEED_NOTES to isNeedNotes,
+                            TABLE_EVENT_ATTENDANCE_FORM to isNeedAttendance,
                             TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
                             TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
                             TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
@@ -244,6 +307,9 @@ class AddEventActivity : AppCompatActivity() {
                     if (savedState.actionAfterAttendance != null) {
                         switchActionAfterAttendance.isChecked = savedState.actionAfterAttendance!!
                     }
+                    if (savedState.isNeedNotes != null) {
+                        switchNotes.isChecked = savedState.isNeedNotes!!
+                    }
                 }
             }
         }
@@ -265,6 +331,7 @@ class AddEventActivity : AppCompatActivity() {
                     place = edtEventPlace.text.toString().trim(),
                     date = edtEventDate.text.toString().trim(),
                     time = edtEventTime.text.toString().trim(),
+                    isNeedNotes = switchNotes.isChecked,
                     isNeedAttendanceForm = switchAttendance.isChecked,
                     extraActionName = edtAdditionalName.text.toString().trim(),
                     extraActionLink = edtAdditionalLink.text.toString().trim(),

@@ -37,6 +37,12 @@
         <item name="boxCornerRadiusTopStart">@dimen/corner_radius</item>
     </style>
 
+    <style name="Theme.ECTRO.FakeInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/outlined_rectangle</item>
+        <item name="android:minWidth">56dp</item>
+    </style>
+
     <style name="Theme.ECTRO.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
         <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/corner_radius</item>

@@ -114,6 +114,8 @@
     <string name="role_request">Daftar Permintaan Role</string>
     <string name="edit_role">Edit Role</string>
     <string name="user_info">Informasi Pengguna</string>
+
+    <!--  Himatro Position  -->
     <string name="kominfo">Kominfo</string>
     <string name="soswir">Soswir</string>
     <string name="bangtek">Bangtek</string>
@@ -138,11 +140,15 @@
     <string name="sekdep">Sekretaris Departemen</string>
     <string name="kadiv">Kepala Divisi</string>
     <string name="anggota">Anggota</string>
+
     <string name="update_role">Update Role</string>
     <string name="please_choose_department">Mohon pilih departemen</string>
     <string name="please_choose_position">Mohon pilih posisi</string>
     <string name="successfully_update_role">Berhasil memperbarui role</string>
     <string name="status_is_completed">Status: Selesai</string>
+    <string name="choose_event_date">Pilih Tanggal Acara</string>
+    <string name="choose_event_start_time">Pilih Jam Mulai Acara</string>
+    <string name="with_notes">Notulensi</string>
 
 
     <string-array name="online_event_media">

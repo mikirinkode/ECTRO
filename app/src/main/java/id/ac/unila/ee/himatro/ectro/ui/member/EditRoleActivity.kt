@@ -26,6 +26,7 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DIVISION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_POSITION
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ROLE
+import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils
 import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
 import javax.inject.Inject
 
@@ -158,45 +159,45 @@ class EditRoleActivity : AppCompatActivity() {
 
                 when (rgDepartment.checkedRadioButtonId) {
                     R.id.rb_kominfo -> {
-                        department = getString(R.string.kominfo)
+                        department = HimatroUtils.KOMINFO
                         when (rgKominfoDivision.checkedRadioButtonId) {
-                            R.id.rb_medin -> division = getString(R.string.medin)
-                            R.id.rb_humas -> division = getString(R.string.humas)
+                            R.id.rb_medin -> division = HimatroUtils.MEDIN
+                            R.id.rb_humas -> division = HimatroUtils.HUMAS
                         }
                     }
                     R.id.rb_soswir -> {
-                        department = getString(R.string.soswir)
+                        department = HimatroUtils.SOSWIR
                         when (rgSoswirDivision.checkedRadioButtonId) {
-                            R.id.rb_sosial -> division = getString(R.string.sosial)
-                            R.id.rb_kewirausahaan -> division = getString(R.string.kewirausahaan)
+                            R.id.rb_sosial -> division = HimatroUtils.SOSIAL
+                            R.id.rb_kewirausahaan -> division = HimatroUtils.KEWIRAUSAHAAN
                         }
                     }
                     R.id.rb_bangtek -> {
-                        department = getString(R.string.bangtek)
+                        department = HimatroUtils.BANGTEK
                         when (rgBangtekDivision.checkedRadioButtonId) {
-                            R.id.rb_litbang -> division = getString(R.string.litbang)
-                            R.id.rb_pengmas -> division = getString(R.string.pengmas)
+                            R.id.rb_litbang -> division = HimatroUtils.LITBANG
+                            R.id.rb_pengmas -> division = HimatroUtils.PENGMAS
                         }
                     }
                     R.id.rb_ppd -> {
-                        department = getString(R.string.ppd)
+                        department = HimatroUtils.PPD
                         when (rgKominfoDivision.checkedRadioButtonId) {
-                            R.id.rb_pendidikan -> division = getString(R.string.pendidikan)
-                            R.id.rb_kerohanian -> division = getString(R.string.kerohanian)
-                            R.id.rb_minat_bakat -> division = getString(R.string.minat_bakat)
+                            R.id.rb_pendidikan -> division = HimatroUtils.PENDIDIKAN
+                            R.id.rb_kerohanian -> division = HimatroUtils.KEROHANIAN
+                            R.id.rb_minat_bakat -> division = HimatroUtils.MINAT_BAKAT
                         }
                     }
                     R.id.rb_kpo -> {
-                        department = getString(R.string.kpo)
+                        department = HimatroUtils.KPO
                     }
                     else -> department = ""
                 }
 
                 val position = when (rgOtherPosition.checkedRadioButtonId) {
-                    R.id.rb_kadep -> getString(R.string.kadep)
-                    R.id.rb_sekdep -> getString(R.string.sekdep)
-                    R.id.rb_kadiv -> getString(R.string.kadiv)
-                    R.id.rb_anggota -> getString(R.string.anggota)
+                    R.id.rb_kadep -> HimatroUtils.KADEP
+                    R.id.rb_sekdep -> HimatroUtils.SEKDEP
+                    R.id.rb_kadiv -> HimatroUtils.KADIV
+                    R.id.rb_anggota -> HimatroUtils.ANGGOTA
                     else -> ""
                 }
 
