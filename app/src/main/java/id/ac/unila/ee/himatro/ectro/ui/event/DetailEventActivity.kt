@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentReference
@@ -12,12 +13,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.attendance.AttendanceFormActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.participant.ParticipantListActivity
+import id.ac.unila.ee.himatro.ectro.ui.profile.DetailUserActivity
+import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,7 +31,9 @@ class DetailEventActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var fireStore: FirebaseFirestore
+    lateinit var preferences: EctroPreferences
+
+    private val viewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +46,13 @@ class DetailEventActivity : AppCompatActivity() {
 
             btnBack.setOnClickListener { onBackPressed() }
 
-            btnParticipant.setOnClickListener {
-                startActivity(Intent(this@DetailEventActivity, ParticipantListActivity::class.java))
-            }
-
-            btnNotes.setOnClickListener {
-                startActivity(Intent(this@DetailEventActivity, AddNoteActivity::class.java))
-            }
-
             layoutCreatedBy.setOnClickListener {
-
+                startActivity(
+                    Intent(
+                        this@DetailEventActivity,
+                        DetailUserActivity::class.java
+                    ).putExtra(DetailUserActivity.EXTRA_USER_ID, entity?.creatorUid)
+                )
             }
         }
     }
@@ -66,14 +69,47 @@ class DetailEventActivity : AppCompatActivity() {
                 tvEventPlace.text = eventEntity.place
 
                 // show attendance layout
+                if (eventEntity.isNeedNotes == true) {
+                    btnNotes.visibility = View.VISIBLE
+                    btnNotes.setOnClickListener {
+                        startActivity(Intent(this@DetailEventActivity, AddNoteActivity::class.java))
+                    }
+                } else {
+                    btnNotes.visibility = View.GONE
+                }
+
                 if (eventEntity.isNeedAttendanceForm == true) {
                     layoutEventAttendance.visibility = View.VISIBLE
+                    btnAttendance.visibility = View.VISIBLE
+
+                    btnParticipant.setOnClickListener {
+                        startActivity(
+                            Intent(
+                                this@DetailEventActivity,
+                                ParticipantListActivity::class.java
+                            )
+                        )
+                    }
 
                     btnAttendance.setOnClickListener {
-                        startActivity(Intent(this@DetailEventActivity, AttendanceFormActivity::class.java))
+                        if (isUserDataComplete()) {
+                            startActivity(
+                                Intent(
+                                    this@DetailEventActivity,
+                                    AttendanceFormActivity::class.java
+                                )
+                            )
+                        } else {
+                            Toast.makeText(
+                                this@DetailEventActivity,
+                                getString(R.string.please_complete_your_data),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 } else {
                     layoutEventAttendance.visibility = View.GONE
+                    btnAttendance.visibility = View.GONE
                 }
 
                 // show extra action button
@@ -103,46 +139,53 @@ class DetailEventActivity : AppCompatActivity() {
                 }
 
                 observeUploaderInfo(eventEntity.creatorUid)
+                observeIsLoading()
             }
         }
     }
 
     private fun observeUploaderInfo(userId: String) {
+        if (userId != null){
+            viewModel.getUserDataByUid(userId).observe(this) { user ->
+                binding.apply {
+                    tvUserName.text = user.name
 
-        val userInDB: DocumentReference = fireStore.collection("users").document(userId)
-
-        userInDB.get()
-            .addOnSuccessListener { document ->
-                val user: User? = document.toObject<User>()
-
-                if (user != null) {
-                    binding.apply {
-                        tvUserName.text = user.name
-
-                        if (user.photoUrl.isNotEmpty()) {
-                            Glide.with(this@DetailEventActivity)
-                                .load(user.photoUrl)
-                                .into(ivUserPhoto)
-                        } else {
-                            Glide.with(this@DetailEventActivity)
-                                .load(R.drawable.ic_default_profile)
-                                .into(ivUserPhoto)
-                        }
+                    if (user.photoUrl.isNotEmpty()) {
+                        Glide.with(applicationContext)
+                            .load(user.photoUrl)
+                            .into(ivUserPhoto)
+                    } else {
+                        // java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+                        Glide.with(applicationContext) // TODO: THERE's is an error occured here
+                            .load(R.drawable.ic_default_profile)
+                            .into(ivUserPhoto)
                     }
                 }
             }
-            .addOnFailureListener {
-                Log.e(TAG, it.message.toString())
-                Toast.makeText(
-                    this,
-                    getString(R.string.database_connection_failed),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        }
     }
 
-    private fun hasFilledAttendance(): Boolean{
+    // TODO: CREATE SHIMMER LOADING FOR USER INFO
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+            } else {
+            }
+        }
+    }
+
+    private fun hasFilledAttendance(): Boolean {
         return false
+    }
+
+    private fun isUserDataComplete(): Boolean {
+        val userNpm = preferences.getValues(EctroPreferences.USER_NPM)
+        val userDepartment = preferences.getValues(EctroPreferences.USER_DEPARTMENT)
+        val userDivision = preferences.getValues(EctroPreferences.USER_DIVISION)
+        val userPosition = preferences.getValues(EctroPreferences.USER_POSITION)
+        val activePeriod = preferences.getValues(EctroPreferences.ACTIVE_PERIOD)
+
+        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
     companion object {

@@ -6,11 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.utils.Event
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENTS
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATED_AT
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +38,9 @@ class EventViewModel @Inject constructor(
 
 
     fun observeEventList() {
-        fireStore.collection("events").get()
+        fireStore.collection(TABLE_EVENTS)
+            .orderBy(TABLE_EVENT_CREATED_AT,  Query.Direction.DESCENDING)
+            .get()
             .addOnSuccessListener { documentList ->
                 val eventEntityList: ArrayList<EventEntity> = ArrayList()
                 for (document in documentList) {

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -24,6 +25,7 @@ import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityEditProfileBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.RegisterActivity
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,14 +35,16 @@ class EditProfileActivity : AppCompatActivity() {
         ActivityEditProfileBinding.inflate(layoutInflater)
     }
 
+    private val viewModel: UserViewModel by viewModels()
+
     @Inject
-    lateinit var auth: FirebaseAuth
+    lateinit var preferences: EctroPreferences
 
     @Inject
     lateinit var fireStore: FirebaseFirestore
 
     @Inject
-    lateinit var preferences: EctroPreferences
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,31 +62,25 @@ class EditProfileActivity : AppCompatActivity() {
 
                 val isValid = checkInputValidation(name, npm)
 
+                // TODO: MOVE TO VIEWMODEL AND MAKE SURE DID NOT DOUBLE ACTIVITY
                 if (isValid) {
-                    loadingIndicator.visibility = View.VISIBLE
-                    val user = auth.currentUser
-                    if (user != null) {
-                        val newData = hashMapOf(
-                            "name" to name,
-                            "npm" to npm,
-                            "instagram" to instagram,
-                            "linkedin" to linkedin,
-                        )
-
-                        fireStore.collection("users")
-                            .document(user.uid)
-                            .set(newData, SetOptions.merge())
+                    val loggedUser = auth.currentUser
+                    val update = hashMapOf(
+                        "name" to name,
+                        "npm" to npm,
+                        "instagram" to instagram,
+                        "linkedin" to linkedin
+                    )
+                    if (loggedUser != null) {
+                        fireStore.collection("users").document(loggedUser.uid)
+                            .set(update, SetOptions.merge())
                             .addOnSuccessListener {
-                                loadingIndicator.visibility = View.GONE
+                                updateLocalData(name, npm, instagram, linkedin)
                                 Toast.makeText(
                                     this@EditProfileActivity,
                                     getString(R.string.successfully_update_data),
                                     Toast.LENGTH_SHORT
                                 ).show()
-
-                                // if success, update data on local preferences then back to Main
-                                updateLocalData(name, npm, instagram, linkedin)
-
                                 startActivity(
                                     Intent(
                                         this@EditProfileActivity,
@@ -91,23 +89,47 @@ class EditProfileActivity : AppCompatActivity() {
                                 )
                                 finishAffinity()
                             }
-                            .addOnFailureListener {
-                                loadingIndicator.visibility = View.GONE
-                                Log.e(TAG, it.message.toString())
-                                Toast.makeText(
-                                    this@EditProfileActivity,
-                                    it.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                    }else {
-                        Toast.makeText(
-                            baseContext, getString(R.string.update_failed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        loadingIndicator.visibility = View.GONE
                     }
+
+                    /*
+                        Work
+                     */
+//                    viewModel.updateUserProfile(name, npm, instagram, linkedin)
+//                    startActivity(Intent(this@EditProfileActivity, MainActivity::class.java))
+//                    updateLocalData(name, npm, instagram, linkedin)
+//                    Toast.makeText(
+//                        this@EditProfileActivity,
+//                        getString(R.string.successfully_update_data),
+//                        Toast.LENGTH_SHORT
+//                            ).show()
+//                    finishAffinity()
+
+                    /*
+                        DOUBLE
+                     */
+
+//                    viewModel.isError.observe(this@EditProfileActivity){ isError ->
+//                        if (isError){
+//                            viewModel.responseMessage.observe(this@EditProfileActivity) {
+//                                if (it != null) {
+//                                    it.getContentIfNotHandled()?.let { msg ->
+//                                        Toast.makeText(this@EditProfileActivity, msg, Toast.LENGTH_SHORT).show()
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            // if success, update data on local preferences then back to Main
+////                            updateLocalData(name, npm, instagram, linkedin)
+//
+//                            Toast.makeText(
+//                                this@EditProfileActivity,
+//                                getString(R.string.successfully_update_data),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            startActivity(Intent(this@EditProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+////                            finishAffinity()
+//                        }
+//                    }
                 }
             }
 
@@ -117,43 +139,28 @@ class EditProfileActivity : AppCompatActivity() {
 
 
     private fun observeUserData() {
-        val loggedUser = auth.currentUser
+        viewModel.observeLoggedUserData()
+        viewModel.loggedUserData.observe(this) { user ->
+            if (user != null) {
+                binding.apply {
+                    edtFullName.setText(user.name)
+                    edtStudentId.setText(user.npm)
+                    edtInstagram.setText(user.instagram)
+                    edtLinkedin.setText(user.linkedin)
 
-        if (loggedUser != null) {
-            val userInDB: DocumentReference = fireStore.collection("users").document(loggedUser.uid)
-
-            userInDB.get()
-                .addOnSuccessListener { document ->
-                    val user: User? = document.toObject<User>()
-
-                    if (user != null) {
-                        binding.apply {
-                            edtFullName.setText(user.name)
-                            edtStudentId.setText(user.npm)
-                            edtInstagram.setText(user.instagram)
-                            edtLinkedin.setText(user.linkedin)
-
-                            if (user.photoUrl.isEmpty()) {
-                                Glide.with(this@EditProfileActivity)
-                                    .load(R.drawable.ic_default_profile)
-                                    .into(ivUserPhoto)
-                            } else {
-                                Glide.with(this@EditProfileActivity)
-                                    .load(user.photoUrl)
-                                    .into(ivUserPhoto)
-                            }
-                        }
+                    if (user.photoUrl.isEmpty()) {
+                        Glide.with(this@EditProfileActivity)
+                            .load(R.drawable.ic_default_profile)
+                            .into(ivUserPhoto)
+                    } else {
+                        Glide.with(this@EditProfileActivity)
+                            .load(user.photoUrl)
+                            .into(ivUserPhoto)
                     }
                 }
-                .addOnFailureListener {
-                    Log.e(TAG, it.message.toString())
-                    Toast.makeText(
-                        this,
-                        getString(R.string.database_connection_failed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+            }
         }
+
     }
 
     private fun checkInputValidation(name: String, npm: String): Boolean {

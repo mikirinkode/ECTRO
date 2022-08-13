@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
                 .into(ivAnnouncementPicture)
 
             ivUserPhoto.setOnClickListener {
-                startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+                startActivity(Intent(activity, EditProfileActivity::class.java))
             }
 
             btnUserRecap.setOnClickListener {
@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
 
             btnAddEvent.setOnClickListener {
                 if (isUserDataComplete()) {
-                    startActivity(Intent(requireContext(), AddEventActivity::class.java))
+                    startActivity(Intent(activity, AddEventActivity::class.java))
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
         val userPhotoUrl = preferences.getValues(USER_PHOTO_URL)
 
         if (userName == "") {
-            userViewModel.observeUserData()
+            userViewModel.observeLoggedUserData()
             userViewModel.isError.observe(viewLifecycleOwner) { isError ->
                 if (isError) {
                     userViewModel.responseMessage.observe(viewLifecycleOwner) {
@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                 } else {
-                    userViewModel.userData.observe(viewLifecycleOwner) { user ->
+                    userViewModel.loggedUserData.observe(viewLifecycleOwner) { user ->
                         updateUi(user.name, user.photoUrl)
                     }
                 }
@@ -185,6 +185,20 @@ class HomeFragment : Fragment() {
                 Glide.with(requireContext())
                     .load(photoUrl)
                     .into(ivUserPhoto)
+            }
+        }
+    }
+
+    // TODO: CREATE SHIMMER LOADING FOR USER INFO AND EVENT LIST
+    private fun observeIsLoading() {
+        userViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+            } else {
+            }
+        }
+        eventViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+            } else {
             }
         }
     }

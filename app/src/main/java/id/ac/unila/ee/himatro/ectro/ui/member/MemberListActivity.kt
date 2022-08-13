@@ -34,8 +34,8 @@ class MemberListActivity : AppCompatActivity() {
         observeRoleRequest()
 
         binding.apply {
-            userViewModel.observeUserData()
-            userViewModel.userData.observe(this@MemberListActivity) { user ->
+            userViewModel.observeLoggedUserData()
+            userViewModel.loggedUserData.observe(this@MemberListActivity) { user ->
                 if (user != null && (user.role.department == PH || user.role.position == KADIV || user.role.position == KADEP || user.role.position == SEKDEP || user.role.position == DEV_TEAM)) {
                     cardRoleReq.visibility = View.VISIBLE
 
@@ -71,6 +71,15 @@ class MemberListActivity : AppCompatActivity() {
                 }
             } else {
                 binding.cardRoleReq.visibility = View.GONE
+            }
+        }
+    }
+
+    // TODO: CREATE SHIMMER LOADING FOR USER LIST
+    private fun observeIsLoading() {
+        userViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+            } else {
             }
         }
     }

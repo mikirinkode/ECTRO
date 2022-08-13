@@ -67,106 +67,119 @@
                 android:layout_marginBottom="48dp"
                 android:background="@drawable/rect_rounded_bottom"
                 android:backgroundTint="?attr/backgroundColor"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_participant"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_header_action"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_participant"
-                style="@style/Widget.Material3.CardView.Filled"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="?attr/background"
-                android:clickable="true"
-                android:elevation="16dp"
-                android:focusable="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/btn_notes"
+                android:id="@id/layout_header_action"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="0dp">
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:id="@+id/btn_participant"
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="?attr/background"
+                    android:clickable="true"
+                    android:elevation="16dp"
+                    android:focusable="true"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    app:layout_constraintEnd_toStartOf="@+id/btn_notes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeWidth="0dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/participant_list"
-                        android:textAlignment="center"
-                        android:textSize="12sp" />
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tv_total_participant"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:drawablePadding="16dp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:textAlignment="center"
-                        android:textSize="18sp"
-                        app:drawableStartCompat="@drawable/ic_user"
-                        tools:text="98" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="@string/participant_list"
+                            android:textAlignment="center"
+                            android:textSize="12sp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_notes"
-                style="@style/Widget.Material3.CardView.Filled"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:backgroundTint="?attr/background"
-                android:clickable="true"
-                android:elevation="16dp"
-                android:focusable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_participant"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="0dp">
+                        <TextView
+                            android:id="@+id/tv_total_participant"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            app:drawableStartCompat="@drawable/ic_user"
+                            tools:text="98" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:id="@+id/btn_notes"
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="?attr/background"
+                    android:clickable="true"
+                    android:elevation="16dp"
+                    android:focusable="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_participant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeWidth="0dp">
 
-                    <TextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Notulensi"
-                        android:textAlignment="center"
-                        android:textSize="12sp" />
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:textAlignment="center"
-                        android:textSize="18sp"
-                        app:drawableStartCompat="@drawable/ic_notes" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Notulensi"
+                            android:textAlignment="center"
+                            android:textSize="12sp" />
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            app:drawableStartCompat="@drawable/ic_notes" />
 
-            </com.google.android.material.card.MaterialCardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_event_info"
                 android:layout_width="match_parent"
@@ -179,7 +192,7 @@
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_notes">
+                app:layout_constraintTop_toBottomOf="@+id/layout_header_action">
 
 
                 <View

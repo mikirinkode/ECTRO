@@ -61,8 +61,8 @@ class ProfileFragment : Fragment() {
 
         binding.apply {
             if (preferences.getValues(ROLE_REQUEST_STATUS) != EctroPreferences.COMPLETED_STATUS){
-                userViewModel.observeUserData()
-                userViewModel.userData.observe(viewLifecycleOwner) { user ->
+                userViewModel.observeLoggedUserData()
+                userViewModel.loggedUserData.observe(viewLifecycleOwner) { user ->
                     setupUi(
                         user.name,
                         user.photoUrl,
