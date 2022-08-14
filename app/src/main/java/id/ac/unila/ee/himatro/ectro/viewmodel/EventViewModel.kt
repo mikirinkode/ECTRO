@@ -101,16 +101,6 @@ class EventViewModel @Inject constructor(
                 TABLE_EVENT_CREATED_AT to DateHelper.getCurrentDate()
             )
 
-//            if (isNeedAttendance) {
-//                val attendanceDocumentRef =
-//                    fireStore.collection(FirestoreUtils.TABLE_ATTENDANCES).document()
-//
-//                val attendance = hashMapOf(
-//                    FirestoreUtils.TABLE_ATTENDANCE_ID to attendanceDocumentRef.id,
-//                    FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID to eventDocumentRef.id,
-//                )
-//                attendanceDocumentRef.set(attendance)
-//            }
 
             eventDocumentRef.set(event)
                 .addOnSuccessListener {

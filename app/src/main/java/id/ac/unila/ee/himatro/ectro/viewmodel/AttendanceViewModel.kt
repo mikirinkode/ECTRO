@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.model.UserAttendance
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
@@ -47,10 +49,13 @@ class AttendanceViewModel @Inject constructor(
         val userAttendanceRef = fireStore.collection(TABLE_ATTENDANCES).document()
         val loggedUser = auth.currentUser
 
+        val name = preferences.getValues(EctroPreferences.USER_NAME)
+
         val userAttendance = hashMapOf(
             FirestoreUtils.TABLE_ATTENDANCE_ID to userAttendanceRef.id,
             FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID to eventId,
             FirestoreUtils.TABLE_ATTENDANCE_USER_ID to loggedUser?.uid,
+            FirestoreUtils.TABLE_ATTENDANCE_USER_NAME to name,
             FirestoreUtils.TABLE_ATTENDANCE_STATUS to attendanceStatus,
             FirestoreUtils.TABLE_ATTENDANCE_IS_ATTEND to isAttend,
             FirestoreUtils.TABLE_ATTENDANCE_REASON to reasonCannotAttend,
@@ -80,7 +85,7 @@ class AttendanceViewModel @Inject constructor(
             .whereEqualTo(TABLE_ATTENDANCE_EVENT_ID, eventId)
             .get()
             .addOnSuccessListener { documentList ->
-                if (documentList.isEmpty){
+                if (documentList.isEmpty) {
                     _hasFilledAttendance.postValue(false)
                 } else {
                     _hasFilledAttendance.postValue(true)
@@ -100,6 +105,32 @@ class AttendanceViewModel @Inject constructor(
             }
 
         return total
+    }
+
+    fun observeAttendanceByEventId(eventId: String?): LiveData<List<UserAttendance>> {
+        val attendanceList = MutableLiveData<List<UserAttendance>>()
+
+        _isLoading.postValue(true)
+        fireStore.collection(TABLE_ATTENDANCES)
+            .whereEqualTo(TABLE_ATTENDANCE_EVENT_ID, eventId)
+            .get()
+            .addOnSuccessListener { documentList ->
+                _isLoading.postValue(false)
+                _isError.postValue(false)
+                val arrayList = ArrayList<UserAttendance>()
+                for (document in documentList) {
+                    arrayList.add(document.toObject())
+                }
+                attendanceList.postValue(arrayList)
+            }
+            .addOnFailureListener {
+                _isLoading.postValue(false)
+                _isError.postValue(true)
+                _responseMessage.postValue(Event(it.message.toString()))
+                Log.e(TAG, it.message.toString())
+            }
+
+        return attendanceList
     }
 
 

@@ -164,6 +164,7 @@
     <string name="successfully_fill_attendance">Berhasil mengisi data kehadiran</string>
     <string name="empty_reason">Keterangan tidak hadir harus diisi</string>
     <string name="has_filled_attendance">Telah Mengisi Kehadiran</string>
+    <string name="attendance_list">Daftar Kehadiran</string>
 
 
     <string-array name="online_event_media">

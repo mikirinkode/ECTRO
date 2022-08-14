@@ -97,6 +97,9 @@ class DetailEventActivity : AppCompatActivity() {
                             Intent(
                                 this@DetailEventActivity,
                                 ParticipantListActivity::class.java
+                            ).putExtra(
+                                ParticipantListActivity.EXTRA_EVENT_ID,
+                                eventEntity.eventId
                             )
                         )
                     }

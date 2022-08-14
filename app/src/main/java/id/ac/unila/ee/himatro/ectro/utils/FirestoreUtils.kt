@@ -57,6 +57,7 @@ object FirestoreUtils {
     const val TABLE_ATTENDANCE_ID = "attendanceId"
     const val TABLE_ATTENDANCE_EVENT_ID = "eventId"
     const val TABLE_ATTENDANCE_USER_ID = "userId"
+    const val TABLE_ATTENDANCE_USER_NAME = "userName"
     const val TABLE_ATTENDANCE_STATUS = "status"
     const val TABLE_ATTENDANCE_IS_ATTEND = "isAttend"
     const val TABLE_ATTENDANCE_REASON = "reasonCannotAttend"
