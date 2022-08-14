@@ -52,7 +52,7 @@ class RoleRequestViewModel @Inject constructor(
             val roleRequest = hashMapOf(
                 FirestoreUtils.TABLE_RR_REQUEST_ID to requestId,
                 FirestoreUtils.TABLE_RR_STATUS to EctroPreferences.WAITING_STATUS,
-                FirestoreUtils.TABLE_RR_APPLICANT_UID to firebaseUser.uid,
+                FirestoreUtils.TABLE_RR_APPLICANT_ID to firebaseUser.uid,
                 FirestoreUtils.TABLE_RR_APPLICANT_NAME to preferences.getValues(EctroPreferences.USER_NAME),
                 FirestoreUtils.TABLE_RR_APPLICANT_NPM to preferences.getValues(EctroPreferences.USER_NPM),
                 FirestoreUtils.TABLE_RR_APPLICANT_EMAIL to preferences.getValues(EctroPreferences.USER_EMAIL),
@@ -121,7 +121,7 @@ class RoleRequestViewModel @Inject constructor(
 
         val updateRequest = hashMapOf(
             FirestoreUtils.TABLE_RR_STATUS to EctroPreferences.COMPLETED_STATUS,
-            FirestoreUtils.TABLE_RR_HANDLER_UID to firebaseUser?.uid,
+            FirestoreUtils.TABLE_RR_HANDLER_ID to firebaseUser?.uid,
             FirestoreUtils.TABLE_RR_UPDATED_AT to DateHelper.getCurrentDate()
         )
 
@@ -138,7 +138,7 @@ class RoleRequestViewModel @Inject constructor(
 
         // update user data in database
         fireStore.collection(FirestoreUtils.TABLE_USER)
-            .document(entity?.applicantUid ?: "")
+            .document(entity?.applicantId ?: "")
             .set(updateRole, SetOptions.merge())
             .addOnSuccessListener {
 

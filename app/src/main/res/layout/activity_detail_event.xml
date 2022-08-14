@@ -44,6 +44,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <ImageView
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="?attr/background"
+            android:clickable="true"
+            android:contentDescription="@string/btn_edit"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -371,6 +387,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/fill_attendance"
                     android:textAllCaps="true"
+                    android:enabled="false"
                     android:theme="@style/Theme.ECTRO.Button"
                     app:cornerRadius="@dimen/corner_radius"
                     app:layout_constraintBottom_toBottomOf="parent"

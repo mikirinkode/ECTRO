@@ -1,13 +1,11 @@
 package id.ac.unila.ee.himatro.ectro.ui.event
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -23,23 +21,7 @@ import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENTS
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_ACTION_AFTER_ATTENDANCE
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_ATTENDANCE_FORM
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CATEGORY
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATED_AT
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATOR_UID
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_DATE
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_DESC
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NAME
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_NEED_NOTES
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_PLACE
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TIME
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_TYPE
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
 import java.util.*
 import javax.inject.Inject
 
@@ -50,15 +32,7 @@ class AddEventActivity : AppCompatActivity() {
         ActivityAddEventBinding.inflate(layoutInflater)
     }
 
-    @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    @Inject
-    lateinit var auth: FirebaseAuth
-
-    private val firebaseUser: FirebaseUser? by lazy {
-        auth.currentUser
-    }
+    private val viewModel: EventViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +43,8 @@ class AddEventActivity : AppCompatActivity() {
         val arrayAdapter: ArrayAdapter<String> =
             ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayString)
         binding.actOnlineEventMedia.setAdapter(arrayAdapter)
+
+        observeLoading()
 
         binding.apply {
             /**
@@ -116,7 +92,7 @@ class AddEventActivity : AppCompatActivity() {
             }
 
             timePicker.addOnPositiveButtonClickListener {
-                edtEventTime.setText("${timePicker.hour}:${timePicker.minute}")
+                edtEventTime.text = "${timePicker.hour}:${timePicker.minute}"
             }
 
             switchAttendance.setOnCheckedChangeListener { _, checked ->
@@ -207,6 +183,7 @@ class AddEventActivity : AppCompatActivity() {
                     ).show()
                     isValid = false
                 } else {
+                    // TODO Still Needed Or Not?
 //                    eventDate = DateHelper.mapAlarmFormatToDisplayFormat()
                 }
 
@@ -225,58 +202,43 @@ class AddEventActivity : AppCompatActivity() {
                 }
 
                 if (isValid) {
-                    if (firebaseUser != null) {
-                        val event = hashMapOf(
-                            TABLE_EVENT_NAME to eventName,
-                            TABLE_EVENT_DESC to eventDesc,
-                            TABLE_EVENT_TYPE to eventType,
-                            TABLE_EVENT_DATE to DateHelper.mapDisplayFormatToAlarmFormat(eventDate),
-                            TABLE_EVENT_TIME to eventTime,
-                            TABLE_EVENT_PLACE to eventPlace,
-                            TABLE_EVENT_CATEGORY to eventCategory,
-                            TABLE_EVENT_NEED_NOTES to isNeedNotes,
-                            TABLE_EVENT_ATTENDANCE_FORM to isNeedAttendance,
-                            TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
-                            TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
-                            TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
-                            TABLE_EVENT_CREATOR_UID to firebaseUser?.uid,
-                            TABLE_EVENT_CREATED_AT to DateHelper.getCurrentDate()
-                        )
-
-                        loadingIndicator.visibility = View.VISIBLE
-                        fireStore.collection(TABLE_EVENTS)
-                            .document()
-                            .set(event)
-                            .addOnSuccessListener {
-                                loadingIndicator.visibility = View.GONE
-                                Toast.makeText(
+                    viewModel.createEvent(
+                        eventName = eventName,
+                        eventDesc = eventDesc,
+                        eventType = eventType ?: "",
+                        eventDate = eventDate,
+                        eventTime = eventTime,
+                        eventPlace = eventPlace,
+                        eventCategory = eventCategory,
+                        isNeedNotes = isNeedNotes,
+                        isNeedAttendance = isNeedAttendance,
+                        additionalName = additionalName,
+                        additionalLink = additionalLink,
+                        actionAfterAttendance = actionAfterAttendance
+                    )
+                    viewModel.isError.observe(this@AddEventActivity) { isError ->
+                        if (isError) {
+                            viewModel.responseMessage.observe(this@AddEventActivity){
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(this@AddEventActivity, msg, Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@AddEventActivity,
+                                getString(R.string.successfully_add_event),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(
+                                Intent(
                                     this@AddEventActivity,
-                                    getString(R.string.successfully_add_event),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                startActivity(
-                                    Intent(
-                                        this@AddEventActivity,
-                                        MainActivity::class.java
-                                    )
+                                    MainActivity::class.java
                                 )
-                                finish()
-                            }
-                            .addOnFailureListener {
-                                loadingIndicator.visibility = View.GONE
-                                Toast.makeText(
-                                    this@AddEventActivity,
-                                    it.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.e(TAG, it.message.toString())
-                            }
-                    } else {
-                        Toast.makeText(
-                            this@AddEventActivity,
-                            getString(R.string.an_error_occurred),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            )
+                            finish()
+                        }
                     }
                 }
             }
@@ -284,6 +246,22 @@ class AddEventActivity : AppCompatActivity() {
             btnBack.setOnClickListener { onBackPressed() }
 
             // restore saved data
+            restoreSavedDate(savedInstanceState)
+        }
+    }
+
+    private fun observeLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.loadingIndicator.visibility = View.VISIBLE
+            } else {
+                binding.loadingIndicator.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun restoreSavedDate(savedInstanceState: Bundle?) {
+        binding.apply {
             if (savedInstanceState != null) {
                 val savedState = savedInstanceState.getParcelable<EventEntity>(STATE_RESULT)
                 if (savedState != null) {
@@ -296,8 +274,8 @@ class AddEventActivity : AppCompatActivity() {
                         rbOnline.isChecked = true
                     }
                     edtEventPlace.setText(savedState.name)
-                    edtEventDate.setText(savedState.name)
-                    edtEventTime.setText(savedState.name)
+                    edtEventDate.text = savedState.name
+                    edtEventTime.text = savedState.name
                     edtEventCategory.setText(savedState.name)
                     edtAdditionalName.setText(savedState.extraActionName)
                     edtAdditionalLink.setText(savedState.extraActionLink)

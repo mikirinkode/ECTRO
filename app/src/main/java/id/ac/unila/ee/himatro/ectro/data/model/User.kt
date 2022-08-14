@@ -1,6 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.data.model
 
 class User (
+    var userId:String = "",
     var email:String = "",
     var name:String = "",
     var npm: String = "",

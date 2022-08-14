@@ -19,7 +19,7 @@ class RoleReqDiffUtil(
         return when {
             oldList[oldItemPosition].updatedAt != newList[newItemPosition].updatedAt -> false
             oldList[oldItemPosition].status != newList[newItemPosition].status -> false
-            oldList[oldItemPosition].requestHandlerUid != newList[newItemPosition].requestHandlerUid -> false
+            oldList[oldItemPosition].requestHandlerId != newList[newItemPosition].requestHandlerId -> false
             else -> true
         }
     }

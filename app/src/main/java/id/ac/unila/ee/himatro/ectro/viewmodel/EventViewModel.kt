@@ -11,7 +11,9 @@ import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
+import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENTS
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_EVENT_CREATED_AT
 import javax.inject.Inject
@@ -39,7 +41,7 @@ class EventViewModel @Inject constructor(
 
     fun observeEventList() {
         fireStore.collection(TABLE_EVENTS)
-            .orderBy(TABLE_EVENT_CREATED_AT,  Query.Direction.DESCENDING)
+            .orderBy(TABLE_EVENT_CREATED_AT, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documentList ->
                 val eventEntityList: ArrayList<EventEntity> = ArrayList()
@@ -57,6 +59,72 @@ class EventViewModel @Inject constructor(
                 _isError.postValue(true)
                 _responseMessage.postValue(Event(it.message.toString()))
             }
+    }
+
+    fun createEvent(
+        eventName: String,
+        eventDesc: String,
+        eventType: String,
+        eventDate: String,
+        eventTime: String,
+        eventPlace: String,
+        eventCategory: String,
+        isNeedNotes: Boolean,
+        isNeedAttendance: Boolean,
+        additionalName: String,
+        additionalLink: String,
+        actionAfterAttendance: Boolean
+    ) {
+        val firebaseUser = auth.currentUser
+
+        _isLoading.postValue(true)
+        if (firebaseUser != null) {
+            val eventDocumentRef = fireStore.collection(TABLE_EVENTS).document()
+
+            val event = hashMapOf(
+                FirestoreUtils.TABLE_EVENT_ID to eventDocumentRef.id,
+                FirestoreUtils.TABLE_EVENT_NAME to eventName,
+                FirestoreUtils.TABLE_EVENT_DESC to eventDesc,
+                FirestoreUtils.TABLE_EVENT_TYPE to eventType,
+                FirestoreUtils.TABLE_EVENT_DATE to DateHelper.mapDisplayFormatToAlarmFormat(
+                    eventDate
+                ),
+                FirestoreUtils.TABLE_EVENT_TIME to eventTime,
+                FirestoreUtils.TABLE_EVENT_PLACE to eventPlace,
+                FirestoreUtils.TABLE_EVENT_CATEGORY to eventCategory,
+                FirestoreUtils.TABLE_EVENT_NEED_NOTES to isNeedNotes,
+                FirestoreUtils.TABLE_EVENT_ATTENDANCE_FORM to isNeedAttendance,
+                FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
+                FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
+                FirestoreUtils.TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
+                FirestoreUtils.TABLE_EVENT_CREATOR_ID to firebaseUser?.uid,
+                TABLE_EVENT_CREATED_AT to DateHelper.getCurrentDate()
+            )
+
+//            if (isNeedAttendance) {
+//                val attendanceDocumentRef =
+//                    fireStore.collection(FirestoreUtils.TABLE_ATTENDANCES).document()
+//
+//                val attendance = hashMapOf(
+//                    FirestoreUtils.TABLE_ATTENDANCE_ID to attendanceDocumentRef.id,
+//                    FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID to eventDocumentRef.id,
+//                )
+//                attendanceDocumentRef.set(attendance)
+//            }
+
+            eventDocumentRef.set(event)
+                .addOnSuccessListener {
+                    _isLoading.postValue(false)
+                    _isError.postValue(false)
+
+                }
+                .addOnFailureListener {
+                    _isLoading.postValue(false)
+                    _isError.postValue(true)
+                    _responseMessage.postValue(Event(it.message.toString()))
+                    Log.e(TAG, it.message.toString())
+                }
+        }
     }
 
     companion object {

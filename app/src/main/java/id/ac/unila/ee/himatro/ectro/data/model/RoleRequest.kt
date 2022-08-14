@@ -9,9 +9,9 @@ class RoleRequest (
     var requestedAt: String = "",
     var updatedAt: String = "",
     var status: String = "",
-    var applicantUid: String = "",
+    var applicantId: String = "",
     var applicantName: String = "",
     var applicantNpm: String = "",
     var applicantEmail: String = "",
-    var requestHandlerUid: String = ""
+    var requestHandlerId: String = ""
         ):Parcelable

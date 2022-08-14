@@ -149,6 +149,21 @@
     <string name="choose_event_date">Pilih Tanggal Acara</string>
     <string name="choose_event_start_time">Pilih Jam Mulai Acara</string>
     <string name="with_notes">Notulensi</string>
+    <string name="fill_attendance_list">Isi Daftar Hadir</string>
+    <string name="update">Update</string>
+    <string name="reject">Tolak</string>
+    <string name="attendance_status">Status Kehadiran</string>
+    <string name="presence">Hadir</string>
+    <string name="present">Hadir</string>
+    <string name="sick">Sakit</string>
+    <string name="permission">Izin</string>
+    <string name="reason_cannot_attend">Alasan tidak dapat hadir</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="please_choose_attendance_status">Mohon Pilih Status Kehadiran</string>
+    <string name="btn_edit">Edit button</string>
+    <string name="successfully_fill_attendance">Berhasil mengisi data kehadiran</string>
+    <string name="empty_reason">Keterangan tidak hadir harus diisi</string>
+    <string name="has_filled_attendance">Telah Mengisi Kehadiran</string>
 
 
     <string-array name="online_event_media">

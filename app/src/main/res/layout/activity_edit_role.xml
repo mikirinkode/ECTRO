@@ -434,17 +434,35 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_update_role"
-                android:layout_width="match_parent"
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/update_role"
+                android:text="@string/reject"
+                style="@style/Theme.ECTRO.OutlinedButton"
+                app:cornerRadius="@dimen/corner_radius"
+                android:layout_marginEnd="8dp"
+                android:textAllCaps="true"
+                android:textColor="@color/red"
+                app:strokeColor="@color/red"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_update_role"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_division" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_update_role"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/update"
+                android:layout_marginStart="8dp"
                 android:theme="@style/Theme.ECTRO.Button"
                 app:cornerRadius="@dimen/corner_radius"
                 android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_reject"
                 app:layout_constraintTop_toBottomOf="@id/layout_division" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

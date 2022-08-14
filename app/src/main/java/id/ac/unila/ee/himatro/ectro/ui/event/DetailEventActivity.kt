@@ -21,6 +21,7 @@ import id.ac.unila.ee.himatro.ectro.ui.event.attendance.AttendanceFormActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.participant.ParticipantListActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.DetailUserActivity
+import id.ac.unila.ee.himatro.ectro.viewmodel.AttendanceViewModel
 import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
@@ -33,7 +34,8 @@ class DetailEventActivity : AppCompatActivity() {
     @Inject
     lateinit var preferences: EctroPreferences
 
-    private val viewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val attendanceViewModel: AttendanceViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +48,16 @@ class DetailEventActivity : AppCompatActivity() {
 
             btnBack.setOnClickListener { onBackPressed() }
 
+            btnEdit.setOnClickListener {
+                // TODO LATER
+            }
+
             layoutCreatedBy.setOnClickListener {
                 startActivity(
                     Intent(
                         this@DetailEventActivity,
                         DetailUserActivity::class.java
-                    ).putExtra(DetailUserActivity.EXTRA_USER_ID, entity?.creatorUid)
+                    ).putExtra(DetailUserActivity.EXTRA_USER_ID, entity?.creatorId)
                 )
             }
         }
@@ -79,8 +85,12 @@ class DetailEventActivity : AppCompatActivity() {
                 }
 
                 if (eventEntity.isNeedAttendanceForm == true) {
+                    observeHasFilledAttendance(eventEntity.eventId, eventEntity.actionAfterAttendance, eventEntity.extraActionName)
+                    observeTotalParticipant(eventEntity.eventId)
+
                     layoutEventAttendance.visibility = View.VISIBLE
                     btnAttendance.visibility = View.VISIBLE
+                    btnParticipant.visibility = View.VISIBLE
 
                     btnParticipant.setOnClickListener {
                         startActivity(
@@ -97,9 +107,15 @@ class DetailEventActivity : AppCompatActivity() {
                                 Intent(
                                     this@DetailEventActivity,
                                     AttendanceFormActivity::class.java
+                                ).putExtra(
+                                    AttendanceFormActivity.EXTRA_EVENT_ID,
+                                    eventEntity.eventId
+                                ).putExtra(
+                                    AttendanceFormActivity.EXTRA_EVENT_NAME,
+                                    eventEntity.name
                                 )
                             )
-                        } else {
+                        }  else {
                             Toast.makeText(
                                 this@DetailEventActivity,
                                 getString(R.string.please_complete_your_data),
@@ -116,12 +132,7 @@ class DetailEventActivity : AppCompatActivity() {
                 if (eventEntity.extraActionName.isNotEmpty()) {
                     layoutAdditionalButton.visibility = View.VISIBLE
 
-                    // if action only active after user fill attendance && user has not fill it
-                    // then button will be disabled
-                    if (eventEntity.actionAfterAttendance == true && !hasFilledAttendance()) {
-                        btnAdditional.isEnabled = false
-                        btnAdditional.text = getString(R.string.please_fill_attendance_first)
-                    } else {
+                    if (eventEntity.actionAfterAttendance == false) {
                         btnAdditional.isEnabled = true
                         btnAdditional.text = eventEntity.extraActionName
                     }
@@ -138,15 +149,15 @@ class DetailEventActivity : AppCompatActivity() {
                     layoutAdditionalButton.visibility = View.GONE
                 }
 
-                observeUploaderInfo(eventEntity.creatorUid)
+                observeUploaderInfo(eventEntity.creatorId)
                 observeIsLoading()
             }
         }
     }
 
     private fun observeUploaderInfo(userId: String) {
-        if (userId != null){
-            viewModel.getUserDataByUid(userId).observe(this) { user ->
+        if (userId != null) {
+            userViewModel.getUserDataByUid(userId).observe(this) { user ->
                 binding.apply {
                     tvUserName.text = user.name
 
@@ -156,7 +167,7 @@ class DetailEventActivity : AppCompatActivity() {
                             .into(ivUserPhoto)
                     } else {
                         // java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
-                        Glide.with(applicationContext) // TODO: THERE's is an error occured here
+                        Glide.with(applicationContext) // TODO: THERE's is an error occurred here
                             .load(R.drawable.ic_default_profile)
                             .into(ivUserPhoto)
                     }
@@ -165,16 +176,40 @@ class DetailEventActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: CREATE SHIMMER LOADING FOR USER INFO
-    private fun observeIsLoading() {
-        viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading){
-            } else {
+    private fun observeHasFilledAttendance(eventId: String?, actionAfterAttendance: Boolean?, extraActionName: String?) {
+        if (eventId != null){
+            attendanceViewModel.checkAttendanceFilled(eventId)
+            attendanceViewModel.hasFilledAttendance.observe(this){ hasFilledAttendance ->
+                if (hasFilledAttendance){
+                    binding.btnAttendance.isEnabled = false
+                    binding.btnAttendance.text = getString(R.string.has_filled_attendance)
+                    binding.btnAttendance.isAllCaps = false
+                } else {
+                    binding.btnAttendance.isEnabled = true
+                }
+
+                // if action only active after user fill attendance && user has not fill it
+                // then button will be disabled
+                if (actionAfterAttendance == true && !hasFilledAttendance){
+                    binding.btnAdditional.isEnabled = false
+                    binding.btnAdditional.text = getString(R.string.please_fill_attendance_first)
+                } else {
+                    binding.btnAdditional.isEnabled = true
+                    binding.btnAdditional.text = extraActionName
+                }
             }
         }
     }
 
-    private fun hasFilledAttendance(): Boolean {
+    private fun observeTotalParticipant(eventId: String) {
+        attendanceViewModel.getTotalAttendees(eventId).observe(this) { totalAttendees ->
+            binding.tvTotalParticipant.text = totalAttendees.toString()
+        }
+    }
+
+    // TODO
+    private fun hasFilledAttendance(eventId: String): Boolean {
+        attendanceViewModel.checkAttendanceFilled(eventId)
         return false
     }
 
@@ -188,6 +223,14 @@ class DetailEventActivity : AppCompatActivity() {
         return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
+    // TODO: CREATE SHIMMER LOADING FOR USER INFO
+    private fun observeIsLoading() {
+        userViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+            } else {
+            }
+        }
+    }
     companion object {
         const val EXTRA_ENTITY = "extra_entity"
         private const val TAG = "DetailEventActivity"

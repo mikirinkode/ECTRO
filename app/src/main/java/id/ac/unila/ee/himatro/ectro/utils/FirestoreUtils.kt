@@ -6,8 +6,10 @@ object FirestoreUtils {
     const val TABLE_USER = "users"
     const val TABLE_ROLE_REQUEST = "roleRequests"
     const val TABLE_EVENTS = "events"
+    const val TABLE_ATTENDANCES = "attendances"
 
     // User Column Name
+    const val TABLE_USER_ID = "userId"
     const val TABLE_USER_NAME = "name"
     const val TABLE_USER_EMAIL = "email"
     const val TABLE_USER_NPM = "npm"
@@ -23,6 +25,7 @@ object FirestoreUtils {
     const val TABLE_USER_LAST_LOGIN = "lastLoginAt"
 
     // Event Column Name
+    const val TABLE_EVENT_ID = "eventId"
     const val TABLE_EVENT_NAME = "name"
     const val TABLE_EVENT_DESC = "desc"
     const val TABLE_EVENT_TYPE = "type"
@@ -35,17 +38,27 @@ object FirestoreUtils {
     const val TABLE_EVENT_EXTRA_ACTION_NAME = "extraActionName"
     const val TABLE_EVENT_EXTRA_ACTION_LINK = "extraActionLink"
     const val TABLE_EVENT_ACTION_AFTER_ATTENDANCE = "actionAfterAttendance"
-    const val TABLE_EVENT_CREATOR_UID = "creatorUid"
+    const val TABLE_EVENT_CREATOR_ID = "creatorId"
     const val TABLE_EVENT_CREATED_AT = "createdAt"
 
     // Role Request Column Name
     const val TABLE_RR_REQUEST_ID = "requestId"
     const val TABLE_RR_REQUEST_AT = "requestedAt"
-    const val TABLE_RR_APPLICANT_UID = "applicantUid"
+    const val TABLE_RR_APPLICANT_ID = "applicantId"
     const val TABLE_RR_APPLICANT_NAME = "applicantName"
     const val TABLE_RR_APPLICANT_NPM = "applicantNpm"
     const val TABLE_RR_APPLICANT_EMAIL = "applicantEmail"
-    const val TABLE_RR_HANDLER_UID = "requestHandlerUid"
+    const val TABLE_RR_HANDLER_ID = "requestHandlerId"
     const val TABLE_RR_STATUS = "status"
     const val TABLE_RR_UPDATED_AT = "updatedAt"
+
+
+    // Attendance column
+    const val TABLE_ATTENDANCE_ID = "attendanceId"
+    const val TABLE_ATTENDANCE_EVENT_ID = "eventId"
+    const val TABLE_ATTENDANCE_USER_ID = "userId"
+    const val TABLE_ATTENDANCE_STATUS = "status"
+    const val TABLE_ATTENDANCE_IS_ATTEND = "isAttend"
+    const val TABLE_ATTENDANCE_REASON = "reasonCannotAttend"
+    const val TABLE_ATTENDANCE_DATE = "confirmationDate"
 }

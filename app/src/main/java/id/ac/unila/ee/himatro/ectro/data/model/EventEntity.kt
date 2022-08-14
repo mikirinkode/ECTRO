@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class EventEntity (
+    var eventId: String = "",
     var name: String = "",
     var desc: String = "",
     var category: String = "",
@@ -16,13 +17,14 @@ class EventEntity (
 
     @field:JvmField
     var isNeedNotes: Boolean? = null,
+    @field:JvmField
     var isNeedAttendanceForm: Boolean? = null,
     var extraActionName: String = "",
     var extraActionLink: String = "",
     @field:JvmField
     var actionAfterAttendance: Boolean? = null,
 
-    var creatorUid: String = "",
+    var creatorId: String = "",
     var createdAt: String = ""
 
 ): Parcelable

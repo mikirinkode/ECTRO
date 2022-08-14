@@ -35,7 +35,7 @@ class AuthViewModel @Inject constructor(
     fun loginUser(email: String, password: String) {
         _isLoading.postValue(true)
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener{ task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _isLoading.postValue(false)
 
@@ -72,8 +72,11 @@ class AuthViewModel @Inject constructor(
     fun registerUser(name: String, email: String, password: String) {
         _isLoading.postValue(true)
 
+        val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER).document()
+
         // create user entity for fireStore
         val user = hashMapOf(
+            FirestoreUtils.TABLE_USER_ID to documentRef.id,
             FirestoreUtils.TABLE_USER_NAME to name,
             FirestoreUtils.TABLE_USER_EMAIL to email,
             FirestoreUtils.TABLE_USER_NPM to "",
@@ -106,7 +109,8 @@ class AuthViewModel @Inject constructor(
                         firebaseUser.sendEmailVerification()
 
                         // try to add new user document to fireStore
-                        fireStore.collection(FirestoreUtils.TABLE_USER).document(firebaseUser.uid)
+
+                        documentRef
                             .set(user)
                             .addOnSuccessListener {
                                 _isLoading.postValue(false)

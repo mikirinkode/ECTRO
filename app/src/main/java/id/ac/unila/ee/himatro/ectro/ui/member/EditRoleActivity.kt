@@ -1,34 +1,16 @@
 package id.ac.unila.ee.himatro.ectro.ui.member
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityEditRoleBinding
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ROLE_REQUEST
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_HANDLER_UID
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_STATUS
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_RR_UPDATED_AT
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DEPARTMENT
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_DIVISION
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_POSITION
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_REQUEST_STATUS
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_ROLE
 import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils
 import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditRoleActivity : AppCompatActivity() {
