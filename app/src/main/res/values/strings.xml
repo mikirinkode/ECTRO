@@ -165,6 +165,11 @@
     <string name="empty_reason">Keterangan tidak hadir harus diisi</string>
     <string name="has_filled_attendance">Telah Mengisi Kehadiran</string>
     <string name="attendance_list">Daftar Kehadiran</string>
+    <string name="create_event_note">Buat Notulensi Acara</string>
+    <string name="add_note">Tambah Notulensi</string>
+    <string name="type_or_paste_note_here">Ketik atau tempel catatan disini</string>
+    <string name="successfully_add_note">Berhasil menambahkan notulensi acara</string>
+    <string name="event_note">Notulensi Acara</string>
 
 
     <string-array name="online_event_media">

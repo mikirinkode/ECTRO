@@ -7,6 +7,7 @@ object FirestoreUtils {
     const val TABLE_ROLE_REQUEST = "roleRequests"
     const val TABLE_EVENTS = "events"
     const val TABLE_ATTENDANCES = "attendances"
+    const val TABLE_NOTES = "notes"
 
     // User Column Name
     const val TABLE_USER_ID = "userId"
@@ -62,4 +63,11 @@ object FirestoreUtils {
     const val TABLE_ATTENDANCE_IS_ATTEND = "isAttend"
     const val TABLE_ATTENDANCE_REASON = "reasonCannotAttend"
     const val TABLE_ATTENDANCE_DATE = "confirmationDate"
+
+    // Notes column
+    const val TABLE_NOTE_ID = "noteId"
+    const val TABLE_NOTE_EVENT_ID = "eventId"
+    const val TABLE_NOTE_CONTENT = "noteContent"
+    const val TABLE_NOTE_USER_ID = "userId"
+    const val TABLE_NOTE_CREATED_AT = "createdAt"
 }

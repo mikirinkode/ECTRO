@@ -237,7 +237,7 @@ class AddEventActivity : AppCompatActivity() {
                                     MainActivity::class.java
                                 )
                             )
-                            finish()
+                            finishAffinity()
                         }
                     }
                 }

@@ -69,6 +69,7 @@ class EctroPreferences(context: Context) {
         setValues(USER_DIVISION, null)
         setValues(USER_POSITION, null)
         setValues(ACTIVE_PERIOD, null)
+        setValues(ROLE_REQUEST_STATUS, null)
 
         setValues(USER_LINKEDIN_ACCOUNT, null)
         setValues(USER_INSTAGRAM_ACCOUNT, null)

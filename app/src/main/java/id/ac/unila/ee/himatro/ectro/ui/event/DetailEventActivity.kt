@@ -78,14 +78,23 @@ class DetailEventActivity : AppCompatActivity() {
                 if (eventEntity.isNeedNotes == true) {
                     btnNotes.visibility = View.VISIBLE
                     btnNotes.setOnClickListener {
-                        startActivity(Intent(this@DetailEventActivity, AddNoteActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@DetailEventActivity,
+                                AddNoteActivity::class.java
+                            ).putExtra(AddNoteActivity.EXTRA_EVENT_ID, eventEntity.eventId)
+                        )
                     }
                 } else {
                     btnNotes.visibility = View.GONE
                 }
 
                 if (eventEntity.isNeedAttendanceForm == true) {
-                    observeHasFilledAttendance(eventEntity.eventId, eventEntity.actionAfterAttendance, eventEntity.extraActionName)
+                    observeHasFilledAttendance(
+                        eventEntity.eventId,
+                        eventEntity.actionAfterAttendance,
+                        eventEntity.extraActionName
+                    )
                     observeTotalParticipant(eventEntity.eventId)
 
                     layoutEventAttendance.visibility = View.VISIBLE
@@ -118,7 +127,7 @@ class DetailEventActivity : AppCompatActivity() {
                                     eventEntity.name
                                 )
                             )
-                        }  else {
+                        } else {
                             Toast.makeText(
                                 this@DetailEventActivity,
                                 getString(R.string.please_complete_your_data),
@@ -179,11 +188,15 @@ class DetailEventActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeHasFilledAttendance(eventId: String?, actionAfterAttendance: Boolean?, extraActionName: String?) {
-        if (eventId != null){
+    private fun observeHasFilledAttendance(
+        eventId: String?,
+        actionAfterAttendance: Boolean?,
+        extraActionName: String?
+    ) {
+        if (eventId != null) {
             attendanceViewModel.checkAttendanceFilled(eventId)
-            attendanceViewModel.hasFilledAttendance.observe(this){ hasFilledAttendance ->
-                if (hasFilledAttendance){
+            attendanceViewModel.hasFilledAttendance.observe(this) { hasFilledAttendance ->
+                if (hasFilledAttendance) {
                     binding.btnAttendance.isEnabled = false
                     binding.btnAttendance.text = getString(R.string.has_filled_attendance)
                     binding.btnAttendance.isAllCaps = false
@@ -193,7 +206,7 @@ class DetailEventActivity : AppCompatActivity() {
 
                 // if action only active after user fill attendance && user has not fill it
                 // then button will be disabled
-                if (actionAfterAttendance == true && !hasFilledAttendance){
+                if (actionAfterAttendance == true && !hasFilledAttendance) {
                     binding.btnAdditional.isEnabled = false
                     binding.btnAdditional.text = getString(R.string.please_fill_attendance_first)
                 } else {
@@ -234,6 +247,7 @@ class DetailEventActivity : AppCompatActivity() {
             }
         }
     }
+
     companion object {
         const val EXTRA_ENTITY = "extra_entity"
         private const val TAG = "DetailEventActivity"
