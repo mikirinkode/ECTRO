@@ -18,6 +18,7 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCES
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_IS_ATTEND
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_USER_ID
+import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,6 +40,23 @@ class AttendanceViewModel @Inject constructor(
     private val _hasFilledAttendance = MutableLiveData<Boolean>()
     val hasFilledAttendance: LiveData<Boolean> = _hasFilledAttendance
 
+    private val _totalPhAttendees = MutableLiveData<Int>()
+    val totalPhAttendees: LiveData<Int> = _totalPhAttendees
+
+    private val _totalKominfoAttendees = MutableLiveData<Int>()
+    val totalKominfoAttendees: LiveData<Int> = _totalKominfoAttendees
+
+    private val _totalSoswirAttendees = MutableLiveData<Int>()
+    val totalSoswirAttendees: LiveData<Int> = _totalSoswirAttendees
+
+    private val _totalPddAttendees = MutableLiveData<Int>()
+    val totalPddAttendees: LiveData<Int> = _totalPddAttendees
+
+    private val _totalKpoAttendees = MutableLiveData<Int>()
+    val totalKpoAttendees: LiveData<Int> = _totalKpoAttendees
+
+    private val _totalBangtekAttendees = MutableLiveData<Int>()
+    val totalBangtekAttendees: LiveData<Int> = _totalBangtekAttendees
 
     fun insertUserAttendance(
         reasonCannotAttend: String,
@@ -50,12 +68,14 @@ class AttendanceViewModel @Inject constructor(
         val loggedUser = auth.currentUser
 
         val name = preferences.getValues(EctroPreferences.USER_NAME)
+        val dept = preferences.getValues(EctroPreferences.USER_DEPARTMENT)
 
         val userAttendance = hashMapOf(
             FirestoreUtils.TABLE_ATTENDANCE_ID to userAttendanceRef.id,
             FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID to eventId,
             FirestoreUtils.TABLE_ATTENDANCE_USER_ID to loggedUser?.uid,
             FirestoreUtils.TABLE_ATTENDANCE_USER_NAME to name,
+            FirestoreUtils.TABLE_ATTENDANCE_USER_DEPT to dept,
             FirestoreUtils.TABLE_ATTENDANCE_STATUS to attendanceStatus,
             FirestoreUtils.TABLE_ATTENDANCE_IS_ATTEND to isAttend,
             FirestoreUtils.TABLE_ATTENDANCE_REASON to reasonCannotAttend,
@@ -118,10 +138,33 @@ class AttendanceViewModel @Inject constructor(
                 _isLoading.postValue(false)
                 _isError.postValue(false)
                 val arrayList = ArrayList<UserAttendance>()
+                var ph = 0
+                var kominfo = 0
+                var pdd = 0
+                var soswir = 0
+                var bangtek = 0
+                var kpo = 0
+
                 for (document in documentList) {
-                    arrayList.add(document.toObject())
+                    val attendance: UserAttendance = document.toObject()
+                    arrayList.add(attendance)
+
+                    when (attendance.userDept){
+                        HimatroUtils.PH -> { ph++ }
+                        HimatroUtils.KOMINFO -> { kominfo++ }
+                        HimatroUtils.SOSWIR -> { soswir++ }
+                        HimatroUtils.PPD -> { pdd++ }
+                        HimatroUtils.KPO -> { kpo++ }
+                        HimatroUtils.BANGTEK -> { bangtek++ }
+                    }
                 }
                 attendanceList.postValue(arrayList)
+                _totalPhAttendees.postValue(ph)
+                _totalKominfoAttendees.postValue(kominfo)
+                _totalPddAttendees.postValue(pdd)
+                _totalKpoAttendees.postValue(kpo)
+                _totalBangtekAttendees.postValue(bangtek)
+                _totalSoswirAttendees.postValue(soswir)
             }
             .addOnFailureListener {
                 _isLoading.postValue(false)

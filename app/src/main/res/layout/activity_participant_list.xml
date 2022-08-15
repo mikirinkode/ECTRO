@@ -46,6 +46,177 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_total_attendees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rect_rounded"
+        android:backgroundTint="?attr/background"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar">
+
+        <TextView
+            android:id="@+id/tv_ph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PH"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_kominfo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_ph_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_ph"
+            app:layout_constraintStart_toStartOf="@id/tv_ph"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ph"
+            tools:text="6" />
+
+        <TextView
+            android:id="@+id/tv_kominfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KOMINFO"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_kominfo_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_kominfo"
+            app:layout_constraintStart_toStartOf="@id/tv_kominfo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kominfo"
+            tools:text="21" />
+
+        <TextView
+            android:id="@+id/tv_pdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PDD"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_kominfo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pdd_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_pdd"
+            app:layout_constraintStart_toStartOf="@id/tv_pdd"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pdd"
+            tools:text="18" />
+
+        <TextView
+            android:id="@+id/tv_soswir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SOSWIR"
+            app:layout_constraintEnd_toEndOf="@+id/tv_ph"
+            app:layout_constraintStart_toStartOf="@+id/tv_ph"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ph_attendees" />
+
+        <TextView
+            android:id="@+id/tv_soswir_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_soswir"
+            app:layout_constraintStart_toStartOf="@id/tv_soswir"
+            app:layout_constraintTop_toBottomOf="@+id/tv_soswir"
+            tools:text="22" />
+
+        <TextView
+            android:id="@+id/tv_kpo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KPO"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kominfo_attendees"  />
+
+        <TextView
+            android:id="@+id/tv_kpo_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_kpo"
+            app:layout_constraintStart_toStartOf="@id/tv_kpo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kpo"
+            tools:text="14" />
+
+        <TextView
+            android:id="@+id/tv_bangtek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="BANGTEK"
+            app:layout_constraintEnd_toEndOf="@+id/tv_pdd"
+            app:layout_constraintStart_toStartOf="@+id/tv_pdd"
+            app:layout_constraintTop_toBottomOf="@id/tv_pdd_attendees" />
+
+        <TextView
+            android:id="@+id/tv_bangtek_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_bangtek"
+            app:layout_constraintStart_toStartOf="@id/tv_bangtek"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bangtek"
+            tools:text="35" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_soswir_attendees"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/total_attendees"
+                android:textSize="16sp"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tv_total_participant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_user"
+                tools:text="98" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_attendance"
         android:layout_width="0dp"
@@ -53,7 +224,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintTop_toBottomOf="@+id/layout_total_attendees"
         tools:listitem="@layout/item_attendance" />
 
     <!--    <ScrollView-->

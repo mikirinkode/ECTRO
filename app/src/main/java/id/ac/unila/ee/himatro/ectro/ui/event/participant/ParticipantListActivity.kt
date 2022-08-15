@@ -35,13 +35,41 @@ class ParticipantListActivity : AppCompatActivity() {
             viewModel.observeAttendanceByEventId(eventId).observe(this@ParticipantListActivity){ list ->
                 if (list.isNotEmpty()){
                     adapter.setData(list)
-                } else {
 
+                    observeAttendees()
+                    viewModel.getTotalAttendees(eventId ?: "").observe(this@ParticipantListActivity){
+                        tvTotalParticipant.text = it.toString()
+                    }
+                } else {
+                    // TODO: CREATE EMPTY MESSAGE
                 }
             }
 
             btnBack.setOnClickListener { onBackPressed() }
         }
+    }
+
+    private fun observeAttendees() {
+        viewModel.totalKominfoAttendees.observe(this){
+            binding.tvKominfoAttendees.text = it.toString()
+        }
+        viewModel.totalPhAttendees.observe(this){
+            binding.tvPhAttendees.text = it.toString()
+        }
+        viewModel.totalPddAttendees.observe(this){
+            binding.tvPddAttendees.text = it.toString()
+        }
+        viewModel.totalSoswirAttendees.observe(this){
+            binding.tvSoswirAttendees.text = it.toString()
+        }
+        viewModel.totalKpoAttendees.observe(this){
+            binding.tvKpoAttendees.text = it.toString()
+        }
+        viewModel.totalBangtekAttendees.observe(this){
+            binding.tvBangtekAttendees.text = it.toString()
+        }
+
+
     }
 
     companion object {

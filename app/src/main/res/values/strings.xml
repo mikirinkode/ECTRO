@@ -170,6 +170,9 @@
     <string name="type_or_paste_note_here">Ketik atau tempel catatan disini</string>
     <string name="successfully_add_note">Berhasil menambahkan notulensi acara</string>
     <string name="event_note">Notulensi Acara</string>
+    <string name="empty_note">Anda belum mengisi catatan</string>
+    <string name="successfully_update_note">Berhasil memperbarui notulensi</string>
+    <string name="total_attendees">Total Kehadiran</string>
 
 
     <string-array name="online_event_media">

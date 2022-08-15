@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -34,6 +35,9 @@ class DetailEventActivity : AppCompatActivity() {
     @Inject
     lateinit var preferences: EctroPreferences
 
+    @Inject
+    lateinit var auth: FirebaseAuth
+
     private val userViewModel: UserViewModel by viewModels()
     private val attendanceViewModel: AttendanceViewModel by viewModels()
 
@@ -44,12 +48,19 @@ class DetailEventActivity : AppCompatActivity() {
         val entity = intent.getParcelableExtra<EventEntity>(EXTRA_ENTITY)
         setData(entity)
 
+        val loggedUser = auth.currentUser
+
         binding.apply {
 
             btnBack.setOnClickListener { onBackPressed() }
 
-            btnEdit.setOnClickListener {
-                // TODO LATER
+            if (loggedUser?.uid == entity?.creatorId){
+                btnEdit.visibility = View. VISIBLE
+                btnEdit.setOnClickListener {
+                    // TODO LATER
+                }
+            } else {
+                btnEdit.visibility = View.GONE
             }
 
             layoutCreatedBy.setOnClickListener {

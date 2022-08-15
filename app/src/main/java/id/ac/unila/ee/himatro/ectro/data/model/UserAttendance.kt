@@ -5,6 +5,7 @@ class UserAttendance(
     var eventId: String = "",
     var userId: String = "",
     var userName: String = "",
+    var userDept: String = "",
 
     @field:JvmField
     var isAttend: Boolean? = null,

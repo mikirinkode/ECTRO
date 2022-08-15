@@ -59,6 +59,7 @@ object FirestoreUtils {
     const val TABLE_ATTENDANCE_EVENT_ID = "eventId"
     const val TABLE_ATTENDANCE_USER_ID = "userId"
     const val TABLE_ATTENDANCE_USER_NAME = "userName"
+    const val TABLE_ATTENDANCE_USER_DEPT = "userDept"
     const val TABLE_ATTENDANCE_STATUS = "status"
     const val TABLE_ATTENDANCE_IS_ATTEND = "isAttend"
     const val TABLE_ATTENDANCE_REASON = "reasonCannotAttend"
@@ -70,4 +71,5 @@ object FirestoreUtils {
     const val TABLE_NOTE_CONTENT = "noteContent"
     const val TABLE_NOTE_USER_ID = "userId"
     const val TABLE_NOTE_CREATED_AT = "createdAt"
+    const val TABLE_NOTE_UPDATED_AT = "updatedAt"
 }

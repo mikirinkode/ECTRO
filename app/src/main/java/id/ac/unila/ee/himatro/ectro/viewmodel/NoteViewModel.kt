@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -46,6 +47,7 @@ class NoteViewModel @Inject constructor(
             FirestoreUtils.TABLE_NOTE_ID to docRef.id,
             FirestoreUtils.TABLE_NOTE_EVENT_ID to eventId,
             FirestoreUtils.TABLE_NOTE_USER_ID to loggedUser?.uid,
+            FirestoreUtils.TABLE_NOTE_USER_ID to loggedUser?.uid,
             FirestoreUtils.TABLE_NOTE_CONTENT to text,
             FirestoreUtils.TABLE_NOTE_CREATED_AT to DateHelper.getCurrentDate()
         )
@@ -81,6 +83,30 @@ class NoteViewModel @Inject constructor(
                         _noteEntity.postValue(document.toObject())
                     }
                 }
+            }
+            .addOnFailureListener {
+                _isLoading.postValue(false)
+                _isError.postValue(true)
+                _responseMessage.postValue(Event(it.message.toString()))
+                Log.e(TAG, it.message.toString())
+            }
+    }
+
+    fun updateNote(text: String, noteId: String) {
+        _isLoading.postValue(true)
+
+        val updateNote = hashMapOf(
+            FirestoreUtils.TABLE_NOTE_CONTENT to text,
+            FirestoreUtils.TABLE_NOTE_UPDATED_AT to DateHelper.getCurrentDate()
+        )
+
+        fireStore.collection(FirestoreUtils.TABLE_NOTES)
+            .document(noteId)
+            .set(updateNote, SetOptions.merge())
+            .addOnSuccessListener {
+                _isLoading.postValue(false)
+                _isError.postValue(false)
+
             }
             .addOnFailureListener {
                 _isLoading.postValue(false)

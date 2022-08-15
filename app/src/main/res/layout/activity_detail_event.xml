@@ -46,6 +46,8 @@
 
 
         <ImageView
+            android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
