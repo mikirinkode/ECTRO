@@ -173,6 +173,12 @@
     <string name="empty_note">Anda belum mengisi catatan</string>
     <string name="successfully_update_note">Berhasil memperbarui notulensi</string>
     <string name="total_attendees">Total Kehadiran</string>
+    <string name="send_feedback">Saran dan Masukan</string>
+    <string name="feedback">Feedback</string>
+    <string name="send_us_your_feedback">Feedback untuk Ectro</string>
+    <string name="tell_your_experience">Ceritakan Pengalamanmu</string>
+    <string name="feedback_desc">Nemu bug, punya saran atau ingin ikut belajar dan ngembangin bareng Ectro? \nSilahkan tulis dibawah :)</string>
+    <string name="submit">Kirim</string>
 
 
     <string-array name="online_event_media">
@@ -232,8 +238,7 @@
         <item>Anggota</item>
     </string-array>
 
-    <string-array name="empty">
-    </string-array>
+    <string-array name="empty"></string-array>
 
 
 </resources>

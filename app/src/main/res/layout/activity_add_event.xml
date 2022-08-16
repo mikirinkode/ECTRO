@@ -467,7 +467,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:background="@drawable/rect_rounded"
-        android:backgroundTint="?android:attr/windowBackground"
+        android:backgroundTint="?attr/background"
         android:padding="16dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

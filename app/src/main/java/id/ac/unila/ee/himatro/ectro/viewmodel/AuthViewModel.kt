@@ -75,8 +75,10 @@ class AuthViewModel @Inject constructor(
         val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER).document()
 
         // create user entity for fireStore
+        val loggedUser = auth.currentUser
+
         val user = hashMapOf(
-            FirestoreUtils.TABLE_USER_ID to documentRef.id,
+            FirestoreUtils.TABLE_USER_ID to loggedUser?.uid,
             FirestoreUtils.TABLE_USER_NAME to name,
             FirestoreUtils.TABLE_USER_EMAIL to email,
             FirestoreUtils.TABLE_USER_NPM to "",

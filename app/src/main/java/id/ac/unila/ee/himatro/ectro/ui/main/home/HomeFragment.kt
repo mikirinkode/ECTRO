@@ -104,6 +104,10 @@ class HomeFragment : Fragment() {
             btnMore.setOnClickListener {
                 Toast.makeText(requireContext(), "Under Development", Toast.LENGTH_SHORT).show()
             }
+
+            btnAnnouncement.setOnClickListener {
+                startActivity(Intent(requireContext(), UserFeedbackActivity::class.java))
+            }
         }
 
         observeUser()
