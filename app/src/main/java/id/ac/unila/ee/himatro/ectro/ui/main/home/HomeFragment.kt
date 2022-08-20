@@ -148,7 +148,7 @@ class HomeFragment : Fragment() {
         val userPosition = preferences.getValues(USER_POSITION)
         val activePeriod = preferences.getValues(ACTIVE_PERIOD)
 
-        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
+        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty()  && !userPosition.isNullOrEmpty()
     }
 
     private fun observeUser() {

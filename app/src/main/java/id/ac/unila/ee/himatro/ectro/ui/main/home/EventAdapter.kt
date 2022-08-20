@@ -9,19 +9,16 @@ import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 
-class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val eventEntityList: ArrayList<EventEntity> = ArrayList()
 
-    inner class ViewHolder(private val binding: ItemEventBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(eventEntity: EventEntity){
+    inner class ViewHolder(private val binding: ItemEventBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(eventEntity: EventEntity) {
             binding.apply {
                 tvEventTitle.text = eventEntity.name
-                try {
-                    tvEventDate.text = DateHelper.mapAlarmFormatToDisplayFormat(eventEntity.date)
-                } catch (e: Exception){
-                    tvEventDate.text = eventEntity.date
-                }
+                tvEventDate.text = eventEntity.date
                 tvEventTime.text = eventEntity.time
                 tvEventPlace.text = eventEntity.place
                 tvDummyCategory.text = "#${eventEntity.category}"
@@ -37,7 +34,7 @@ class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -47,7 +44,7 @@ class EventAdapter: RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = eventEntityList.size
 
-    fun setData(newList: ArrayList<EventEntity>){
+    fun setData(newList: ArrayList<EventEntity>) {
         eventEntityList.clear()
         eventEntityList.addAll(newList)
         notifyDataSetChanged()

@@ -82,9 +82,7 @@ class AddEventActivity : AppCompatActivity() {
             }
 
             datePicker.addOnPositiveButtonClickListener {
-                // map to alarm format, then to display format
-                val date = DateHelper.mapPickerFormatToAlarmFormat(datePicker.headerText)
-                edtEventDate.text = DateHelper.mapAlarmFormatToDisplayFormat(date)
+                edtEventDate.text = datePicker.headerText
             }
 
             tilEventTime.setOnClickListener {
@@ -218,10 +216,14 @@ class AddEventActivity : AppCompatActivity() {
                     )
                     viewModel.isError.observe(this@AddEventActivity) { isError ->
                         if (isError) {
-                            viewModel.responseMessage.observe(this@AddEventActivity){
+                            viewModel.responseMessage.observe(this@AddEventActivity) {
                                 if (it != null) {
                                     it.getContentIfNotHandled()?.let { msg ->
-                                        Toast.makeText(this@AddEventActivity, msg, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this@AddEventActivity,
+                                            msg,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }

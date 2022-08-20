@@ -86,9 +86,7 @@ class EventViewModel @Inject constructor(
                 FirestoreUtils.TABLE_EVENT_NAME to eventName,
                 FirestoreUtils.TABLE_EVENT_DESC to eventDesc,
                 FirestoreUtils.TABLE_EVENT_TYPE to eventType,
-                FirestoreUtils.TABLE_EVENT_DATE to DateHelper.mapDisplayFormatToAlarmFormat(
-                    eventDate
-                ),
+                FirestoreUtils.TABLE_EVENT_DATE to eventDate,
                 FirestoreUtils.TABLE_EVENT_TIME to eventTime,
                 FirestoreUtils.TABLE_EVENT_PLACE to eventPlace,
                 FirestoreUtils.TABLE_EVENT_CATEGORY to eventCategory,

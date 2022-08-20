@@ -247,7 +247,7 @@ class DetailEventActivity : AppCompatActivity() {
         val userPosition = preferences.getValues(EctroPreferences.USER_POSITION)
         val activePeriod = preferences.getValues(EctroPreferences.ACTIVE_PERIOD)
 
-        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userDivision.isNullOrEmpty() && !userPosition.isNullOrEmpty()
+        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
     // TODO: CREATE SHIMMER LOADING FOR USER INFO

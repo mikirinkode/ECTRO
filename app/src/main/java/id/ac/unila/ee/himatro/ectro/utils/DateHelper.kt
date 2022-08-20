@@ -1,5 +1,6 @@
 package id.ac.unila.ee.himatro.ectro.utils
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,26 +30,37 @@ object DateHelper {
 
     fun mapPickerFormatToAlarmFormat(date: String): String {
 
-        val originalFormat = SimpleDateFormat(DATE_PICKER_FORMAT, Locale.getDefault())
-        val parsePicker = originalFormat.parse(date)
+        try {
 
-        val alarmFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
+            val originalFormat = SimpleDateFormat(DATE_PICKER_FORMAT, Locale.getDefault())
+            val parsePicker = originalFormat.parse(date)
 
-        if (parsePicker != null){
-            return alarmFormat.format(parsePicker)
-        } else {
+            val alarmFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
+
+            if (parsePicker != null){
+                return alarmFormat.format(parsePicker)
+            } else {
+                return ""
+            }
+        } catch (e: Exception){
+            Log.e("DateHelper", e.message.toString())
             return ""
         }
 
     }
 
     fun mapAlarmFormatToDisplayFormat(date: String): String {
-        val originalFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
-        val parseAlarmDate = originalFormat.parse(date)
-        val displayFormat = SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault())
-        if (parseAlarmDate != null){
-            return displayFormat.format(parseAlarmDate)
-        } else {
+        try {
+            val originalFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
+            val parseAlarmDate = originalFormat.parse(date)
+            val displayFormat = SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault())
+            if (parseAlarmDate != null){
+                return displayFormat.format(parseAlarmDate)
+            } else {
+                return ""
+            }
+        } catch (e: Exception){
+            Log.e("DateHelper", e.message.toString())
             return ""
         }
     }

@@ -72,35 +72,6 @@ class AuthViewModel @Inject constructor(
     fun registerUser(name: String, email: String, password: String) {
         _isLoading.postValue(true)
 
-        val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER).document()
-
-        // create user entity for fireStore
-        val loggedUser = auth.currentUser
-
-        val user = hashMapOf(
-            FirestoreUtils.TABLE_USER_ID to loggedUser?.uid,
-            FirestoreUtils.TABLE_USER_NAME to name,
-            FirestoreUtils.TABLE_USER_EMAIL to email,
-            FirestoreUtils.TABLE_USER_NPM to "",
-            FirestoreUtils.TABLE_USER_PHOTO_URL to "",
-            FirestoreUtils.TABLE_USER_LINKEDIN to "",
-            FirestoreUtils.TABLE_USER_INSTAGRAM to "",
-            FirestoreUtils.TABLE_USER_ROLE to hashMapOf(
-                FirestoreUtils.TABLE_USER_DEPARTMENT to "",
-                FirestoreUtils.TABLE_USER_DIVISION to "",
-                FirestoreUtils.TABLE_USER_POSITION to "",
-                FirestoreUtils.TABLE_USER_ACTIVE_PERIOD to ""
-            ),
-            FirestoreUtils.TABLE_USER_LAST_LOGIN to DateHelper.getCurrentDate()
-        )
-
-        // create user entity for local preference
-        val userEntity = User(
-            email = email,
-            name = name,
-            lastLoginAt = DateHelper.getCurrentDate()
-        )
-
         // try to create new user
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -108,26 +79,58 @@ class AuthViewModel @Inject constructor(
                     val firebaseUser: FirebaseUser? = task.result.user
 
                     if (firebaseUser != null) {
-                        firebaseUser.sendEmailVerification()
+
+                        // TODO: OPEN AGAIN
+//                            firebaseUser.sendEmailVerification()
 
                         // try to add new user document to fireStore
 
-                        documentRef
-                            .set(user)
-                            .addOnSuccessListener {
-                                _isLoading.postValue(false)
-                                _isError.postValue(false)
+                        // create user entity for fireStore
+                        val loggedUser = auth.currentUser
 
-                                // save user info to preferences
-                                preferences.startSession(userEntity)
+                        if (loggedUser != null){
 
-                            }
-                            .addOnFailureListener {
-                                // failed to add new user document to fireStore
-                                _isLoading.postValue(false)
-                                _isError.postValue(true)
-                                _responseMessage.postValue(Event(task.exception?.message.toString()))
-                            }
+                            val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER).document(loggedUser.uid)
+                            val user = hashMapOf(
+                                FirestoreUtils.TABLE_USER_ID to loggedUser.uid,
+                                FirestoreUtils.TABLE_USER_NAME to name,
+                                FirestoreUtils.TABLE_USER_EMAIL to email,
+                                FirestoreUtils.TABLE_USER_NPM to "",
+                                FirestoreUtils.TABLE_USER_PHOTO_URL to "",
+                                FirestoreUtils.TABLE_USER_LINKEDIN to "",
+                                FirestoreUtils.TABLE_USER_INSTAGRAM to "",
+                                FirestoreUtils.TABLE_USER_ROLE to hashMapOf(
+                                    FirestoreUtils.TABLE_USER_DEPARTMENT to "",
+                                    FirestoreUtils.TABLE_USER_DIVISION to "",
+                                    FirestoreUtils.TABLE_USER_POSITION to "",
+                                    FirestoreUtils.TABLE_USER_ACTIVE_PERIOD to ""
+                                ),
+                                FirestoreUtils.TABLE_USER_LAST_LOGIN to DateHelper.getCurrentDate()
+                            )
+
+                            // create user entity for local preference
+                            val userEntity = User(
+                                email = email,
+                                name = name,
+                                lastLoginAt = DateHelper.getCurrentDate()
+                            )
+                            documentRef
+                                .set(user)
+                                .addOnSuccessListener {
+                                    _isLoading.postValue(false)
+                                    _isError.postValue(false)
+
+                                    // save user info to preferences
+                                    preferences.startSession(userEntity)
+
+                                }
+                                .addOnFailureListener {
+                                    // failed to add new user document to fireStore
+                                    _isLoading.postValue(false)
+                                    _isError.postValue(true)
+                                    _responseMessage.postValue(Event(task.exception?.message.toString()))
+                                }
+                        }
                     }
                 } else {
                     // failed to create new user
