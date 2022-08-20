@@ -26,8 +26,8 @@ class NoteViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean> = _isError
+    private val _isError = MutableLiveData<Event<Boolean>>()
+    val isError: LiveData<Event<Boolean>> = _isError
 
     private val _noteAlreadyAdded = MutableLiveData<Boolean>()
     val noteAlreadyAdded: LiveData<Boolean> = _noteAlreadyAdded
@@ -40,6 +40,7 @@ class NoteViewModel @Inject constructor(
 
     fun addNote(text: String, eventId: String) {
 
+        Log.e( TAG, "add note")
         val docRef = fireStore.collection(FirestoreUtils.TABLE_NOTES).document()
         val loggedUser = auth.currentUser
 
@@ -56,25 +57,25 @@ class NoteViewModel @Inject constructor(
         docRef.set(note)
             .addOnSuccessListener {
                 _isLoading.postValue(false)
-                _isError.postValue(false)
+                _isError.postValue(Event(false))
 
             }
             .addOnFailureListener {
                 _isLoading.postValue(false)
-                _isError.postValue(true)
+                _isError.postValue(Event(true))
                 _responseMessage.postValue(Event(it.message.toString()))
                 Log.e(TAG, it.message.toString())
             }
     }
 
     fun checkNoteByEventId(eventId: String) {
+        Log.e( TAG, "checkNoteByEventId")
         _isLoading.postValue(true)
         fireStore.collection(FirestoreUtils.TABLE_NOTES)
             .whereEqualTo(FirestoreUtils.TABLE_NOTE_EVENT_ID, eventId)
             .get()
             .addOnSuccessListener { documentList ->
                 _isLoading.postValue(false)
-                _isError.postValue(false)
                 if (documentList.isEmpty){
                     _noteAlreadyAdded.postValue(false)
                 } else {
@@ -86,13 +87,12 @@ class NoteViewModel @Inject constructor(
             }
             .addOnFailureListener {
                 _isLoading.postValue(false)
-                _isError.postValue(true)
-                _responseMessage.postValue(Event(it.message.toString()))
                 Log.e(TAG, it.message.toString())
             }
     }
 
     fun updateNote(text: String, noteId: String) {
+        Log.e( TAG, "updateNote")
         _isLoading.postValue(true)
 
         val updateNote = hashMapOf(
@@ -105,12 +105,12 @@ class NoteViewModel @Inject constructor(
             .set(updateNote, SetOptions.merge())
             .addOnSuccessListener {
                 _isLoading.postValue(false)
-                _isError.postValue(false)
+                _isError.postValue(Event(false))
 
             }
             .addOnFailureListener {
                 _isLoading.postValue(false)
-                _isError.postValue(true)
+                _isError.postValue(Event(true))
                 _responseMessage.postValue(Event(it.message.toString()))
                 Log.e(TAG, it.message.toString())
             }

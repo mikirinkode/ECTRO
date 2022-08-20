@@ -3,6 +3,7 @@ package id.ac.unila.ee.himatro.ectro.ui.event.notes
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -124,32 +125,34 @@ class AddNoteActivity : AppCompatActivity() {
 
             if (isValid) {
                 noteViewModel.addNote(text, eventId)
-                noteViewModel.isError.observe(this@AddNoteActivity) { isError ->
-                    if (isError) {
-                        noteViewModel.responseMessage.observe(this@AddNoteActivity) {
-                            if (it != null) {
-                                it.getContentIfNotHandled()?.let { msg ->
-                                    Toast.makeText(
-                                        this@AddNoteActivity,
-                                        msg,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                noteViewModel.isError.observe(this@AddNoteActivity) { result ->
+                    result.getContentIfNotHandled()?.let { isError ->
+                        if (isError) {
+                            noteViewModel.responseMessage.observe(this@AddNoteActivity) {
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(
+                                            this@AddNoteActivity,
+                                            msg,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             }
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@AddNoteActivity,
-                            getString(R.string.successfully_add_note),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        startActivity(
-                            Intent(
+                        } else {
+                            Toast.makeText(
                                 this@AddNoteActivity,
-                                MainActivity::class.java
+                                getString(R.string.successfully_add_note),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(
+                                Intent(
+                                    this@AddNoteActivity,
+                                    MainActivity::class.java
+                                )
                             )
-                        )
-                        finishAffinity()
+                            finishAffinity()
+                        }
                     }
                 }
             }
@@ -169,28 +172,30 @@ class AddNoteActivity : AppCompatActivity() {
             if (isValid) {
                 noteViewModel.updateNote(text, noteId)
 
-                noteViewModel.isError.observe(this@AddNoteActivity) { isError ->
-                    if (isError) {
-                        noteViewModel.responseMessage.observe(this@AddNoteActivity) {
-                            if (it != null) {
-                                it.getContentIfNotHandled()?.let { msg ->
-                                    Toast.makeText(
-                                        this@AddNoteActivity,
-                                        msg,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                noteViewModel.isError.observe(this@AddNoteActivity) { result ->
+                    result.getContentIfNotHandled()?.let { isError ->
+                        if (!isError) {
+                            Toast.makeText(
+                                this@AddNoteActivity,
+                                getString(R.string.successfully_update_note),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            tvNoteContent.text = text
+                            layoutCreateNote.visibility = View.GONE
+                            layoutNoteInfo.visibility = View.VISIBLE
+                        } else {
+                            noteViewModel.responseMessage.observe(this@AddNoteActivity) {
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(
+                                            this@AddNoteActivity,
+                                            msg,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             }
                         }
-                    } else {
-                        Toast.makeText(
-                            this@AddNoteActivity,
-                            getString(R.string.successfully_update_note),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        tvNoteContent.text = text
-                        layoutCreateNote.visibility = View.GONE
-                        layoutNoteInfo.visibility = View.VISIBLE
                     }
                 }
             }
