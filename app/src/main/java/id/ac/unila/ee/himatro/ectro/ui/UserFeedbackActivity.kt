@@ -1,6 +1,5 @@
-package id.ac.unila.ee.himatro.ectro.ui.main.home
+package id.ac.unila.ee.himatro.ectro.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +22,9 @@ class UserFeedbackActivity : AppCompatActivity() {
     @Inject
     lateinit var auth: FirebaseAuth
 
+    @Inject
+    lateinit var preferences: EctroPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -38,14 +40,17 @@ class UserFeedbackActivity : AppCompatActivity() {
                     isValid = false
                 }
 
+                // TODO: Need ViewModel
                 if (isValid){
                     val docRef = fireStore.collection("feedbacks").document()
                     val user = auth.currentUser
                     val userId = user?.uid
+                    val userName = preferences.getValues(EctroPreferences.USER_NAME)
 
                     val feedbackItem = hashMapOf(
                         "content" to feedback,
-                        "userId" to userId
+                        "userId" to userId,
+                        "name" to userName
                     )
 
                     docRef.set(feedbackItem)

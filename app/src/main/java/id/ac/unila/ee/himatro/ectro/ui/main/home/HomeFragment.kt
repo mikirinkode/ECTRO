@@ -2,11 +2,11 @@ package id.ac.unila.ee.himatro.ectro.ui.main.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +22,9 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NPM
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_PHOTO_URL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_POSITION
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentHomeBinding
+import id.ac.unila.ee.himatro.ectro.ui.UserFeedbackActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.AddEventActivity
+import id.ac.unila.ee.himatro.ectro.ui.event.EventListActivity
 import id.ac.unila.ee.himatro.ectro.ui.member.MemberListActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
@@ -61,11 +63,7 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             // set recyclerview layout
-            rvEvent.layoutManager = object : LinearLayoutManager(requireContext()) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
+            rvEvent.layoutManager = LinearLayoutManager(requireContext())
             rvEvent.adapter = adapter
 
             // set announcement
@@ -108,6 +106,10 @@ class HomeFragment : Fragment() {
             btnAnnouncement.setOnClickListener {
                 startActivity(Intent(requireContext(), UserFeedbackActivity::class.java))
             }
+
+            btnSeeAllEvent.setOnClickListener {
+                startActivity(Intent(requireContext(), EventListActivity::class.java))
+            }
         }
 
         observeUser()
@@ -115,15 +117,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeEvent() {
-        eventViewModel.observeEventList()
-
-        // get event list from view model
-        eventViewModel.eventList.observe(viewLifecycleOwner) { list ->
+        eventViewModel.observeEventList(HOME_EVENT_LIMIT).observe(viewLifecycleOwner) { list ->
             if (list.isEmpty()) {
                 binding.emptyMessage.visibility = View.VISIBLE
             } else {
                 binding.emptyMessage.visibility = View.GONE
                 adapter.setData(list)
+                Log.e(TAG, list.size.toString())
+                Log.e(TAG, adapter.itemCount.toString())
             }
         }
 
@@ -214,5 +215,6 @@ class HomeFragment : Fragment() {
 
     companion object {
         private const val TAG = "HomeFragment"
+        private const val HOME_EVENT_LIMIT = 2L
     }
 }

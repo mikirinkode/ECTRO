@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
+import id.ac.unila.ee.himatro.ectro.data.model.UserAttendance
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
@@ -34,31 +35,65 @@ class EventViewModel @Inject constructor(
     private val _responseMessage = MutableLiveData<Event<String>>()
     val responseMessage: LiveData<Event<String>> = _responseMessage
 
+    fun observeEventList(limit: Long): LiveData<List<EventEntity>> {
+        val eventList = MutableLiveData<List<EventEntity>>()
 
-    private val _eventList = MutableLiveData<ArrayList<EventEntity>>()
-    val eventList: LiveData<ArrayList<EventEntity>> = _eventList
-
-
-    fun observeEventList() {
         fireStore.collection(TABLE_EVENTS)
             .orderBy(TABLE_EVENT_CREATED_AT, Query.Direction.DESCENDING)
+            .limit(limit)
             .get()
             .addOnSuccessListener { documentList ->
-                val eventEntityList: ArrayList<EventEntity> = ArrayList()
+                Log.e("EventViewModel", documentList.toString())
+                Log.e("EventViewModel", documentList.size().toString())
+                Log.e("EventViewModel", documentList.documents.toString())
+                Log.e("EventViewModel", documentList.documents.size.toString())
+                val newList: ArrayList<EventEntity> = ArrayList()
                 for (document in documentList) {
                     if (document != null) {
-                        eventEntityList.add(
+                        newList.add(
                             document.toObject()
                         )
                     }
                 }
-                _eventList.postValue(eventEntityList)
+                eventList.postValue(newList)
             }
             .addOnFailureListener {
                 Log.e(TAG, it.message.toString())
                 _isError.postValue(true)
                 _responseMessage.postValue(Event(it.message.toString()))
             }
+
+        return eventList
+    }
+
+    fun getAllEventList(): LiveData<List<EventEntity>> {
+        val eventList = MutableLiveData<List<EventEntity>>()
+
+        fireStore.collection(TABLE_EVENTS)
+            .orderBy(TABLE_EVENT_CREATED_AT, Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documentList ->
+                Log.e("EventViewModel", documentList.toString())
+                Log.e("EventViewModel", documentList.size().toString())
+                Log.e("EventViewModel", documentList.documents.toString())
+                Log.e("EventViewModel", documentList.documents.size.toString())
+                val newList: ArrayList<EventEntity> = ArrayList()
+                for (document in documentList) {
+                    if (document != null) {
+                        newList.add(
+                            document.toObject()
+                        )
+                    }
+                }
+                eventList.postValue(newList)
+            }
+            .addOnFailureListener {
+                Log.e(TAG, it.message.toString())
+                _isError.postValue(true)
+                _responseMessage.postValue(Event(it.message.toString()))
+            }
+
+        return eventList
     }
 
     fun createEvent(

@@ -3,11 +3,13 @@ package id.ac.unila.ee.himatro.ectro.ui.main.home
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.EventDiffUtil
 
 class EventAdapter : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
@@ -44,9 +46,11 @@ class EventAdapter : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = eventEntityList.size
 
-    fun setData(newList: ArrayList<EventEntity>) {
+    fun setData(newList: List<EventEntity>) {
+        val diffCallback = EventDiffUtil(this.eventEntityList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         eventEntityList.clear()
         eventEntityList.addAll(newList)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 }

@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="id.ac.unila.ee.himatro.ectro">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".di.BaseApplication"
         android:allowBackup="true"
@@ -15,7 +18,10 @@
         android:theme="@style/Theme.ECTRO"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.home.UserFeedbackActivity"
+            android:name=".ui.event.EventListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserFeedbackActivity"
             android:exported="false" />
         <activity
             android:name=".ui.member.EditRoleActivity"
@@ -69,6 +75,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".utils.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
