@@ -55,8 +55,8 @@ class DetailEventActivity : AppCompatActivity() {
 
             btnBack.setOnClickListener { onBackPressed() }
 
-            if (loggedUser?.uid == entity?.creatorId){
-                btnEdit.visibility = View. VISIBLE
+            if (loggedUser?.uid == entity?.creatorId) {
+                btnEdit.visibility = View.VISIBLE
                 btnEdit.setOnClickListener {
                     // TODO LATER
                 }
@@ -131,13 +131,7 @@ class DetailEventActivity : AppCompatActivity() {
                                 Intent(
                                     this@DetailEventActivity,
                                     AttendanceFormActivity::class.java
-                                ).putExtra(
-                                    AttendanceFormActivity.EXTRA_EVENT_ID,
-                                    eventEntity.eventId
-                                ).putExtra(
-                                    AttendanceFormActivity.EXTRA_EVENT_NAME,
-                                    eventEntity.name
-                                )
+                                ).putExtra(AttendanceFormActivity.EXTRA_EVENT, eventEntity)
                             )
                         } else {
                             Toast.makeText(
@@ -167,8 +161,12 @@ class DetailEventActivity : AppCompatActivity() {
                             val uri: Uri = Uri.parse(eventEntity.extraActionLink)
                             val intent = Intent(Intent.ACTION_VIEW, uri)
                             startActivity(intent)
-                        } catch (e: Exception){
-                            Toast.makeText(this@DetailEventActivity, "Invalid Link", Toast.LENGTH_SHORT).show()
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                this@DetailEventActivity,
+                                "Invalid Link",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } else {

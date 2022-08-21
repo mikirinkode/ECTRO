@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -20,27 +19,28 @@ import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent) {
-        val type = intent.getStringExtra(EXTRA_TYPE)
+    override fun onReceive(context: Context, intent: Intent) {
+
+        val title = intent.getStringExtra(EXTRA_TITLE)
         val message = intent.getStringExtra(EXTRA_MESSAGE)
 
-        val title = "OneTimeAlarm"
-        val notificationId = 100
-
-        showToast(context, title, message)
+        if (message != null && title != null){
+            showToast(context, message)
+            showAlarmNotification(context, title, message)
+        }
     }
 
-    private fun showToast(context: Context?, title: String, message: String?) {
-        Toast.makeText(context, "$title: $message", Toast.LENGTH_SHORT).show()
+    private fun showToast(context: Context?, message: String?) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun setNotification(context: Context, type: String, date: String, time: String, message: String){
+    fun setNotification(context: Context, date: String, time: String, title: String, message: String){
         if (isInvalidDate(date, DATE_FORMAT) || isInvalidDate(time, TIME_FORMAT)) return
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
+        intent.putExtra(EXTRA_TITLE, title)
         intent.putExtra(EXTRA_MESSAGE, message)
-        intent.putExtra(EXTRA_TYPE, type)
 
         val dateArray = date.split("-").toTypedArray()
         val timeArray = time.split(":").toTypedArray()
@@ -49,7 +49,7 @@ class AlarmReceiver : BroadcastReceiver() {
         calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]))
         calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1]) - 1)
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]))
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]))
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]) - 1)
         calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]))
         calendar.set(Calendar.SECOND, 0)
 
@@ -57,15 +57,15 @@ class AlarmReceiver : BroadcastReceiver() {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
 
-    private fun showAlarmNotification(context: Context, title: String, message: String, notificationId: Int) {
+    private fun showAlarmNotification(context: Context, title: String, message: String) {
         val channelId = "Ectro"
         val channelName = "Ectro"
 
         val notificationManagerCompat = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_time)
-            .setContentText(title)
+            .setSmallIcon(R.drawable.ic_notifications)
+            .setContentTitle(title)
             .setContentText(message)
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
@@ -81,7 +81,7 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManagerCompat.createNotificationChannel(channel)
         }
         val notification = builder.build()
-        notificationManagerCompat.notify(notificationId, notification)
+        notificationManagerCompat.notify(ID_ONETIME, notification)
     }
 
         private fun isInvalidDate(date: String, format: String): Boolean {
@@ -97,7 +97,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     companion object {
         const val EXTRA_MESSAGE = "message"
-        const val EXTRA_TYPE = "type"
+        const val EXTRA_TITLE = "title"
         const val ID_ONETIME = 100
         private const val DATE_FORMAT = "yyyy-MM-dd"
         private const val TIME_FORMAT = "HH:mm"

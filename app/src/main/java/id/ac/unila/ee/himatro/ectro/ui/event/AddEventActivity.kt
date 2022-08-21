@@ -39,10 +39,6 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
 
     private val viewModel: EventViewModel by viewModels()
 
-    private val alarmReceiver: AlarmReceiver by lazy {
-        AlarmReceiver()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

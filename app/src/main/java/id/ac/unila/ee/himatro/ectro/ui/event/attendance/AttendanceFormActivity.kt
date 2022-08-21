@@ -9,8 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAttendanceFormBinding
+import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.utils.AlarmReceiver
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.viewmodel.AttendanceViewModel
 import javax.inject.Inject
@@ -27,16 +30,19 @@ class AttendanceFormActivity : AppCompatActivity() {
     @Inject
     lateinit var preferences: EctroPreferences
 
+    private val alarmReceiver: AlarmReceiver by lazy {
+        AlarmReceiver()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         observeIsLoading()
 
-        val eventId = intent.getStringExtra(EXTRA_EVENT_ID)
-        val eventName = intent.getStringExtra(EXTRA_EVENT_NAME)
+        val event = intent.getParcelableExtra<EventEntity>(EXTRA_EVENT)
 
-        updateUserInfo(eventName ?: "")
+        updateUserInfo(event?.name ?: "")
 
         binding.apply {
 
@@ -77,11 +83,22 @@ class AttendanceFormActivity : AppCompatActivity() {
                 }
 
                 if (isValid) {
-                    if (eventId != null) {
+                    if (event != null) {
+                        if (attendanceStatus == ATTENDANCE_PRESENT){
+                            val userName = preferences.getValues(EctroPreferences.USER_NAME)
+
+                            alarmReceiver.setNotification(
+                                this@AttendanceFormActivity,
+                                event.date,
+                                event.time,
+                                "Reminder Acara ${event.name}",
+                            "Hai $userName, acara akan segera mulai nih.")
+                        }
+
                         viewModel.insertUserAttendance(
                             reasonCannotAttend,
                             attendanceStatus,
-                            eventId,
+                            event.eventId,
                             attendanceStatus == ATTENDANCE_PRESENT
                         )
                         viewModel.isError.observe(this@AttendanceFormActivity) { isError ->
@@ -146,7 +163,6 @@ class AttendanceFormActivity : AppCompatActivity() {
         const val ATTENDANCE_PRESENT = "Hadir"
         const val ATTENDANCE_PERMISSION = "Izin"
         const val ATTENDANCE_SICK = "Sakit"
-        const val EXTRA_EVENT_ID = "extra_event_id"
-        const val EXTRA_EVENT_NAME = "extra_event_name"
+        const val EXTRA_EVENT = "extra_event"
     }
 }
