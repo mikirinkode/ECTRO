@@ -1,5 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.ui.profile
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +13,7 @@ import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailUserBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
+import id.ac.unila.ee.himatro.ectro.utils.Constants
 import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
 
@@ -76,6 +79,18 @@ class DetailUserActivity : AppCompatActivity() {
                 Glide.with(this@DetailUserActivity)
                     .load(user.photoUrl)
                     .into(ivUserPhoto)
+            }
+
+            tvUserInstagram.setOnClickListener {
+                val uri: Uri = Uri.parse(Constants.INSTAGRAM_BASE_LINK + user.instagram)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+
+            tvUserLinkedin.setOnClickListener {
+                val uri: Uri = Uri.parse(Constants.LINKEDIN_BASE_LINK + user.linkedin)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             }
         }
     }

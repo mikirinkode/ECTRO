@@ -62,74 +62,29 @@ class EditProfileActivity : AppCompatActivity() {
 
                 val isValid = checkInputValidation(name, npm)
 
-                // TODO: MOVE TO VIEWMODEL AND MAKE SURE DID NOT DOUBLE ACTIVITY
                 if (isValid) {
-                    val loggedUser = auth.currentUser
-                    val update = hashMapOf(
-                        "name" to name,
-                        "npm" to npm,
-                        "instagram" to instagram,
-                        "linkedin" to linkedin
-                    )
-                    if (loggedUser != null) {
-                        fireStore.collection("users").document(loggedUser.uid)
-                            .set(update, SetOptions.merge())
-                            .addOnSuccessListener {
-                                updateLocalData(name, npm, instagram, linkedin)
-                                Toast.makeText(
-                                    this@EditProfileActivity,
-                                    getString(R.string.successfully_update_data),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                startActivity(
-                                    Intent(
-                                        this@EditProfileActivity,
-                                        MainActivity::class.java
-                                    )
-                                )
-                                finishAffinity()
+
+                    viewModel.updateUserProfile(name, npm, instagram, linkedin)
+
+                    viewModel.isUpdateSuccess.observe(this@EditProfileActivity){ isUpdateSuccess ->
+                        if (!isUpdateSuccess){
+                            viewModel.responseMessage.observe(this@EditProfileActivity) {
+                                if (it != null) {
+                                    it.getContentIfNotHandled()?.let { msg ->
+                                        Toast.makeText(this@EditProfileActivity, msg, Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             }
+                        } else {
+                            Toast.makeText(
+                                this@EditProfileActivity,
+                                getString(R.string.successfully_update_data),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(Intent(this@EditProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                            finishAffinity()
+                        }
                     }
-
-                    /*
-                        Work
-                     */
-//                    viewModel.updateUserProfile(name, npm, instagram, linkedin)
-//                    startActivity(Intent(this@EditProfileActivity, MainActivity::class.java))
-//                    updateLocalData(name, npm, instagram, linkedin)
-//                    Toast.makeText(
-//                        this@EditProfileActivity,
-//                        getString(R.string.successfully_update_data),
-//                        Toast.LENGTH_SHORT
-//                            ).show()
-//                    finishAffinity()
-
-                    /*
-                        DOUBLE
-                     */
-
-//                    viewModel.isError.observe(this@EditProfileActivity){ isError ->
-//                        if (isError){
-//                            viewModel.responseMessage.observe(this@EditProfileActivity) {
-//                                if (it != null) {
-//                                    it.getContentIfNotHandled()?.let { msg ->
-//                                        Toast.makeText(this@EditProfileActivity, msg, Toast.LENGTH_SHORT).show()
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            // if success, update data on local preferences then back to Main
-////                            updateLocalData(name, npm, instagram, linkedin)
-//
-//                            Toast.makeText(
-//                                this@EditProfileActivity,
-//                                getString(R.string.successfully_update_data),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                            startActivity(Intent(this@EditProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-////                            finishAffinity()
-//                        }
-//                    }
                 }
             }
 
@@ -207,13 +162,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         return isValid
-    }
-
-    private fun updateLocalData(name: String, npm: String, instagram: String, linkedin: String) {
-        preferences.setValues(EctroPreferences.USER_NAME, name)
-        preferences.setValues(EctroPreferences.USER_NPM, npm)
-        preferences.setValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT, instagram)
-        preferences.setValues(EctroPreferences.USER_LINKEDIN_ACCOUNT, linkedin)
     }
 
     companion object {

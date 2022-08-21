@@ -1,6 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.ui.event
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -162,11 +163,13 @@ class DetailEventActivity : AppCompatActivity() {
 
 
                     btnAdditional.setOnClickListener {
-                        Toast.makeText(
-                            this@DetailEventActivity,
-                            eventEntity.extraActionLink,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        try {
+                            val uri: Uri = Uri.parse(eventEntity.extraActionLink)
+                            val intent = Intent(Intent.ACTION_VIEW, uri)
+                            startActivity(intent)
+                        } catch (e: Exception){
+                            Toast.makeText(this@DetailEventActivity, "Invalid Link", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
                     layoutAdditionalButton.visibility = View.GONE

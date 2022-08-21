@@ -39,8 +39,6 @@ class NoteViewModel @Inject constructor(
     val responseMessage: LiveData<Event<String>> = _responseMessage
 
     fun addNote(text: String, eventId: String) {
-
-        Log.e( TAG, "add note")
         val docRef = fireStore.collection(FirestoreUtils.TABLE_NOTES).document()
         val loggedUser = auth.currentUser
 
@@ -69,7 +67,6 @@ class NoteViewModel @Inject constructor(
     }
 
     fun checkNoteByEventId(eventId: String) {
-        Log.e( TAG, "checkNoteByEventId")
         _isLoading.postValue(true)
         fireStore.collection(FirestoreUtils.TABLE_NOTES)
             .whereEqualTo(FirestoreUtils.TABLE_NOTE_EVENT_ID, eventId)
@@ -92,7 +89,6 @@ class NoteViewModel @Inject constructor(
     }
 
     fun updateNote(text: String, noteId: String) {
-        Log.e( TAG, "updateNote")
         _isLoading.postValue(true)
 
         val updateNote = hashMapOf(

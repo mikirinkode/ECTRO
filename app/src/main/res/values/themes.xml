@@ -8,6 +8,12 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <!-- Secondary brand color. it is for date picker -->
+        <item name="colorSecondary">@color/primary_500</item>
+        <item name="colorSecondaryVariant">@color/primary_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+
         <!-- Customize your theme here. -->
 
         <item name="android:fontFamily">@font/poppins</item>
@@ -26,7 +32,7 @@
     <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">
         <item name="android:padding">@dimen/button_padding</item>
         <item name="cornerRadius">16dp</item>
-        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -35,7 +41,7 @@
         <item name="strokeColor">?attr/colorPrimary</item>
         <item name="android:padding">@dimen/button_padding</item>
         <item name="cornerRadius">16dp</item>
-        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:textSize">16sp</item>
     </style>
 

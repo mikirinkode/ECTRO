@@ -39,6 +39,9 @@ class UserViewModel @Inject constructor(
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
+    private val _isUpdateSuccess = MutableLiveData<Boolean>()
+    val isUpdateSuccess: LiveData<Boolean> = _isUpdateSuccess
+
     private val _responseMessage = MutableLiveData<Event<String>>()
     val responseMessage: LiveData<Event<String>> = _responseMessage
 
@@ -122,20 +125,20 @@ class UserViewModel @Inject constructor(
                 .set(newData, SetOptions.merge())
                 .addOnSuccessListener {
                     _isLoading.postValue(false)
-                    _isError.postValue(false)
+                    _isUpdateSuccess.postValue(true)
 
 
-//                    // if success, update data on local preferences then back to Main
-//                    preferences.setValues(EctroPreferences.USER_NAME, name)
-//                    preferences.setValues(EctroPreferences.USER_NPM, npm)
-//                    preferences.setValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT, instagram)
-//                    preferences.setValues(EctroPreferences.USER_LINKEDIN_ACCOUNT, linkedin)
+                    // if success, update data on local preferences then back to Main
+                    preferences.setValues(EctroPreferences.USER_NAME, name)
+                    preferences.setValues(EctroPreferences.USER_NPM, npm)
+                    preferences.setValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT, instagram)
+                    preferences.setValues(EctroPreferences.USER_LINKEDIN_ACCOUNT, linkedin)
 
 
                 }
                 .addOnFailureListener {
                     _isLoading.postValue(false)
-                    _isError.postValue(true)
+                    _isUpdateSuccess.postValue(false)
                     _responseMessage.postValue(Event(it.message.toString()))
                 }
 

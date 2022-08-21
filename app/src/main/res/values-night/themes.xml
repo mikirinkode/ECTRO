@@ -8,6 +8,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/backgroundColor</item>
 
+        <!-- Secondary brand color. it is for date picker -->
+        <item name="colorSecondary">@color/primary_400</item>
+        <item name="colorSecondaryVariant">@color/primary_500</item>
+        <item name="colorOnSecondary">@color/black</item>
+
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:windowBackground">@color/dark_500</item>

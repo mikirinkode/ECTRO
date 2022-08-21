@@ -1,6 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.ui.main.profile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.ROLE_REQUEST_STATUS
 import id.ac.unila.ee.himatro.ectro.databinding.FragmentProfileBinding
 import id.ac.unila.ee.himatro.ectro.ui.settings.SettingsActivity
+import id.ac.unila.ee.himatro.ectro.utils.Constants
 import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
 import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
 import javax.inject.Inject
@@ -202,6 +204,18 @@ class ProfileFragment : Fragment() {
                 Glide.with(requireContext())
                     .load(userPhotoUrl)
                     .into(ivUserPhoto)
+            }
+
+            tvUserInstagram.setOnClickListener {
+                val uri: Uri = Uri.parse(Constants.INSTAGRAM_BASE_LINK + instagramAccount)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+
+            tvUserLinkedin.setOnClickListener {
+                val uri: Uri = Uri.parse(Constants.LINKEDIN_BASE_LINK + linkedinAccount)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             }
         }
     }
