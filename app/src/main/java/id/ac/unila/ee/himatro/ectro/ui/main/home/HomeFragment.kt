@@ -114,12 +114,14 @@ class HomeFragment : Fragment() {
 
         observeUser()
         observeEvent()
+        observeIsLoading()
     }
 
     private fun observeEvent() {
         eventViewModel.observeEventList(HOME_EVENT_LIMIT).observe(viewLifecycleOwner) { list ->
             if (list.isEmpty()) {
                 binding.emptyMessage.visibility = View.VISIBLE
+                binding.loadingEventList.visibility = View.GONE
             } else {
                 binding.emptyMessage.visibility = View.GONE
                 adapter.setData(list)
@@ -149,7 +151,7 @@ class HomeFragment : Fragment() {
         val userPosition = preferences.getValues(USER_POSITION)
         val activePeriod = preferences.getValues(ACTIVE_PERIOD)
 
-        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty()  && !userPosition.isNullOrEmpty()
+        return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
     private fun observeUser() {
@@ -181,6 +183,7 @@ class HomeFragment : Fragment() {
 
     private fun updateUi(name: String?, photoUrl: String?) {
         binding.apply {
+            loadingUser.visibility = View.GONE
             tvUserName.text = name
             if (photoUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -194,16 +197,21 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // TODO: CREATE SHIMMER LOADING FOR USER INFO AND EVENT LIST
     private fun observeIsLoading() {
-        userViewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading){
-            } else {
+        binding.apply {
+            userViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                if (isLoading) {
+                    loadingUser.visibility = View.VISIBLE
+                } else {
+                    loadingUser.visibility = View.GONE
+                }
             }
-        }
-        eventViewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading){
-            } else {
+            eventViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                if (isLoading) {
+                    loadingEventList.visibility = View.VISIBLE
+                } else {
+                    loadingEventList.visibility = View.GONE
+                }
             }
         }
     }

@@ -80,11 +80,10 @@ class AuthViewModel @Inject constructor(
 
                     if (firebaseUser != null) {
 
-                        // TODO: OPEN AGAIN
+                        // TODO: OPEN AGAIN LATER
 //                            firebaseUser.sendEmailVerification()
 
                         // try to add new user document to fireStore
-
                         // create user entity for fireStore
                         val loggedUser = auth.currentUser
 

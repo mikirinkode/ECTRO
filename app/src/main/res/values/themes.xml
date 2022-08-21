@@ -15,7 +15,6 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Customize your theme here. -->
-
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:windowBackground">@color/light_200</item>
         <item name="background">@color/white</item>
@@ -27,6 +26,8 @@
         <item name="itemTextAppearanceActive">@color/white</item>
         <item name="itemTextAppearanceInactive">@color/light_400</item>
         <item name="colorOnBackground">@color/neutral_700</item>
+        <item name="shimmer_base_color">@color/neutral_200</item>
+        <item name="shimmer_highlight_color">@color/light_400</item>
     </style>
 
     <style name="Theme.ECTRO.Button" parent="Widget.Material3.Button">

@@ -190,8 +190,7 @@ class DetailEventActivity : AppCompatActivity() {
                             .load(user.photoUrl)
                             .into(ivUserPhoto)
                     } else {
-                        // java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
-                        Glide.with(applicationContext) // TODO: THERE's is an error occurred here
+                        Glide.with(applicationContext)
                             .load(R.drawable.ic_default_profile)
                             .into(ivUserPhoto)
                     }
@@ -233,12 +232,6 @@ class DetailEventActivity : AppCompatActivity() {
         attendanceViewModel.getTotalAttendees(eventId).observe(this) { totalAttendees ->
             binding.tvTotalParticipant.text = totalAttendees.toString()
         }
-    }
-
-    // TODO
-    private fun hasFilledAttendance(eventId: String): Boolean {
-        attendanceViewModel.checkAttendanceFilled(eventId)
-        return false
     }
 
     private fun isUserDataComplete(): Boolean {

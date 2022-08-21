@@ -8,7 +8,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="16dp"
-    android:backgroundTint="?attr/background"
+    android:backgroundTint="?attr/shimmer_base_color"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,19 +21,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="@drawable/rect_rounded"
+            android:backgroundTint="?attr/shimmer_highlight_color"
             android:fontFamily="@font/poppins_bold"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_category"
-            tools:text="Rapat Electrical Engineering in Action 2022" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_category" />
 
 
         <ImageView
             android:id="@+id/ic_date"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_date"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color"
             app:layout_constraintBottom_toBottomOf="@+id/tv_event_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_event_date" />
@@ -44,17 +46,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_medium"
             app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/poppins_medium"
             app:layout_constraintStart_toEndOf="@id/ic_date"
             app:layout_constraintTop_toBottomOf="@+id/tv_event_title"
-            tools:text="Senin, 19 Juni 2022" />
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color"/>
 
         <ImageView
             android:id="@+id/ic_time"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_time"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color"
             app:layout_constraintBottom_toBottomOf="@+id/tv_event_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_event_time" />
@@ -66,17 +70,19 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_medium"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ic_time"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_event_date"
-            tools:text="20.00 WIB - 21.00 WIB" />
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color" />
 
 
         <ImageView
             android:id="@+id/ic_location"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_location"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color"
             app:layout_constraintBottom_toBottomOf="@+id/tv_event_place"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_event_place" />
@@ -88,10 +94,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_medium"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ic_location"
             app:layout_constraintTop_toBottomOf="@+id/tv_event_time"
-            tools:text="Via Zoom" />
+            android:background="@drawable/rect_rounded_small_item"
+            android:backgroundTint="?attr/shimmer_highlight_color"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_category"
@@ -102,11 +109,10 @@
 
             <TextView
                 android:id="@+id/tv_dummy_category"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:alpha="0.25"
                 android:background="@drawable/rect_rounded"
-                android:backgroundTint="?attr/colorPrimary"
+                android:backgroundTint="?attr/shimmer_highlight_color"
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
@@ -114,20 +120,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="#RAPAT" />
+                app:layout_constraintTop_toTopOf="parent"  />
 
             <TextView
                 android:id="@+id/tv_event_category"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rect_rounded"
+                android:backgroundTint="?attr/shimmer_highlight_color"
                 android:fontFamily="@font/poppins_semibold"
-                android:textColor="?android:attr/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="#RAPAT" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user_photo"
             android:layout_width="50dp"
@@ -62,7 +63,62 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/loading_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="64dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/btn_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user_photo_loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="?attr/shimmer_highlight_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_greeting_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/white"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_photo_loading"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rect_rounded_small_item"
+                    android:backgroundTint="?attr/shimmer_highlight_color"
+                    android:fontFamily="@font/poppins_medium"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_photo_loading"
+                    app:layout_constraintTop_toBottomOf="@id/tv_greeting_loading" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -346,6 +402,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_event"
                 tools:listitem="@layout/item_event" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/loading_event_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_event"
+                app:shimmer_auto_start="true"
+                tools:visibility="visible">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/item_event_placeholder" />
+
+                        <include layout="@layout/item_event_placeholder" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </ScrollView>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/empty_message"
