@@ -20,19 +20,28 @@ import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
+import id.ac.unila.ee.himatro.ectro.utils.AlarmReceiver
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
+import id.ac.unila.ee.himatro.ectro.utils.DatePickerFragment
+import id.ac.unila.ee.himatro.ectro.utils.TimePickerFragment
 import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddEventActivity : AppCompatActivity() {
+class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener,
+    TimePickerFragment.DialogTimeListener {
 
     private val binding: ActivityAddEventBinding by lazy {
         ActivityAddEventBinding.inflate(layoutInflater)
     }
 
     private val viewModel: EventViewModel by viewModels()
+
+    private val alarmReceiver: AlarmReceiver by lazy {
+        AlarmReceiver()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +87,8 @@ class AddEventActivity : AppCompatActivity() {
                 .build()
 
             tilEventDate.setOnClickListener {
-                datePicker.show(supportFragmentManager, "DATE_PICKER")
+                val datePickerFragment = DatePickerFragment()
+                datePickerFragment.show(supportFragmentManager, "DatePicker")
             }
 
             datePicker.addOnPositiveButtonClickListener {
@@ -86,7 +96,8 @@ class AddEventActivity : AppCompatActivity() {
             }
 
             tilEventTime.setOnClickListener {
-                timePicker.show(supportFragmentManager, "TIME_PICKER")
+                val timePickerFragmentOne = TimePickerFragment()
+                timePickerFragmentOne.show(supportFragmentManager, "TimePicker")
             }
 
             timePicker.addOnPositiveButtonClickListener {
@@ -128,7 +139,7 @@ class AddEventActivity : AppCompatActivity() {
                 }
 
                 val eventPlace = edtEventPlace.text.toString().trim()
-                var eventDate = edtEventDate.text.toString().trim()
+                val eventDate = edtEventDate.text.toString().trim()
                 val eventTime = edtEventTime.text.toString().trim()
 
                 val isNeedNotes = switchNotes.isChecked
@@ -180,9 +191,6 @@ class AddEventActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     isValid = false
-                } else {
-                    // TODO Still Needed Or Not?
-//                    eventDate = DateHelper.mapAlarmFormatToDisplayFormat()
                 }
 
                 if (eventTime.isEmpty()) {
@@ -321,9 +329,30 @@ class AddEventActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Set text dari textview once
+        binding.edtEventDate.text = dateFormat.format(calendar.time)
+    }
+
+    override fun onDialogTimeSet(tag: String?, hourOfDay: Int, minute: Int) {
+        // Siapkan time formatter-nya terlebih dahulu
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
+
+        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+
+        binding.edtEventTime.text = dateFormat.format(calendar.time)
+    }
+
+
     companion object {
         private const val TAG = "CreateEventActivity"
         private const val STATE_RESULT = "state_result"
     }
-
 }
