@@ -1,13 +1,14 @@
 package id.ac.unila.ee.himatro.ectro.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityUserFeedbackBinding
-import javax.inject.Inject
+import id.ac.unila.ee.himatro.ectro.viewmodel.FeedbackViewModel
 
 @AndroidEntryPoint
 class UserFeedbackActivity : AppCompatActivity() {
@@ -16,18 +17,13 @@ class UserFeedbackActivity : AppCompatActivity() {
         ActivityUserFeedbackBinding.inflate(layoutInflater)
     }
 
-    @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
-    lateinit var preferences: EctroPreferences
+    private val viewModel: FeedbackViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        observeIsLoading()
 
         binding.apply {
             btnBack.setOnClickListener { onBackPressed() }
@@ -42,25 +38,26 @@ class UserFeedbackActivity : AppCompatActivity() {
 
                 // TODO: Need ViewModel
                 if (isValid){
-                    val docRef = fireStore.collection("feedbacks").document()
-                    val user = auth.currentUser
-                    val userId = user?.uid
-                    val userName = preferences.getValues(EctroPreferences.USER_NAME)
-
-                    val feedbackItem = hashMapOf(
-                        "content" to feedback,
-                        "userId" to userId,
-                        "name" to userName
-                    )
-
-                    docRef.set(feedbackItem)
-                        .addOnSuccessListener {
+                    viewModel.createFeedback(feedback).observe(this@UserFeedbackActivity) { isSuccess ->
+                        if (isSuccess){
+                            Toast.makeText(this@UserFeedbackActivity, getString(R.string.successfully_sent_feedback), Toast.LENGTH_SHORT).show()
                             finish()
+                        } else {
+                            Toast.makeText(this@UserFeedbackActivity, getString(R.string.failed_sent_feedback), Toast.LENGTH_SHORT).show()
                         }
-                        .addOnFailureListener {
+                    }
 
-                        }
                 }
+            }
+        }
+    }
+
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.loadingIndicator.visibility = View.VISIBLE
+            } else {
+                binding.loadingIndicator.visibility = View.GONE
             }
         }
     }

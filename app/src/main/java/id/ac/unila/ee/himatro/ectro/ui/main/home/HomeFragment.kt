@@ -123,6 +123,7 @@ class HomeFragment : Fragment() {
                 binding.emptyMessage.visibility = View.VISIBLE
                 binding.loadingEventList.visibility = View.GONE
             } else {
+                binding.loadingEventList.visibility = View.GONE
                 binding.emptyMessage.visibility = View.GONE
                 adapter.setData(list)
                 Log.e(TAG, list.size.toString())

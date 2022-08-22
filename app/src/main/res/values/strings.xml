@@ -240,6 +240,8 @@
 
     <string-array name="empty"></string-array>
     <string name="event_list">Daftar Acara</string>
+    <string name="failed_sent_feedback">Gagal mengirim Feedback.</string>
+    <string name="successfully_sent_feedback">Berhasil mengirim Feedback</string>
 
 
 </resources>
