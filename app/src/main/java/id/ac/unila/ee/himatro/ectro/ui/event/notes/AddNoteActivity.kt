@@ -54,7 +54,7 @@ class AddNoteActivity : AppCompatActivity() {
     }
 
     private fun observeIsLoading() {
-        noteViewModel.isLoading.observe(this){ isLoading ->
+        noteViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
                 binding.loadingIndicator.visibility = View.VISIBLE
             } else {
@@ -62,9 +62,12 @@ class AddNoteActivity : AppCompatActivity() {
             }
         }
 
-        // TODO: CREATE SHIMMER LOADING
-        userViewModel.isLoading.observe(this) { isLoding ->
-
+        userViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.loadingUser.visibility = View.VISIBLE
+            } else {
+                binding.loadingUser.visibility = View.GONE
+            }
         }
     }
 

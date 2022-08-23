@@ -55,11 +55,12 @@ class EventListActivity : AppCompatActivity() {
             }
     }
 
-    // TODO: CREATE SHIMMER LOADING FOR USER INFO AND EVENT LIST
     private fun observeIsLoading() {
         eventViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
+                binding.loadingEventList.visibility = View.VISIBLE
             } else {
+                binding.loadingEventList.visibility = View.GONE
             }
         }
     }

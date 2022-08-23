@@ -62,8 +62,8 @@
             android:id="@+id/tv_ph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PH"
             android:layout_marginEnd="16dp"
+            android:text="PH"
             app:layout_constraintEnd_toStartOf="@+id/tv_kominfo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -84,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="KOMINFO"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -103,8 +103,8 @@
             android:id="@+id/tv_pdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PDD"
             android:layout_marginStart="16dp"
+            android:text="PDD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_kominfo"
             app:layout_constraintTop_toTopOf="parent" />
@@ -145,11 +145,11 @@
             android:id="@+id/tv_kpo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="KPO"
             android:layout_marginTop="16dp"
+            android:text="KPO"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_kominfo_attendees"  />
+            app:layout_constraintTop_toBottomOf="@+id/tv_kominfo_attendees" />
 
         <TextView
             android:id="@+id/tv_kpo_attendees"
@@ -187,20 +187,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_soswir_attendees"
-            android:layout_marginTop="24dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_soswir_attendees">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/total_attendees"
-                android:textSize="16sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_total_participant"
@@ -221,28 +221,51 @@
         android:id="@+id/rv_attendance"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_total_attendees"
         tools:listitem="@layout/item_attendance" />
 
-    <!--    <ScrollView-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:clipToPadding="false"-->
-    <!--        android:paddingBottom="24dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/top_bar">-->
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:padding="16dp">-->
 
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/loading_participant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:shimmer_auto_start="true"
+        tools:visibility="visible">
 
-    <!--    </ScrollView>-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/placeholder_total_attendees" />
+
+                <include layout="@layout/item_attendance_placeholder" />
+
+                <include layout="@layout/item_attendance_placeholder" />
+
+                <include layout="@layout/item_attendance_placeholder" />
+
+                <include layout="@layout/item_attendance_placeholder" />
+
+                <include layout="@layout/item_attendance_placeholder" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

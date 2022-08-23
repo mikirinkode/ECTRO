@@ -19,6 +19,7 @@ import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 import id.ac.unila.ee.himatro.ectro.utils.Event
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_INSTAGRAM
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LINKEDIN
@@ -44,6 +45,9 @@ class UserViewModel @Inject constructor(
 
     private val _responseMessage = MutableLiveData<Event<String>>()
     val responseMessage: LiveData<Event<String>> = _responseMessage
+
+    private val _userList = MutableLiveData<List<User>>()
+    val userList: LiveData<List<User>> = _userList
 
     private val _loggedUserData = MutableLiveData<User>()
     val loggedUserData: LiveData<User> = _loggedUserData
@@ -90,6 +94,7 @@ class UserViewModel @Inject constructor(
     fun getUserDataByUid(uid: String): LiveData<User> {
         val userData = MutableLiveData<User>()
         val userInDB: DocumentReference = fireStore.collection(TABLE_USER).document(uid)
+        _isLoading.postValue(true)
         userInDB.get()
             .addOnSuccessListener { document ->
                 _isLoading.postValue(false)
@@ -137,6 +142,7 @@ class UserViewModel @Inject constructor(
 
                 }
                 .addOnFailureListener {
+                    Log.e(TAG, it.message.toString())
                     _isLoading.postValue(false)
                     _isUpdateSuccess.postValue(false)
                     _responseMessage.postValue(Event(it.message.toString()))
@@ -146,6 +152,33 @@ class UserViewModel @Inject constructor(
             Log.e(TAG, "FailUpdateUserData")
             _isLoading.postValue(false)
         }
+    }
+
+    fun getAllUser(): LiveData<List<User>> {
+        _isLoading.postValue(true)
+        fireStore.collection(TABLE_USER)
+            .get()
+            .addOnSuccessListener { documentList ->
+                _isLoading.postValue(false)
+                _isError.postValue(false)
+
+                val newList: ArrayList<User> = ArrayList()
+                for (document in documentList){
+                    if (document != null){
+                        newList.add(document.toObject())
+                    }
+                    Log.e(TAG, document.toString() )
+                }
+                _userList.postValue(newList)
+            }
+            .addOnFailureListener {
+                Log.e(TAG, it.message.toString())
+                _isLoading.postValue(false)
+                _isUpdateSuccess.postValue(false)
+                _responseMessage.postValue(Event(it.message.toString()))
+            }
+
+        return userList
     }
 
     companion object {

@@ -2,6 +2,7 @@ package id.ac.unila.ee.himatro.ectro.ui.event.participant
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +28,7 @@ class ParticipantListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val eventId = intent.getStringExtra(EXTRA_EVENT_ID)
+        observeIsLoading()
 
         binding.apply {
             rvAttendance.layoutManager = LinearLayoutManager(this@ParticipantListActivity)
@@ -49,6 +51,16 @@ class ParticipantListActivity : AppCompatActivity() {
         }
     }
 
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+                binding.loadingParticipant.visibility = View.VISIBLE
+            } else {
+                binding.loadingParticipant.visibility = View.GONE
+            }
+        }
+    }
+
     private fun observeAttendees() {
         viewModel.totalKominfoAttendees.observe(this){
             binding.tvKominfoAttendees.text = it.toString()
@@ -68,9 +80,9 @@ class ParticipantListActivity : AppCompatActivity() {
         viewModel.totalBangtekAttendees.observe(this){
             binding.tvBangtekAttendees.text = it.toString()
         }
-
-
     }
+
+
 
     companion object {
         const val EXTRA_EVENT_ID = "extra_event_id"

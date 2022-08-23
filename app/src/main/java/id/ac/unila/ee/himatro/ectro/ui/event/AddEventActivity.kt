@@ -171,6 +171,12 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
                     edtAdditionalLink.error = getString(R.string.empty_additional_link)
                     isValid = false
                 }
+
+                if (additionalName.length > 30){
+                    edtAdditionalName.error = getString(R.string.additional_action_name_is_too_long)
+                    isValid = false
+                }
+
                 if (additionalLink.isNotEmpty() && additionalName.isEmpty()) {
                     edtAdditionalName.error = getString(R.string.empty_additional_link)
                     isValid = false

@@ -36,7 +36,6 @@ class UserFeedbackActivity : AppCompatActivity() {
                     isValid = false
                 }
 
-                // TODO: Need ViewModel
                 if (isValid){
                     viewModel.createFeedback(feedback).observe(this@UserFeedbackActivity) { isSuccess ->
                         if (isSuccess){

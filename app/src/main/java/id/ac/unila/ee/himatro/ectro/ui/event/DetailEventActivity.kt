@@ -63,15 +63,6 @@ class DetailEventActivity : AppCompatActivity() {
             } else {
                 btnEdit.visibility = View.GONE
             }
-
-            layoutCreatedBy.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@DetailEventActivity,
-                        DetailUserActivity::class.java
-                    ).putExtra(DetailUserActivity.EXTRA_USER_ID, entity?.creatorId)
-                )
-            }
         }
     }
 
@@ -183,6 +174,15 @@ class DetailEventActivity : AppCompatActivity() {
         if (userId != null) {
             userViewModel.getUserDataByUid(userId).observe(this) { user ->
                 binding.apply {
+                    layoutCreatedBy.setOnClickListener {
+                        startActivity(
+                            Intent(
+                                this@DetailEventActivity,
+                                DetailUserActivity::class.java
+                            ).putExtra(DetailUserActivity.EXTRA_USER_ID, userId)
+                        )
+                    }
+
                     tvUserName.text = user.name
 
                     if (user.photoUrl.isNotEmpty()) {
@@ -213,6 +213,7 @@ class DetailEventActivity : AppCompatActivity() {
                     binding.btnAttendance.isAllCaps = false
                 } else {
                     binding.btnAttendance.isEnabled = true
+                    binding.btnAttendance.text = getString(R.string.fill_attendance)
                 }
 
                 // if action only active after user fill attendance && user has not fill it
@@ -244,11 +245,21 @@ class DetailEventActivity : AppCompatActivity() {
         return !userNpm.isNullOrEmpty() && !userDepartment.isNullOrEmpty() && !userPosition.isNullOrEmpty()
     }
 
-    // TODO: CREATE SHIMMER LOADING FOR USER INFO
+
     private fun observeIsLoading() {
         userViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
+                binding.loadingUser.visibility = View.VISIBLE
             } else {
+                binding.loadingUser.visibility = View.GONE
+            }
+        }
+
+        attendanceViewModel.isLoading.observe(this){ isLoading ->
+            if (isLoading){
+                binding.loadingCheckAttendance.visibility = View.VISIBLE
+            } else {
+                binding.loadingCheckAttendance.visibility = View.GONE
             }
         }
     }

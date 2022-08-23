@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
@@ -27,13 +28,22 @@ class MemberListActivity : AppCompatActivity() {
     private val roleRequestViewModel: RoleRequestViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
 
+    private val adapter: MemberAdapter by lazy {
+        MemberAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        observeIsLoading()
         observeRoleRequest()
+        observeUserList()
 
         binding.apply {
+            rvUser.layoutManager = LinearLayoutManager(this@MemberListActivity)
+            rvUser.adapter = adapter
+
             userViewModel.observeLoggedUserData()
             userViewModel.loggedUserData.observe(this@MemberListActivity) { user ->
                 if (user != null && (user.role.department == PH || user.role.position == KADIV || user.role.position == KADEP || user.role.position == SEKDEP || user.role.position == DEV_TEAM)) {
@@ -51,6 +61,14 @@ class MemberListActivity : AppCompatActivity() {
             }
 
             btnBack.setOnClickListener { onBackPressed() }
+        }
+    }
+
+    private fun observeUserList() {
+        userViewModel.getAllUser().observe(this){ userList ->
+            binding.apply {
+                adapter.setData(userList)
+            }
         }
     }
 
@@ -79,7 +97,9 @@ class MemberListActivity : AppCompatActivity() {
     private fun observeIsLoading() {
         userViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading){
+                binding.loadingUserList.visibility = View.VISIBLE
             } else {
+                binding.loadingUserList.visibility = View.GONE
             }
         }
     }

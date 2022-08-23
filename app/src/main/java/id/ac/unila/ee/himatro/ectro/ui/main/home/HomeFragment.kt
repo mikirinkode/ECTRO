@@ -61,6 +61,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeIsLoading()
+
         binding.apply {
             // set recyclerview layout
             rvEvent.layoutManager = LinearLayoutManager(requireContext())
@@ -114,7 +116,6 @@ class HomeFragment : Fragment() {
 
         observeUser()
         observeEvent()
-        observeIsLoading()
     }
 
     private fun observeEvent() {
@@ -214,6 +215,15 @@ class HomeFragment : Fragment() {
                     loadingEventList.visibility = View.GONE
                 }
             }
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        if (adapter.itemCount > 0){
+            binding.loadingEventList.visibility = View.GONE
         }
     }
 

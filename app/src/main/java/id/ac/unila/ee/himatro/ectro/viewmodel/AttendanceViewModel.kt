@@ -100,14 +100,17 @@ class AttendanceViewModel @Inject constructor(
     fun checkAttendanceFilled(eventId: String) {
         val loggedUser = auth.currentUser
 
+        _isLoading.postValue(true)
         fireStore.collection(TABLE_ATTENDANCES)
             .whereEqualTo(TABLE_ATTENDANCE_USER_ID, loggedUser?.uid ?: "")
             .whereEqualTo(TABLE_ATTENDANCE_EVENT_ID, eventId)
             .get()
             .addOnSuccessListener { documentList ->
                 if (documentList.isEmpty) {
+                    _isLoading.postValue(false)
                     _hasFilledAttendance.postValue(false)
                 } else {
+                    _isLoading.postValue(false)
                     _hasFilledAttendance.postValue(true)
                 }
             }
@@ -149,13 +152,25 @@ class AttendanceViewModel @Inject constructor(
                     val attendance: UserAttendance = document.toObject()
                     arrayList.add(attendance)
 
-                    when (attendance.userDept){
-                        HimatroUtils.PH -> { ph++ }
-                        HimatroUtils.KOMINFO -> { kominfo++ }
-                        HimatroUtils.SOSWIR -> { soswir++ }
-                        HimatroUtils.PPD -> { pdd++ }
-                        HimatroUtils.KPO -> { kpo++ }
-                        HimatroUtils.BANGTEK -> { bangtek++ }
+                    when (attendance.userDept) {
+                        HimatroUtils.PH -> {
+                            ph++
+                        }
+                        HimatroUtils.KOMINFO -> {
+                            kominfo++
+                        }
+                        HimatroUtils.SOSWIR -> {
+                            soswir++
+                        }
+                        HimatroUtils.PPD -> {
+                            pdd++
+                        }
+                        HimatroUtils.KPO -> {
+                            kpo++
+                        }
+                        HimatroUtils.BANGTEK -> {
+                            bangtek++
+                        }
                     }
                 }
                 attendanceList.postValue(arrayList)

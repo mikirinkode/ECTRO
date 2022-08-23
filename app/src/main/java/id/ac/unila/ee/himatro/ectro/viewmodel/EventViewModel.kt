@@ -38,15 +38,13 @@ class EventViewModel @Inject constructor(
     fun observeEventList(limit: Long): LiveData<List<EventEntity>> {
         val eventList = MutableLiveData<List<EventEntity>>()
 
+        _isLoading.postValue(true)
         fireStore.collection(TABLE_EVENTS)
             .orderBy(TABLE_EVENT_CREATED_AT, Query.Direction.DESCENDING)
             .limit(limit)
             .get()
             .addOnSuccessListener { documentList ->
-                Log.e("EventViewModel", documentList.toString())
-                Log.e("EventViewModel", documentList.size().toString())
-                Log.e("EventViewModel", documentList.documents.toString())
-                Log.e("EventViewModel", documentList.documents.size.toString())
+                _isLoading.postValue(false)
                 val newList: ArrayList<EventEntity> = ArrayList()
                 for (document in documentList) {
                     if (document != null) {
@@ -59,6 +57,7 @@ class EventViewModel @Inject constructor(
             }
             .addOnFailureListener {
                 Log.e(TAG, it.message.toString())
+                _isLoading.postValue(false)
                 _isError.postValue(true)
                 _responseMessage.postValue(Event(it.message.toString()))
             }
@@ -69,14 +68,12 @@ class EventViewModel @Inject constructor(
     fun getAllEventList(): LiveData<List<EventEntity>> {
         val eventList = MutableLiveData<List<EventEntity>>()
 
+        _isLoading.postValue(true)
         fireStore.collection(TABLE_EVENTS)
             .orderBy(TABLE_EVENT_CREATED_AT, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documentList ->
-                Log.e("EventViewModel", documentList.toString())
-                Log.e("EventViewModel", documentList.size().toString())
-                Log.e("EventViewModel", documentList.documents.toString())
-                Log.e("EventViewModel", documentList.documents.size.toString())
+                _isLoading.postValue(false)
                 val newList: ArrayList<EventEntity> = ArrayList()
                 for (document in documentList) {
                     if (document != null) {
@@ -89,6 +86,7 @@ class EventViewModel @Inject constructor(
             }
             .addOnFailureListener {
                 Log.e(TAG, it.message.toString())
+                _isLoading.postValue(false)
                 _isError.postValue(true)
                 _responseMessage.postValue(Event(it.message.toString()))
             }

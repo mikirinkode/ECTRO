@@ -51,6 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         observeUserData()
+        observeIsLoading()
 
         binding.apply {
 
@@ -162,6 +163,16 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         return isValid
+    }
+
+    private fun observeIsLoading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading){
+                binding.loadingIndicator.visibility = View.VISIBLE
+            } else {
+                binding.loadingIndicator.visibility = View.GONE
+            }
+        }
     }
 
     companion object {
