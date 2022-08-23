@@ -91,7 +91,9 @@ class HomeFragment : Fragment() {
 
             btnAddEvent.setOnClickListener {
                 if (isUserDataComplete()) {
-                    startActivity(Intent(activity, AddEventActivity::class.java))
+                    startActivity(Intent(activity, AddEventActivity::class.java)
+                        .putExtra(AddEventActivity.STATE, AddEventActivity.CREATE_ID)
+                    )
                 } else {
                     Toast.makeText(
                         requireContext(),

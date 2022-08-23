@@ -49,26 +49,32 @@ class DetailEventActivity : AppCompatActivity() {
         val entity = intent.getParcelableExtra<EventEntity>(EXTRA_ENTITY)
         setData(entity)
 
-        val loggedUser = auth.currentUser
+
 
         binding.apply {
 
             btnBack.setOnClickListener { onBackPressed() }
 
-            if (loggedUser?.uid == entity?.creatorId) {
-                btnEdit.visibility = View.VISIBLE
-                btnEdit.setOnClickListener {
-                    // TODO LATER
-                }
-            } else {
-                btnEdit.visibility = View.GONE
-            }
         }
     }
 
     private fun setData(eventEntity: EventEntity?) {
         binding.apply {
             if (eventEntity != null) {
+                val loggedUser = auth.currentUser
+
+                if (loggedUser?.uid == eventEntity.creatorId) {
+                    btnEdit.visibility = View.VISIBLE
+                    btnEdit.setOnClickListener {
+                        startActivity(Intent(this@DetailEventActivity, AddEventActivity::class.java)
+                            .putExtra(AddEventActivity.EXTRA_EVENT, eventEntity)
+                            .putExtra(AddEventActivity.STATE, AddEventActivity.UPDATE_ID)
+                        )
+                    }
+                } else {
+                    btnEdit.visibility = View.GONE
+                }
+
                 tvEventName.text = eventEntity.name
                 tvEventDesc.text = eventEntity.desc
                 tvEventCategory.text = eventEntity.category

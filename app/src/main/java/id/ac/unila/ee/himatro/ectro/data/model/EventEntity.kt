@@ -11,6 +11,7 @@ class EventEntity (
     var category: String = "",
 
     var type: String = "",
+    var onlineEventMedia: String = "",
     var place: String = "",
     var date: String = "",
     var time: String = "",

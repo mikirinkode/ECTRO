@@ -30,6 +30,7 @@ object FirestoreUtils {
     const val TABLE_EVENT_NAME = "name"
     const val TABLE_EVENT_DESC = "desc"
     const val TABLE_EVENT_TYPE = "type"
+    const val TABLE_EVENT_ONLINE_MEDIA = "onlineEventMedia"
     const val TABLE_EVENT_DATE = "date"
     const val TABLE_EVENT_TIME = "time"
     const val TABLE_EVENT_PLACE = "place"
@@ -41,6 +42,7 @@ object FirestoreUtils {
     const val TABLE_EVENT_ACTION_AFTER_ATTENDANCE = "actionAfterAttendance"
     const val TABLE_EVENT_CREATOR_ID = "creatorId"
     const val TABLE_EVENT_CREATED_AT = "createdAt"
+    const val TABLE_EVENT_UPDATED_AT = "updatedAt"
 
     // Role Request Column Name
     const val TABLE_RR_REQUEST_ID = "requestId"

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -98,6 +99,7 @@ class EventViewModel @Inject constructor(
         eventName: String,
         eventDesc: String,
         eventType: String,
+        onlineEventMedia: String,
         eventDate: String,
         eventTime: String,
         eventPlace: String,
@@ -119,6 +121,7 @@ class EventViewModel @Inject constructor(
                 FirestoreUtils.TABLE_EVENT_NAME to eventName,
                 FirestoreUtils.TABLE_EVENT_DESC to eventDesc,
                 FirestoreUtils.TABLE_EVENT_TYPE to eventType,
+                FirestoreUtils.TABLE_EVENT_ONLINE_MEDIA to onlineEventMedia,
                 FirestoreUtils.TABLE_EVENT_DATE to eventDate,
                 FirestoreUtils.TABLE_EVENT_TIME to eventTime,
                 FirestoreUtils.TABLE_EVENT_PLACE to eventPlace,
@@ -146,6 +149,56 @@ class EventViewModel @Inject constructor(
                     Log.e(TAG, it.message.toString())
                 }
         }
+    }
+
+    fun updateEvent(
+        eventId: String,
+        eventName: String,
+        eventDesc: String,
+        eventType: String,
+        onlineEventMedia: String,
+        eventDate: String,
+        eventTime: String,
+        eventPlace: String,
+        eventCategory: String,
+        isNeedNotes: Boolean,
+        isNeedAttendance: Boolean,
+        additionalName: String,
+        additionalLink: String,
+        actionAfterAttendance: Boolean
+    ) {
+
+        val update = hashMapOf(
+            FirestoreUtils.TABLE_EVENT_ID to eventId,
+            FirestoreUtils.TABLE_EVENT_NAME to eventName,
+            FirestoreUtils.TABLE_EVENT_DESC to eventDesc,
+            FirestoreUtils.TABLE_EVENT_TYPE to eventType,
+            FirestoreUtils.TABLE_EVENT_ONLINE_MEDIA to onlineEventMedia,
+            FirestoreUtils.TABLE_EVENT_DATE to eventDate,
+            FirestoreUtils.TABLE_EVENT_TIME to eventTime,
+            FirestoreUtils.TABLE_EVENT_PLACE to eventPlace,
+            FirestoreUtils.TABLE_EVENT_CATEGORY to eventCategory,
+            FirestoreUtils.TABLE_EVENT_NEED_NOTES to isNeedNotes,
+            FirestoreUtils.TABLE_EVENT_ATTENDANCE_FORM to isNeedAttendance,
+            FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
+            FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
+            FirestoreUtils.TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
+            FirestoreUtils.TABLE_EVENT_UPDATED_AT to DateHelper.getCurrentDate()
+        )
+        _isLoading.postValue(true)
+        fireStore.collection(TABLE_EVENTS)
+            .document(eventId)
+            .set(update, SetOptions.merge())
+            .addOnSuccessListener {
+                _isLoading.postValue(false)
+                _isError.postValue(false)
+            }
+            .addOnFailureListener {
+                _isLoading.postValue(false)
+                _isError.postValue(true)
+                _responseMessage.postValue(Event(it.message.toString()))
+                Log.e(TAG, it.message.toString())
+            }
     }
 
     companion object {

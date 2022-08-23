@@ -79,17 +79,16 @@ class AuthViewModel @Inject constructor(
                     val firebaseUser: FirebaseUser? = task.result.user
 
                     if (firebaseUser != null) {
-
-                        // TODO: OPEN AGAIN LATER
-//                            firebaseUser.sendEmailVerification()
+                        firebaseUser.sendEmailVerification()
 
                         // try to add new user document to fireStore
                         // create user entity for fireStore
                         val loggedUser = auth.currentUser
 
-                        if (loggedUser != null){
+                        if (loggedUser != null) {
 
-                            val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER).document(loggedUser.uid)
+                            val documentRef = fireStore.collection(FirestoreUtils.TABLE_USER)
+                                .document(loggedUser.uid)
                             val user = hashMapOf(
                                 FirestoreUtils.TABLE_USER_ID to loggedUser.uid,
                                 FirestoreUtils.TABLE_USER_NAME to name,

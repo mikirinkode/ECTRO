@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
+import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.utils.AlarmReceiver
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
@@ -43,81 +44,31 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // set Dropdown for online event type
-        val arrayString: Array<String> = resources.getStringArray(R.array.online_event_media)
-        val arrayAdapter: ArrayAdapter<String> =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayString)
-        binding.actOnlineEventMedia.setAdapter(arrayAdapter)
-
         observeLoading()
+        setupListener()
+
+        val state = intent.getIntExtra(STATE, 0)
+        val event = intent.getParcelableExtra<EventEntity>(EXTRA_EVENT)
 
         binding.apply {
-            /**
-             *  Setup Date Picker
-             */
-            // Build constraints.
-            val constraintsBuilder =
-                CalendarConstraints.Builder()
-                    .setStart(MaterialDatePicker.todayInUtcMilliseconds())
-                    .setValidator(DateValidatorPointForward.now()) // Makes only dates from today forward selectable.
-
-
-            val datePicker =
-                MaterialDatePicker.Builder.datePicker()
-                    .setTitleText(getString(R.string.choose_event_date))
-                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
-                    .setCalendarConstraints(constraintsBuilder.build())
-                    .build()
-
-            /**
-             *  Setup Time Picker
-             */
-            val calendar = Calendar.getInstance()
-            val timePicker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(calendar.get(Calendar.HOUR_OF_DAY))
-                .setMinute(calendar.get(Calendar.MINUTE))
-                .setTitleText(getString(R.string.choose_event_start_time))
-                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-                .build()
-
-            tilEventDate.setOnClickListener {
-                val datePickerFragment = DatePickerFragment()
-                datePickerFragment.show(supportFragmentManager, "DatePicker")
-            }
-
-            datePicker.addOnPositiveButtonClickListener {
-                edtEventDate.text = datePicker.headerText
-            }
-
-            tilEventTime.setOnClickListener {
-                val timePickerFragmentOne = TimePickerFragment()
-                timePickerFragmentOne.show(supportFragmentManager, "TimePicker")
-            }
-
-            timePicker.addOnPositiveButtonClickListener {
-                edtEventTime.text = "${timePicker.hour}:${timePicker.minute}"
-            }
-
-            switchAttendance.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    switchActionAfterAttendance.visibility = View.VISIBLE
-                    tvActionAfterAttendance.visibility = View.VISIBLE
-                } else {
-                    switchActionAfterAttendance.visibility = View.GONE
-                    tvActionAfterAttendance.visibility = View.GONE
-                    switchActionAfterAttendance.isChecked = false
+            when (state) {
+                CREATE_ID -> {
+                    btnAddEvent.text = getString(R.string.add_event)
+                }
+                UPDATE_ID -> {
+                    if (event != null) {
+                        setupUi(event)
+                    } else {
+                        Toast.makeText(
+                            this@AddEventActivity,
+                            getString(R.string.an_error_occurred),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    btnAddEvent.text = getString(R.string.update_event)
                 }
             }
 
-            rgEventType.setOnCheckedChangeListener { _, buttonId ->
-                if (buttonId == R.id.rb_offline) {
-                    tilOnlineEventMedia.visibility = View.GONE
-                } else if (buttonId == R.id.rb_online) {
-                    tilOnlineEventMedia.visibility = View.VISIBLE
-                }
-            }
 
             btnAddEvent.setOnClickListener {
                 var isValid = true
@@ -172,7 +123,7 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
                     isValid = false
                 }
 
-                if (additionalName.length > 30){
+                if (additionalName.length > 30) {
                     edtAdditionalName.error = getString(R.string.additional_action_name_is_too_long)
                     isValid = false
                 }
@@ -210,20 +161,54 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
                 }
 
                 if (isValid) {
-                    viewModel.createEvent(
-                        eventName = eventName,
-                        eventDesc = eventDesc,
-                        eventType = eventType ?: "",
-                        eventDate = eventDate,
-                        eventTime = eventTime,
-                        eventPlace = eventPlace,
-                        eventCategory = eventCategory,
-                        isNeedNotes = isNeedNotes,
-                        isNeedAttendance = isNeedAttendance,
-                        additionalName = additionalName,
-                        additionalLink = additionalLink,
-                        actionAfterAttendance = actionAfterAttendance
-                    )
+                    when (state) {
+                        UPDATE_ID -> {
+                            if (event != null) {
+                                viewModel.updateEvent(
+                                    eventId = event.eventId,
+                                    eventName = eventName,
+                                    eventDesc = eventDesc,
+                                    eventType = eventType ?: "",
+                                    onlineEventMedia = onlineEventMedia,
+                                    eventDate = eventDate,
+                                    eventTime = eventTime,
+                                    eventPlace = eventPlace,
+                                    eventCategory = eventCategory,
+                                    isNeedNotes = isNeedNotes,
+                                    isNeedAttendance = isNeedAttendance,
+                                    additionalName = additionalName,
+                                    additionalLink = additionalLink,
+                                    actionAfterAttendance = actionAfterAttendance
+                                )
+                            } else {
+                                Toast.makeText(
+                                    this@AddEventActivity,
+                                    getString(R.string.an_error_occurred),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        CREATE_ID -> {
+                            viewModel.createEvent(
+                                eventName = eventName,
+                                eventDesc = eventDesc,
+                                eventType = eventType ?: "",
+                                onlineEventMedia = onlineEventMedia,
+                                eventDate = eventDate,
+                                eventTime = eventTime,
+                                eventPlace = eventPlace,
+                                eventCategory = eventCategory,
+                                isNeedNotes = isNeedNotes,
+                                isNeedAttendance = isNeedAttendance,
+                                additionalName = additionalName,
+                                additionalLink = additionalLink,
+                                actionAfterAttendance = actionAfterAttendance
+                            )
+                        }
+                    }
+
+                    // TODO: I think it has possibility to make double intent
                     viewModel.isError.observe(this@AddEventActivity) { isError ->
                         if (isError) {
                             viewModel.responseMessage.observe(this@AddEventActivity) {
@@ -238,11 +223,22 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
                                 }
                             }
                         } else {
-                            Toast.makeText(
-                                this@AddEventActivity,
-                                getString(R.string.successfully_add_event),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            when (state) {
+                                UPDATE_ID -> {
+                                    Toast.makeText(
+                                        this@AddEventActivity,
+                                        getString(R.string.successfully_update_event),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                CREATE_ID -> {
+                                    Toast.makeText(
+                                        this@AddEventActivity,
+                                        getString(R.string.successfully_add_event),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
                             startActivity(
                                 Intent(
                                     this@AddEventActivity,
@@ -253,12 +249,87 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
                         }
                     }
                 }
+
             }
 
             btnBack.setOnClickListener { onBackPressed() }
 
             // restore saved data
-            restoreSavedDate(savedInstanceState)
+//            restoreSavedDate(savedInstanceState)
+        }
+    }
+
+    private fun setupUi(event: EventEntity) {
+        binding.apply {
+            edtEventName.setText(event.name)
+            edtEventDesc.setText(event.desc)
+            edtEventCategory.setText(event.category)
+
+            when (event.type) {
+                getString(R.string.offline) -> {
+                    rbOffline.isChecked = true
+                }
+                getString(R.string.online) -> {
+                    rbOnline.isChecked = true
+                }
+            }
+            actOnlineEventMedia.setText(event.onlineEventMedia)
+
+            edtEventPlace.setText(event.place)
+            edtEventDate.text = event.date
+            edtEventTime.text = event.time
+
+            switchNotes.isChecked = event.isNeedNotes == true
+            switchAttendance.isChecked = event.isNeedAttendanceForm == true
+            edtAdditionalName.setText(event.extraActionName)
+            edtAdditionalLink.setText(event.extraActionLink)
+            switchActionAfterAttendance.isChecked = event.actionAfterAttendance == true
+        }
+    }
+
+
+    private fun setupListener() {
+        binding.apply {
+            // set Dropdown for online event type
+            val arrayString: Array<String> = resources.getStringArray(R.array.online_event_media)
+            val arrayAdapter: ArrayAdapter<String> =
+                ArrayAdapter(
+                    this@AddEventActivity,
+                    android.R.layout.simple_list_item_1,
+                    arrayString
+                )
+            actOnlineEventMedia.setAdapter(arrayAdapter)
+
+            tilEventDate.setOnClickListener {
+                val datePickerFragment = DatePickerFragment()
+                datePickerFragment.show(supportFragmentManager, "DatePicker")
+            }
+
+
+            tilEventTime.setOnClickListener {
+                val timePickerFragmentOne = TimePickerFragment()
+                timePickerFragmentOne.show(supportFragmentManager, "TimePicker")
+            }
+
+
+            switchAttendance.setOnCheckedChangeListener { _, checked ->
+                if (checked) {
+                    switchActionAfterAttendance.visibility = View.VISIBLE
+                    tvActionAfterAttendance.visibility = View.VISIBLE
+                } else {
+                    switchActionAfterAttendance.visibility = View.GONE
+                    tvActionAfterAttendance.visibility = View.GONE
+                    switchActionAfterAttendance.isChecked = false
+                }
+            }
+
+            rgEventType.setOnCheckedChangeListener { _, buttonId ->
+                if (buttonId == R.id.rb_offline) {
+                    tilOnlineEventMedia.visibility = View.GONE
+                } else if (buttonId == R.id.rb_online) {
+                    tilOnlineEventMedia.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -272,64 +343,6 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
         }
     }
 
-    private fun restoreSavedDate(savedInstanceState: Bundle?) {
-        binding.apply {
-            if (savedInstanceState != null) {
-                val savedState = savedInstanceState.getParcelable<EventEntity>(STATE_RESULT)
-                if (savedState != null) {
-                    edtEventName.setText(savedState.name)
-                    edtEventDesc.setText(savedState.name)
-
-                    if (rgEventType.checkedRadioButtonId == R.id.rb_offline) {
-                        rbOffline.isChecked = true
-                    } else if (rgEventType.checkedRadioButtonId == R.id.rb_online) {
-                        rbOnline.isChecked = true
-                    }
-                    edtEventPlace.setText(savedState.name)
-                    edtEventDate.text = savedState.name
-                    edtEventTime.text = savedState.name
-                    edtEventCategory.setText(savedState.name)
-                    edtAdditionalName.setText(savedState.extraActionName)
-                    edtAdditionalLink.setText(savedState.extraActionLink)
-                    if (savedState.isNeedAttendanceForm != null) {
-                        switchAttendance.isChecked = savedState.isNeedAttendanceForm!!
-                    }
-                    if (savedState.actionAfterAttendance != null) {
-                        switchActionAfterAttendance.isChecked = savedState.actionAfterAttendance!!
-                    }
-                    if (savedState.isNeedNotes != null) {
-                        switchNotes.isChecked = savedState.isNeedNotes!!
-                    }
-                }
-            }
-        }
-    }
-
-    // prevent data loss when device rotated
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        binding.apply {
-            val eventType =
-                if (rgEventType.checkedRadioButtonId == R.id.rb_offline) "Offline" else "Online"
-            outState.putParcelable(
-                STATE_RESULT,
-                EventEntity(
-                    name = edtEventName.text.toString().trim(),
-                    desc = edtEventDesc.text.toString().trim(),
-                    category = edtEventCategory.text.toString().trim(),
-                    type = eventType,
-                    place = edtEventPlace.text.toString().trim(),
-                    date = edtEventDate.text.toString().trim(),
-                    time = edtEventTime.text.toString().trim(),
-                    isNeedNotes = switchNotes.isChecked,
-                    isNeedAttendanceForm = switchAttendance.isChecked,
-                    extraActionName = edtAdditionalName.text.toString().trim(),
-                    extraActionLink = edtAdditionalLink.text.toString().trim(),
-                    actionAfterAttendance = switchActionAfterAttendance.isChecked,
-                )
-            )
-        }
-    }
 
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
@@ -348,13 +361,15 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
 
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-
         binding.edtEventTime.text = dateFormat.format(calendar.time)
     }
 
 
     companion object {
         private const val TAG = "CreateEventActivity"
-        private const val STATE_RESULT = "state_result"
+        const val EXTRA_EVENT = "extra_event"
+        const val STATE = "state"
+        const val CREATE_ID = 101
+        const val UPDATE_ID = 202
     }
 }

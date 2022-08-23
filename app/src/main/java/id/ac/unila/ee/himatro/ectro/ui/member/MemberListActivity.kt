@@ -93,7 +93,6 @@ class MemberListActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: CREATE SHIMMER LOADING FOR USER LIST
     private fun observeIsLoading() {
         userViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading){

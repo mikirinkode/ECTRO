@@ -243,6 +243,8 @@
     <string name="failed_sent_feedback">Gagal mengirim Feedback.</string>
     <string name="successfully_sent_feedback">Berhasil mengirim Feedback</string>
     <string name="additional_action_name_is_too_long">Judul aksi terlalu panjang</string>
+    <string name="update_event">Update Acara</string>
+    <string name="successfully_update_event">Berhasil memperbarui acara</string>
 
 
 </resources>
