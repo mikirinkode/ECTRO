@@ -245,6 +245,7 @@
     <string name="additional_action_name_is_too_long">Judul aksi terlalu panjang</string>
     <string name="update_event">Update Acara</string>
     <string name="successfully_update_event">Berhasil memperbarui acara</string>
+    <string name="please_choose_division">Mohon pilih divisi</string>
 
 
 </resources>

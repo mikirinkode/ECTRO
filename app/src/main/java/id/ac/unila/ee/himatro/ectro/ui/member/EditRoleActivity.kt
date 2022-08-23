@@ -200,6 +200,15 @@ class EditRoleActivity : AppCompatActivity() {
                     ).show()
                 }
 
+                if (division.isEmpty() && (position == HimatroUtils.ANGGOTA || position == HimatroUtils.KADIV)){
+                    isValid = false
+                    Toast.makeText(
+                        this@EditRoleActivity,
+                        getString(R.string.please_choose_division),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
                 if (isValid) {
                     viewModel.updateRoleRequest(entity, department, division, position)
 
