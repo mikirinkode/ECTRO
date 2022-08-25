@@ -2,20 +2,17 @@ package id.ac.unila.ee.himatro.ectro.ui.profile
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
-import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailUserBinding
-import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 import id.ac.unila.ee.himatro.ectro.utils.Constants
 import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailUserActivity : AppCompatActivity() {

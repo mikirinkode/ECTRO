@@ -1,30 +1,24 @@
 package id.ac.unila.ee.himatro.ectro.ui.settings
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.DARK_MODE_PREF
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGGED_OUT
-import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.LOGIN_STATUS
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_EMAIL
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.databinding.ActivitySettingsBinding
 import id.ac.unila.ee.himatro.ectro.ui.auth.LoginActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 import javax.inject.Inject
-import kotlin.math.log
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {

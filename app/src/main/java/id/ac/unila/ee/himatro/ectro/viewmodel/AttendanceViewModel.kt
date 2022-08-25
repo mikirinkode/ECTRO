@@ -4,20 +4,26 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_DEPARTMENT
+import id.ac.unila.ee.himatro.ectro.data.EctroPreferences.Companion.USER_NAME
 import id.ac.unila.ee.himatro.ectro.data.model.UserAttendance
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCES
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_DATE
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_ID
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_IS_ATTEND
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_REASON
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_STATUS
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_USER_DEPT
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_USER_ID
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ATTENDANCE_USER_NAME
 import id.ac.unila.ee.himatro.ectro.utils.HimatroUtils
 import javax.inject.Inject
 
@@ -67,19 +73,19 @@ class AttendanceViewModel @Inject constructor(
         val userAttendanceRef = fireStore.collection(TABLE_ATTENDANCES).document()
         val loggedUser = auth.currentUser
 
-        val name = preferences.getValues(EctroPreferences.USER_NAME)
-        val dept = preferences.getValues(EctroPreferences.USER_DEPARTMENT)
+        val name = preferences.getValues(USER_NAME)
+        val dept = preferences.getValues(USER_DEPARTMENT)
 
         val userAttendance = hashMapOf(
-            FirestoreUtils.TABLE_ATTENDANCE_ID to userAttendanceRef.id,
-            FirestoreUtils.TABLE_ATTENDANCE_EVENT_ID to eventId,
-            FirestoreUtils.TABLE_ATTENDANCE_USER_ID to loggedUser?.uid,
-            FirestoreUtils.TABLE_ATTENDANCE_USER_NAME to name,
-            FirestoreUtils.TABLE_ATTENDANCE_USER_DEPT to dept,
-            FirestoreUtils.TABLE_ATTENDANCE_STATUS to attendanceStatus,
-            FirestoreUtils.TABLE_ATTENDANCE_IS_ATTEND to isAttend,
-            FirestoreUtils.TABLE_ATTENDANCE_REASON to reasonCannotAttend,
-            FirestoreUtils.TABLE_ATTENDANCE_DATE to DateHelper.getCurrentDate()
+            TABLE_ATTENDANCE_ID to userAttendanceRef.id,
+            TABLE_ATTENDANCE_EVENT_ID to eventId,
+            TABLE_ATTENDANCE_USER_ID to loggedUser?.uid,
+            TABLE_ATTENDANCE_USER_NAME to name,
+            TABLE_ATTENDANCE_USER_DEPT to dept,
+            TABLE_ATTENDANCE_STATUS to attendanceStatus,
+            TABLE_ATTENDANCE_IS_ATTEND to isAttend,
+            TABLE_ATTENDANCE_REASON to reasonCannotAttend,
+            TABLE_ATTENDANCE_DATE to DateHelper.getCurrentDate()
         )
 
         _isLoading.postValue(true)

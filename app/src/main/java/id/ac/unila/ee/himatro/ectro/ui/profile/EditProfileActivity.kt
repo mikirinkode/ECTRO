@@ -2,13 +2,11 @@ package id.ac.unila.ee.himatro.ectro.ui.profile
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Images
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
@@ -18,12 +16,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -37,7 +29,6 @@ import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityEditProfileBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
 import id.ac.unila.ee.himatro.ectro.viewmodel.UserViewModel
-import java.io.ByteArrayOutputStream
 
 
 @AndroidEntryPoint
@@ -48,17 +39,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private val viewModel: UserViewModel by viewModels()
-
-//    private lateinit var scannedBitmap: Bitmap
-//    private var bitmapState: Bitmap? = null
-
-    private val storage: FirebaseStorage by lazy {
-        Firebase.storage
-    }
-
-    private val db: FirebaseFirestore by lazy {
-        Firebase.firestore
-    }
     private var fileSelected: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -345,19 +325,6 @@ class EditProfileActivity : AppCompatActivity() {
                 binding.loadingIndicator.visibility = View.GONE
             }
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-//        binding.tvResult.clearFocus()
-//        if (bitmapState == null){
-//            binding.btnCopy.isEnabled = false
-//            binding.btnDetectText.isEnabled = false
-//            binding.btnSave.isEnabled = false
-//        } else {
-//            binding.btnDetectText.isEnabled = true
-//        }
     }
 
     companion object {

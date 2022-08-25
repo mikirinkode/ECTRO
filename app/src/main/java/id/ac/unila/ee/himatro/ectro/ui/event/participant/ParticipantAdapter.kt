@@ -1,6 +1,5 @@
 package id.ac.unila.ee.himatro.ectro.ui.event.participant
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.UserAttendance
 import id.ac.unila.ee.himatro.ectro.databinding.ItemAttendanceBinding
-import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
-import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
-import javax.inject.Inject
 
 class ParticipantAdapter : RecyclerView.Adapter<ParticipantAdapter.ViewHolder>() {
 

@@ -12,7 +12,6 @@ import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
-import id.ac.unila.ee.himatro.ectro.data.model.UserAttendance
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
@@ -131,7 +130,7 @@ class EventViewModel @Inject constructor(
                 FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_NAME to additionalName,
                 FirestoreUtils.TABLE_EVENT_EXTRA_ACTION_LINK to additionalLink,
                 FirestoreUtils.TABLE_EVENT_ACTION_AFTER_ATTENDANCE to actionAfterAttendance,
-                FirestoreUtils.TABLE_EVENT_CREATOR_ID to firebaseUser?.uid,
+                FirestoreUtils.TABLE_EVENT_CREATOR_ID to firebaseUser.uid,
                 TABLE_EVENT_CREATED_AT to DateHelper.getCurrentDate()
             )
 

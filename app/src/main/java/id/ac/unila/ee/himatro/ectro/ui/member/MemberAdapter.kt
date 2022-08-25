@@ -8,12 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.User
-import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.databinding.ItemUserBinding
-import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
 import id.ac.unila.ee.himatro.ectro.ui.profile.DetailUserActivity
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
-import id.ac.unila.ee.himatro.ectro.utils.EventDiffUtil
 import id.ac.unila.ee.himatro.ectro.utils.UserDiffUtil
 
 class MemberAdapter : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {

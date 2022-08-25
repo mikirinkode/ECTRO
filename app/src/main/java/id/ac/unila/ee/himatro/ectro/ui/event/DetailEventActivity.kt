@@ -3,21 +3,16 @@ package id.ac.unila.ee.himatro.ectro.ui.event
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
-import id.ac.unila.ee.himatro.ectro.data.model.User
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityDetailEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.attendance.AttendanceFormActivity
 import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
@@ -177,31 +172,29 @@ class DetailEventActivity : AppCompatActivity() {
     }
 
     private fun observeUploaderInfo(userId: String) {
-        if (userId != null) {
-            userViewModel.getUserDataByUid(userId).observe(this) { user ->
-                binding.apply {
-                    layoutCreatedBy.setOnClickListener {
-                        startActivity(
-                            Intent(
-                                this@DetailEventActivity,
-                                DetailUserActivity::class.java
-                            ).putExtra(DetailUserActivity.EXTRA_USER_ID, userId)
-                        )
-                    }
+        userViewModel.getUserDataByUid(userId).observe(this) { user ->
+            binding.apply {
+                layoutCreatedBy.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@DetailEventActivity,
+                            DetailUserActivity::class.java
+                        ).putExtra(DetailUserActivity.EXTRA_USER_ID, userId)
+                    )
+                }
 
-                    tvUserName.text = user.name
+                tvUserName.text = user.name
 
-                    if (user.photoUrl.isNotEmpty()) {
-                        Glide.with(applicationContext)
-                            .load(user.photoUrl)
-                            .placeholder(R.drawable.ic_image_loading)
-                            .error(R.drawable.ic_image_default)
-                            .into(ivUserPhoto)
-                    } else {
-                        Glide.with(applicationContext)
-                            .load(R.drawable.ic_default_profile)
-                            .into(ivUserPhoto)
-                    }
+                if (user.photoUrl.isNotEmpty()) {
+                    Glide.with(applicationContext)
+                        .load(user.photoUrl)
+                        .placeholder(R.drawable.ic_image_loading)
+                        .error(R.drawable.ic_image_default)
+                        .into(ivUserPhoto)
+                } else {
+                    Glide.with(applicationContext)
+                        .load(R.drawable.ic_default_profile)
+                        .into(ivUserPhoto)
                 }
             }
         }

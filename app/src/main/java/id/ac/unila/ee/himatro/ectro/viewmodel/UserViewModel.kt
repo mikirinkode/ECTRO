@@ -1,10 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.viewmodel
 
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,13 +13,9 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
-import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.User
-import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
-import id.ac.unila.ee.himatro.ectro.ui.profile.EditProfileActivity
 import id.ac.unila.ee.himatro.ectro.utils.Event
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_INSTAGRAM
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LINKEDIN
@@ -52,7 +45,7 @@ class UserViewModel @Inject constructor(
     val responseMessage: LiveData<Event<String>> = _responseMessage
 
     private val _userList = MutableLiveData<List<User>>()
-    val userList: LiveData<List<User>> = _userList
+    private val userList: LiveData<List<User>> = _userList
 
     private val _loggedUserData = MutableLiveData<User>()
     val loggedUserData: LiveData<User> = _loggedUserData
@@ -190,11 +183,11 @@ class UserViewModel @Inject constructor(
                                 _isLoading.postValue(false)
                                 _isUpdateSuccess.postValue(true)
                             }
-                            .addOnFailureListener {
-                                Log.e(TAG, it.message.toString())
+                            .addOnFailureListener { exception ->
+                                Log.e(TAG, exception.message.toString())
                                 _isLoading.postValue(false)
                                 _isUpdateSuccess.postValue(false)
-                                _responseMessage.postValue(Event(it.message.toString()))
+                                _responseMessage.postValue(Event(exception.message.toString()))
                             }
 
                     } else {

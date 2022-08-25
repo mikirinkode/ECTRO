@@ -30,7 +30,7 @@ class EctroPreferences(context: Context) {
         return sharedPreferences.getString(key, "")
     }
 
-    fun getValuesInt(key: String): Int? {
+    fun getValuesInt(key: String): Int {
         return sharedPreferences.getInt(key, 0)
     }
 

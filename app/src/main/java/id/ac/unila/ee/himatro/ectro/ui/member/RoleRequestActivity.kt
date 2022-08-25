@@ -1,20 +1,15 @@
 package id.ac.unila.ee.himatro.ectro.ui.member
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityRoleRequestBinding
-import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_ROLE_REQUEST
 import id.ac.unila.ee.himatro.ectro.viewmodel.RoleRequestViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RoleRequestActivity : AppCompatActivity() {

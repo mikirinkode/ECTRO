@@ -2,7 +2,6 @@ package id.ac.unila.ee.himatro.ectro.di
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -51,12 +50,4 @@ class AppModule {
     fun provideStorage(firebase: Firebase): FirebaseStorage {
         return firebase.storage
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideFirebaseUser(auth: FirebaseAuth): FirebaseUser {
-//        return auth.currentUser
-//    }
-
-
 }

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ItemEventBinding
 import id.ac.unila.ee.himatro.ectro.ui.event.DetailEventActivity
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.EventDiffUtil
 
 class EventAdapter : RecyclerView.Adapter<EventAdapter.ViewHolder>() {

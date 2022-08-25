@@ -1,17 +1,13 @@
 package id.ac.unila.ee.himatro.ectro.ui.event
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityEventListBinding
 import id.ac.unila.ee.himatro.ectro.ui.main.home.EventAdapter
-import id.ac.unila.ee.himatro.ectro.ui.main.home.HomeFragment
 import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
 
 @AndroidEntryPoint

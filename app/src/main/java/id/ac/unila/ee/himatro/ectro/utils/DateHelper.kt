@@ -37,10 +37,10 @@ object DateHelper {
 
             val alarmFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
 
-            if (parsePicker != null){
-                return alarmFormat.format(parsePicker)
+            return if (parsePicker != null){
+                alarmFormat.format(parsePicker)
             } else {
-                return ""
+                ""
             }
         } catch (e: Exception){
             Log.e("DateHelper", e.message.toString())
@@ -50,18 +50,18 @@ object DateHelper {
     }
 
     fun mapAlarmFormatToDisplayFormat(date: String): String {
-        try {
+        return try {
             val originalFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
             val parseAlarmDate = originalFormat.parse(date)
             val displayFormat = SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault())
             if (parseAlarmDate != null){
-                return displayFormat.format(parseAlarmDate)
+                displayFormat.format(parseAlarmDate)
             } else {
-                return ""
+                ""
             }
         } catch (e: Exception){
             Log.e("DateHelper", e.message.toString())
-            return ""
+            ""
         }
     }
 
@@ -69,10 +69,10 @@ object DateHelper {
         val originalFormat = SimpleDateFormat(DATE_DISPLAY_FORMAT, Locale.getDefault())
         val parseDisplayDate = originalFormat.parse(date)
         val alarmFormat = SimpleDateFormat(DATE_ALARM_FORMAT, Locale.getDefault())
-        if (parseDisplayDate != null){
-            return alarmFormat.format(parseDisplayDate)
+        return if (parseDisplayDate != null){
+            alarmFormat.format(parseDisplayDate)
         } else {
-            return ""
+            ""
         }
     }
 

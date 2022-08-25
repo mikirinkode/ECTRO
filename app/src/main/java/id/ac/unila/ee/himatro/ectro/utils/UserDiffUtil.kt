@@ -2,7 +2,6 @@ package id.ac.unila.ee.himatro.ectro.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import id.ac.unila.ee.himatro.ectro.data.model.User
-import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
 
 class UserDiffUtil(
     private val oldList: List<User>,

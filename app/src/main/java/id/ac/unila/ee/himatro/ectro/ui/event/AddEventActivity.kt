@@ -7,28 +7,16 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityAddEventBinding
-import id.ac.unila.ee.himatro.ectro.ui.event.notes.AddNoteActivity
 import id.ac.unila.ee.himatro.ectro.ui.main.MainActivity
-import id.ac.unila.ee.himatro.ectro.utils.AlarmReceiver
-import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.DatePickerFragment
 import id.ac.unila.ee.himatro.ectro.utils.TimePickerFragment
 import id.ac.unila.ee.himatro.ectro.viewmodel.EventViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener,
@@ -253,9 +241,6 @@ class AddEventActivity : AppCompatActivity(), DatePickerFragment.DialogDateListe
             }
 
             btnBack.setOnClickListener { onBackPressed() }
-
-            // restore saved data
-//            restoreSavedDate(savedInstanceState)
         }
     }
 

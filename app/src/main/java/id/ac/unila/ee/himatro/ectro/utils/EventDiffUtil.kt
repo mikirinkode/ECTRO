@@ -2,7 +2,6 @@ package id.ac.unila.ee.himatro.ectro.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import id.ac.unila.ee.himatro.ectro.data.model.EventEntity
-import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
 
 class EventDiffUtil(
     private val oldList: List<EventEntity>,

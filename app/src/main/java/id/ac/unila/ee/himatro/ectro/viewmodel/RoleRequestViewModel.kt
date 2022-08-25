@@ -1,8 +1,6 @@
 package id.ac.unila.ee.himatro.ectro.viewmodel
 
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
 import id.ac.unila.ee.himatro.ectro.data.model.RoleRequest
-import id.ac.unila.ee.himatro.ectro.ui.member.EditRoleActivity
 import id.ac.unila.ee.himatro.ectro.utils.DateHelper
 import id.ac.unila.ee.himatro.ectro.utils.Event
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils
@@ -70,7 +66,7 @@ class RoleRequestViewModel @Inject constructor(
                     )
 
                     fireStore.collection(FirestoreUtils.TABLE_USER)
-                        .document(firebaseUser!!.uid)
+                        .document(firebaseUser.uid)
                         .set(updateData, SetOptions.merge())
 
                     preferences.setValues(

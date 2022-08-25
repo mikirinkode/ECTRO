@@ -1,12 +1,11 @@
 package id.ac.unila.ee.himatro.ectro.ui.event.participant
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.databinding.ActivityParticipantListBinding
 import id.ac.unila.ee.himatro.ectro.viewmodel.AttendanceViewModel
 
