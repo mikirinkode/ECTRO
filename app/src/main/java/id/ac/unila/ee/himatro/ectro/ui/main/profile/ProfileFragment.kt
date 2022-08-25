@@ -37,10 +37,6 @@ class ProfileFragment : Fragment() {
     @Inject
     lateinit var fireStore: FirebaseFirestore
 
-    private val firebaseUser: FirebaseUser? by lazy {
-        auth.currentUser
-    }
-
     @Inject
     lateinit var preferences: EctroPreferences
 
@@ -203,6 +199,8 @@ class ProfileFragment : Fragment() {
             } else {
                 Glide.with(requireContext())
                     .load(userPhotoUrl)
+                    .placeholder(R.drawable.ic_image_loading)
+                    .error(R.drawable.ic_image_default)
                     .into(ivUserPhoto)
             }
 

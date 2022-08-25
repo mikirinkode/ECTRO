@@ -33,6 +33,8 @@ class MemberAdapter : RecyclerView.Adapter<MemberAdapter.ViewHolder>() {
                 } else {
                     Glide.with(itemView.context)
                         .load(user.photoUrl)
+                        .placeholder(R.drawable.ic_image_loading)
+                        .error(R.drawable.ic_image_default)
                         .into(ivUserPhoto)
                 }
             }

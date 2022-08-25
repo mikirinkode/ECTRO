@@ -1,6 +1,7 @@
 package id.ac.unila.ee.himatro.ectro.viewmodel
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,6 +13,8 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unila.ee.himatro.ectro.R
 import id.ac.unila.ee.himatro.ectro.data.EctroPreferences
@@ -25,13 +28,15 @@ import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_INSTAGRAM
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_LINKEDIN
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_NAME
 import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_NPM
+import id.ac.unila.ee.himatro.ectro.utils.FirestoreUtils.TABLE_USER_PHOTO_URL
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore,
-    private val preferences: EctroPreferences
+    private val preferences: EctroPreferences,
+    private val storage: FirebaseStorage
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -154,6 +159,58 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    fun updateUserProfile(name: String, npm: String, instagram: String, linkedin: String, file: Uri, path: String) {
+        val sRef: StorageReference = storage.reference.child(path)
+
+        _isLoading.postValue(true)
+        sRef.putFile(file)
+            .addOnSuccessListener {
+                it.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                    val newData = hashMapOf(
+                        TABLE_USER_NAME to name,
+                        TABLE_USER_NPM to npm,
+                        TABLE_USER_INSTAGRAM to instagram,
+                        TABLE_USER_LINKEDIN to linkedin,
+                        TABLE_USER_PHOTO_URL to uri
+                    )
+
+                    // if success, update data on local preferences then back to Main
+                    preferences.setValues(EctroPreferences.USER_NAME, name)
+                    preferences.setValues(EctroPreferences.USER_NPM, npm)
+                    preferences.setValues(EctroPreferences.USER_INSTAGRAM_ACCOUNT, instagram)
+                    preferences.setValues(EctroPreferences.USER_LINKEDIN_ACCOUNT, linkedin)
+                    preferences.setValues(EctroPreferences.USER_PHOTO_URL, uri.toString())
+
+                    val user = auth.currentUser
+                    if (user != null) {
+                        fireStore.collection(TABLE_USER)
+                            .document(user.uid)
+                            .set(newData, SetOptions.merge())
+                            .addOnSuccessListener {
+                                _isLoading.postValue(false)
+                                _isUpdateSuccess.postValue(true)
+                            }
+                            .addOnFailureListener {
+                                Log.e(TAG, it.message.toString())
+                                _isLoading.postValue(false)
+                                _isUpdateSuccess.postValue(false)
+                                _responseMessage.postValue(Event(it.message.toString()))
+                            }
+
+                    } else {
+                        Log.e(TAG, "FailUpdateUserData")
+                        _isLoading.postValue(false)
+                    }
+                }
+            }
+            .addOnFailureListener {
+                Log.e(TAG, it.message.toString())
+                _isLoading.postValue(false)
+                _isUpdateSuccess.postValue(false)
+                _responseMessage.postValue(Event(it.message.toString()))
+            }
+    }
+
     fun getAllUser(): LiveData<List<User>> {
         _isLoading.postValue(true)
         fireStore.collection(TABLE_USER)
@@ -163,11 +220,11 @@ class UserViewModel @Inject constructor(
                 _isError.postValue(false)
 
                 val newList: ArrayList<User> = ArrayList()
-                for (document in documentList){
-                    if (document != null){
+                for (document in documentList) {
+                    if (document != null) {
                         newList.add(document.toObject())
                     }
-                    Log.e(TAG, document.toString() )
+                    Log.e(TAG, document.toString())
                 }
                 _userList.postValue(newList)
             }

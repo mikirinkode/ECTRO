@@ -246,6 +246,12 @@
     <string name="update_event">Update Acara</string>
     <string name="successfully_update_event">Berhasil memperbarui acara</string>
     <string name="please_choose_division">Mohon pilih divisi</string>
+    <string name="choose_action">Pilih Aksi:</string>
+    <string name="get_picture_from_gallery">Ambil Gambar dari Galeri</string>
+    <string name="take_picture_with_camera">Ambil dengan Kamera</string>
+    <string name="permission_to_get_picture_note_given">Anda belum memberikan perizinan untuk mengambil gambar.</string>
+    <string name="cancel">BATALKAN</string>
+    <string name="not_given_permission_explainantion">Sepertinya anda belum memberikan izin kamera atau galeri. Cek dan aktifkan perizinan dari pengaturan aplikasi.</string>
 
 
 </resources>

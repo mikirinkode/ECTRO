@@ -152,25 +152,13 @@ class AttendanceViewModel @Inject constructor(
                     val attendance: UserAttendance = document.toObject()
                     arrayList.add(attendance)
 
-                    when (attendance.userDept) {
-                        HimatroUtils.PH -> {
-                            ph++
-                        }
-                        HimatroUtils.KOMINFO -> {
-                            kominfo++
-                        }
-                        HimatroUtils.SOSWIR -> {
-                            soswir++
-                        }
-                        HimatroUtils.PPD -> {
-                            pdd++
-                        }
-                        HimatroUtils.KPO -> {
-                            kpo++
-                        }
-                        HimatroUtils.BANGTEK -> {
-                            bangtek++
-                        }
+                    when {
+                        attendance.userDept == HimatroUtils.PH && attendance.isAttend == true -> ph++
+                        attendance.userDept == HimatroUtils.KOMINFO && attendance.isAttend == true -> kominfo++
+                        attendance.userDept == HimatroUtils.SOSWIR && attendance.isAttend == true -> soswir++
+                        attendance.userDept == HimatroUtils.PPD && attendance.isAttend == true -> pdd++
+                        attendance.userDept == HimatroUtils.KPO && attendance.isAttend == true -> kpo++
+                        attendance.userDept == HimatroUtils.BANGTEK && attendance.isAttend == true -> bangtek++
                     }
                 }
                 attendanceList.postValue(arrayList)

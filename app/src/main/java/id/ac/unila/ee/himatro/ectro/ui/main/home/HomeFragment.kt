@@ -129,8 +129,6 @@ class HomeFragment : Fragment() {
                 binding.loadingEventList.visibility = View.GONE
                 binding.emptyMessage.visibility = View.GONE
                 adapter.setData(list)
-                Log.e(TAG, list.size.toString())
-                Log.e(TAG, adapter.itemCount.toString())
             }
         }
 
@@ -187,6 +185,7 @@ class HomeFragment : Fragment() {
 
     private fun updateUi(name: String?, photoUrl: String?) {
         binding.apply {
+            Log.e(TAG, photoUrl.toString())
             loadingUser.visibility = View.GONE
             tvUserName.text = name
             if (photoUrl.isNullOrEmpty()) {
@@ -196,6 +195,8 @@ class HomeFragment : Fragment() {
             } else {
                 Glide.with(requireContext())
                     .load(photoUrl)
+                    .placeholder(R.drawable.ic_image_loading)
+                    .error(R.drawable.ic_image_default)
                     .into(ivUserPhoto)
             }
         }

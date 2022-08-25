@@ -78,6 +78,8 @@ class DetailUserActivity : AppCompatActivity() {
             } else {
                 Glide.with(this@DetailUserActivity)
                     .load(user.photoUrl)
+                    .placeholder(R.drawable.ic_image_loading)
+                    .error(R.drawable.ic_image_default)
                     .into(ivUserPhoto)
             }
 
