@@ -156,6 +156,46 @@ class RoleRequestViewModel @Inject constructor(
             }
     }
 
+    fun rejectRoleRequest(entity: RoleRequest?){
+
+        val firebaseUser = auth.currentUser
+
+        val updateRequest = hashMapOf(
+            FirestoreUtils.TABLE_RR_STATUS to EctroPreferences.REJECTED_STATUS,
+            FirestoreUtils.TABLE_RR_HANDLER_ID to firebaseUser?.uid,
+            FirestoreUtils.TABLE_RR_UPDATED_AT to DateHelper.getCurrentDate()
+        )
+
+        val updateRole = hashMapOf(
+            FirestoreUtils.TABLE_USER_REQUEST_STATUS to EctroPreferences.REJECTED_STATUS,
+        )
+
+        _isLoading.postValue(true)
+
+        // update user data in database
+        fireStore.collection(FirestoreUtils.TABLE_USER)
+            .document(entity?.applicantId ?: "")
+            .set(updateRole, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // update request document in database
+                fireStore.collection(FirestoreUtils.TABLE_ROLE_REQUEST)
+                    .document(entity?.requestId ?: "")
+                    .set(updateRequest, SetOptions.merge())
+                    .addOnSuccessListener {
+                        _isLoading.postValue(false)
+                        _isError.postValue(false)
+
+                    }
+                    .addOnFailureListener {
+                        _isLoading.postValue(false)
+                        _isError.postValue(true)
+                        _responseMessage.postValue(Event(it.message.toString()))
+                        Log.e(TAG, it.message.toString())
+                    }
+            }
+    }
+
     companion object {
         private const val TAG = "RoleRequestViewModel"
     }

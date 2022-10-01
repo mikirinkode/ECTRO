@@ -233,6 +233,13 @@ class EditRoleActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            btnReject.setOnClickListener {
+                Toast.makeText(this@EditRoleActivity, getString(R.string.role_request_rejected)   , Toast.LENGTH_SHORT).show()
+                viewModel.rejectRoleRequest(entity)
+                finish()
+            }
+
             btnBack.setOnClickListener { onBackPressed() }
         }
     }

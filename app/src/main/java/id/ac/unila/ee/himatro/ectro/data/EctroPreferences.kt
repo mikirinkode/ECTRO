@@ -94,8 +94,9 @@ class EctroPreferences(context: Context) {
         const val USER_LINKEDIN_ACCOUNT = "user_linkedin_account"
 
         const val ROLE_REQUEST_STATUS = "role_request_status"
-        const val COMPLETED_STATUS = "completed"
-        const val WAITING_STATUS = "waiting"
+        const val COMPLETED_STATUS = "COMPLETED"
+        const val WAITING_STATUS = "WAITING"
+        const val REJECTED_STATUS = "REJECTED"
 
         const val DARK_MODE_PREF: String = "dark_mode_pref"
         private const val USER_PREF: String = "user_pref"

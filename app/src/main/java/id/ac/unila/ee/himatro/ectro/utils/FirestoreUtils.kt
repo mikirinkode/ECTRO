@@ -74,4 +74,8 @@ object FirestoreUtils {
     const val TABLE_NOTE_USER_ID = "userId"
     const val TABLE_NOTE_CREATED_AT = "createdAt"
     const val TABLE_NOTE_UPDATED_AT = "updatedAt"
+
+    // Role Request Status
+    const val ROLE_REQUEST_COMPLETED = "COMPLETED"
+    const val ROLE_REQUEST_REJECTED = "REJECTED"
 }

@@ -30,12 +30,6 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
-    lateinit var fireStore: FirebaseFirestore
-
-    @Inject
     lateinit var preferences: EctroPreferences
 
     private val viewModel: RoleRequestViewModel by viewModels()
@@ -54,9 +48,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadUserLocalPrefs()
+        observeRoleRequestStatus()
 
         binding.apply {
-            if (preferences.getValues(ROLE_REQUEST_STATUS) != EctroPreferences.COMPLETED_STATUS){
+            if (preferences.getValues(ROLE_REQUEST_STATUS) != EctroPreferences.COMPLETED_STATUS) {
                 userViewModel.observeLoggedUserData()
                 userViewModel.loggedUserData.observe(viewLifecycleOwner) { user ->
                     setupUi(
@@ -71,12 +66,16 @@ class ProfileFragment : Fragment() {
 
                     if (user.roleRequestStatus == EctroPreferences.COMPLETED_STATUS) {
                         btnRequestRole.visibility = View.GONE
+                        tvRequestStatus.visibility = View.GONE
                     } else {
+                        tvRequestStatus.visibility = View.VISIBLE
                         btnRequestRole.visibility = View.VISIBLE
 
                         btnRequestRole.setOnClickListener {
                             if (isUserDataComplete()) {
                                 if (user.roleRequestStatus != EctroPreferences.WAITING_STATUS && user.roleRequestStatus != EctroPreferences.COMPLETED_STATUS) {
+
+                                    // TODO: CHECK PENGGUNA CREATE NEW REQUEST OR UPDATE THE PREVIOUS REQUEST BECAUSE OF REJECTED
                                     createRoleRequest()
                                 } else if (user.roleRequestStatus == EctroPreferences.WAITING_STATUS) {
                                     Toast.makeText(
@@ -101,6 +100,13 @@ class ProfileFragment : Fragment() {
                 startActivity(Intent(requireContext(), SettingsActivity::class.java))
             }
 
+        }
+    }
+
+    private fun observeRoleRequestStatus() {
+        userViewModel.observeLoggedUserData()
+        userViewModel.loggedUserData.observe(viewLifecycleOwner) { user ->
+            binding.tvRequestStatus.text = "Request Status: ${user.roleRequestStatus}"
         }
     }
 

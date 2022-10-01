@@ -58,7 +58,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_detail_event.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_detail_user.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_edit_profile.xml" value="0.23645833333333333" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_edit_role.xml" value="0.23645833333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_edit_role.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_event_list.xml" value="0.19003476245654694" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -70,8 +70,8 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/activity_user_feedback.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/dialog_reset_link_sent.xml" value="0.228125" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_home.xml" value="0.264" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_login.xml" value="0.22604166666666667" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_profile.xml" value="0.12631578947368421" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_login.xml" value="0.2" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/fragment_reset_password.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/item_attendance.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/OtherProjs/Himatro/ECTRO/app/src/main/res/layout/item_attendance_placeholder.xml" value="0.4" />
